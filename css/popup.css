@@ -1,0 +1,152 @@
+/*--------------------------------------
+ | Common styles
+ +----------------------------------------------------------------------------*/
+:root {
+    --ground-height: 30px;
+    --nether-height: 45px;
+
+    --control-width: 140px;
+    --panel-gap: 5px;
+    --help-width: 20px;
+}
+body {
+    height: 75px;
+    min-width: 165px;
+    width: 165px;
+}
+
+/*--------------------------------------
+ | "Control" panel styles
+ +----------------------------------------------------------------------------*/
+div.control {
+    background-color: #FFF;
+    float: left;
+    height: 100%;
+    width: var(--control-width);
+}
+
+/* "Hide Videos" styles */
+div.ground {
+    border-bottom: 1px solid #DDD;
+    display: block;
+    height: var(--ground-height);
+    text-align: center;
+}
+span.hidevid {
+    display: inline-block;
+    position: relative;
+    bottom: 1px;
+}
+
+/* "View Threshold" styles */
+div.nether {
+    display: block;
+    height: var(--nether-height);
+}
+div.threshold {
+    display: block;
+    padding-top: 8px;
+    text-align: center;
+}
+div.slidebox {
+    display: table-cell;
+    padding: 2px 0 0 2px;
+    vertical-align: middle;
+}
+input.slider {
+    background: #DDD;
+    height: 2px;
+    opacity: 0.75;
+    outline: none;
+    transition: opacity .2s;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -webkit-transition: .2s;
+    width: 99px;
+}
+input.slider:hover {
+    opacity: 1;
+}
+input.slider::-webkit-slider-thumb {
+    background: #D00;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 10px;
+    -webkit-appearance: none;
+    width: 10px;
+}
+label.percent {
+    vertical-align: middle;
+}
+
+/*--------------------------------------
+ | "Help" panel styles
+ +----------------------------------------------------------------------------*/
+div.help {
+    background-color: #FFF;
+    float: right;
+    margin-left: var(--panel-gap);
+    height: 100%;
+    width: var(--help-width);
+}
+div.symbol {
+    color: #AAA;
+    font-size: 140%;
+    text-align: center;
+    user-select: none;
+}
+div.symbol:hover {
+    color: #F00;
+}
+
+/* "Ground" help styles */
+div.ground-symbol {
+    position: relative;
+    bottom: 3px;
+}
+div.ground-help {
+    height: var(--ground-height);
+    line-height: var(--ground-height);
+}
+div.ground-help:hover div.ground-info::after {
+    background-color: #FFF;
+    color: #333;
+    content: "Toggle the visibility of watched videos.";
+    font-size: 90%;
+    height: var(--ground-height);
+    line-height: 15px;
+    left: 8px;
+    position: absolute;
+    text-align: center;
+    top: 4px;
+    width: var(--control-width);
+}
+div.ground-help div.ground-info:hover {
+    display: none;
+}
+
+/* "Nether" help styles */
+div.nether-symbol {
+    position: relative;
+}
+div.nether-help {
+    height: var(--nether-height);
+    line-height: var(--nether-height);
+}
+div.nether-help:hover div.nether-info::after {
+    background-color: #FFF;
+    bottom: 3px;
+    color: #333;
+    content: "Adjust the minimum \A view progress of a \A watched video.";
+    font-size: 90%;
+    height: var(--nether-height);
+    line-height: 15px;
+    left: 8px;
+    position: absolute;
+    text-align: center;
+    white-space: pre;
+    width: var(--control-width);
+}
+div.nether-help div.nether-info:hover {
+    display: none;
+}
