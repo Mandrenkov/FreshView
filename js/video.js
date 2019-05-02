@@ -1,78 +1,80 @@
 // This file implements the Video class.
 // -----------------------------------------------------------------------------
 
-// Video represents a YouTube video element.
+// Video represents a YouTube video.
 class Video {
     // Constructs a new Video from the given HTML element and Manager.
     constructor(element, manager) {
         this.element = element;
         this.manager = manager;
-        this.id = this.getID();
-        this.title = this.getTitle();
-        this.viewed = this.getViewed();
+        this.display = element.style.display;
+        this.id = undefined;
+        this.title = undefined;
+        this.viewed = undefined;
     }
 
-    // Fetches the ID of this Video from the DOM.
-    fetchID() {
-        let url = this.deriveURL();
-        let path = this.derivePath();
-        let legal = url && path;
-        this.id = legal ? path + url : undefined;
-        return this.id;
-    }
-    
-    // Returns the ID of the YouTube URL associated with this Video. 
+    // -------------------------------------------------------------------------
+
+    // Returns the ID of the YouTube URL associated with this Video.
     deriveURL() {
-        let selectors = [
+        // List of selectors that could match hyperlink tags associated with this Video.
+        const selectors = [
             ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer", // Grid
             ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer",      // Query
             ":scope a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer",          // Secondary
             ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer"       // Shelf, Search
-        ];
+        ].join(", ");
 
-        // Find the href attribute associated with the HTML element of this Video.
-        let href = selectors.reduce((href, selector) => href || this.element.querySelector(selector), null); 
-        if (href === null) {
-            console.post("Failed to determine ID of Video", this.element, ".");
+        // Find a hyperlink tag associated with this Video.
+        const hyperlink = this.element.querySelector(selectors);
+        if (hyperlink === null) {
+            console.post("Video.deriveURL(): Failed to find hyperlink element for Video", this.element, ".");
             return undefined;
         }
 
-        // Parse the ID of the YouTube Video URL.
-        let regex = /v=([a-zA-Z0-9_\-]+)/;
-
-        let attribute = href.getAttribute("href");
-        let matches = attribute.match(regex);
+        // Extract the relative Video URL from the YouTube URL.
+        // TODO: Use a positive lookbehind assertion instead of a capture group.
+        const regex = /v=([a-zA-Z0-9_\-]+)/;
+        const href = hyperlink.getAttribute("href");
+        const matches = href.match(regex);
         if (matches === null) {
-            console.post("Failed to find relative Video URL in attribute", attribute, ".");
+            console.post("Video.deriveURL(): Failed to find relative Video URL in attribute", href, "for Video", this.element, ".");
             return undefined;
         }
         return matches[1];
     }
 
-    // Returns the hierarchical path of the HTML element associated with this Video.
+    // Returns a hierarchical path to the HTML element associated with this Video.
     derivePath() {
         let path = "/";
-        let element = this.element;
-        while (element.id !== undefined) {
-            // The current HTML node can be uniquely identified by its index in
-            // the NodeList of its parent HTML node.
+        // Iterate from the HTML node associated with this Video to the root HTML node.
+        for (let node = this.element; node.id !== undefined; node = node.parentNode) {
+            // The current HTML node can be identified relative to its parent HTML node by its NodeList index.
             let index = 0;
-            for (let sibling = element.previousSibling; sibling !== null; sibling = sibling.previousSibling) {
+            for (let sib = node.previousSibling; sib !== null; sib = sib.previousSibling) {
                 ++index;
             }
-
-            // Prepend the ID of the current node to the hierarchical path.
+            // Prepend the index to the hierarchical path.
             path = "/" + index + path;
-            element = element.parentNode;
         }
         return path;
     }
 
-    // Fetches the title of this Video from the DOM.
+    // Fetches the ID of this Video.
+    fetchID() {
+        const url = this.deriveURL();
+        const path = this.derivePath();
+        const legal = url && path;
+        this.id = legal ? path + url : undefined;
+        return this.id;
+    }
+
+    // Fetches the title of this Video.
     fetchTitle() {
-        let title = this.element.querySelector(":scope #video-title[title]");
+        // Find the title tag associated with this Video.
+        const title = this.element.querySelector(":scope #video-title[title]");
         if (title === null) {
-            console.post("Failed to determine title of Video", this.element, ".");
+            console.post("Video.fetchTitle(): Failed to find title element for Video", this.element, ".");
             return undefined;
         }
 
@@ -80,17 +82,18 @@ class Video {
         return this.title;
     }
 
-    // Fetches the view state of this Video from the DOM.
+    // Fetches the view state of this Video.
     fetchViewed() {
-        let identifier = "div#progress.style-scope.ytd-thumbnail-overlay-resume-playback-renderer";
-
-        let bars = this.element.querySelectorAll(identifier);
-        if (bars.length === 0) {
+        // Find the progress bar tag associated with this Video.
+        const bar = this.element.querySelector("div#progress.style-scope.ytd-thumbnail-overlay-resume-playback-renderer");
+        if (bar === null) {
+            console.post("Video.fetchViewed(): Failed to find bar element for Video", this.element, ".");
             return undefined;
         }
 
-        let width = bars[0].style.width;
-        let progress = parseInt(width.substr(0, width.length - 1));
+        // Determine whether the Video's progress surpasses the progress threshold.
+        const width = bar.style.width.slice(0, -1);
+        const progress = parseInt(width, 10);
         this.viewed = progress >= this.manager.threshold;
         return this.viewed;
     }
@@ -110,13 +113,15 @@ class Video {
         return this.viewed || this.fetchViewed();
     }
 
-    // Hides this Video in the DOM.
+    // -------------------------------------------------------------------------
+
+    // Hides this Video.
     hide() {
-        this.element.style.setProperty("display", "none");
+        this.element.style.display = "none";
     }
 
-    // Shows this Video in the DOM.
+    // Shows this Video.
     show() {
-        this.element.style.setProperty("display", "");
+        this.element.style.display = this.display;
     }
 }
