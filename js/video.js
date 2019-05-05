@@ -1,4 +1,4 @@
-// This file implements the Video class.
+// This script implements the Video class.
 // -----------------------------------------------------------------------------
 
 // Video represents a YouTube video.
@@ -28,7 +28,7 @@ class Video {
         // Find a hyperlink tag associated with this Video.
         const hyperlink = this.element.querySelector(selectors);
         if (hyperlink === null) {
-            console.post("Video.deriveURL(): Failed to find hyperlink element for Video", this.element, ".");
+            Logger.warn("Video.deriveURL(): Failed to find hyperlink element for Video", this.element, ".");
             return undefined;
         }
 
@@ -38,7 +38,7 @@ class Video {
         const href = hyperlink.getAttribute("href");
         const matches = href.match(regex);
         if (matches === null) {
-            console.post("Video.deriveURL(): Failed to find relative Video URL in attribute", href, "for Video", this.element, ".");
+            Logger.warn("Video.deriveURL(): Failed to find relative Video URL in attribute", href, "for Video", this.element, ".");
             return undefined;
         }
         return matches[1];
@@ -74,7 +74,7 @@ class Video {
         // Find the title tag associated with this Video.
         const title = this.element.querySelector(":scope #video-title[title]");
         if (title === null) {
-            console.post("Video.fetchTitle(): Failed to find title element for Video", this.element, ".");
+            Logger.warn("Video.fetchTitle(): Failed to find title element for Video", this.element, ".");
             return undefined;
         }
 
@@ -87,7 +87,7 @@ class Video {
         // Find the progress bar tag associated with this Video.
         const bar = this.element.querySelector("div#progress.style-scope.ytd-thumbnail-overlay-resume-playback-renderer");
         if (bar === null) {
-            console.post("Video.fetchViewed(): Failed to find bar element for Video", this.element, ".");
+            Logger.debug("Video.fetchViewed(): Failed to find bar element for Video", this.element, ".");
             return undefined;
         }
 
