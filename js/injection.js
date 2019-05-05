@@ -12,17 +12,17 @@ function main() {
 
 // Listens to Chrome storage change events.
 function onStorageChangedListener(changes, namespace) {
-    console.post("onStorageChangedListener(): Processing event in namespace \"" + namespace + "\":", changes, ".");
+    Logger.info("onStorageChangedListener(): Processing event in namespace \"" + namespace + "\":", changes, ".");
 
     const expected = namespace == "sync" || namespace == "local";
     if (!expected) {
-        console.post("onStorageChangedListener(): Failed to process event: unexpected namespace \"%s\".", namespace);
+        Logger.warning("onStorageChangedListener(): Failed to process event: unexpected namespace \"%s\".", namespace);
         return;
     }
 
     const handled = hideListener(changes) || thresholdListener(changes);
     if (!handled) {
-       console.post("onStorageChangedListener(): Failed to process event: no keys matched", changes, ".");
+       Logger.warning("onStorageChangedListener(): Failed to process event: no keys matched", changes, ".");
     }
 }
 
@@ -30,7 +30,7 @@ function onStorageChangedListener(changes, namespace) {
 function hideListener(changes) {
     return listenerWrapper("hide", changes, (hidden) => {
         manager.hidden = hidden;
-        manager.refreshVideos();
+        manager.refresh();
     });
 }
 
@@ -38,6 +38,7 @@ function hideListener(changes) {
 function thresholdListener(changes) {
     return listenerWrapper("threshold", changes, (threshold) => {
         manager.threshold = threshold;
+        manager.request();
     });
 }
 
@@ -46,22 +47,14 @@ function listenerWrapper(key, changes, callback) {
     const handled = key in changes;
     if (handled) {
         const value = changes[key].newValue;
-        manager.stop();
         callback(value);
-        manager.start();
     }
     return handled;
 }
 
 // -----------------------------------------------------------------------------
 
-// Toggles the display of debug messages.
-const DEBUG = false;
-
-// Forwards the given arguments to console.log() if debug mode is enabled.
-console.post = (...args) => { if (DEBUG) console.log(...args) };
-
-// Construct the Manager singleton.
+// The (singleton) Manager instance.
 const manager = new Manager();
 
 main();
