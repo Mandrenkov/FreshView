@@ -20,9 +20,10 @@ class Video {
         // List of selectors that could match hyperlink tags associated with this Video.
         const selectors = [
             ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer", // Grid
-            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer",      // Query
+            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer",      // Query, Shelf, Search
             ":scope a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer",          // Secondary
-            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer"       // Shelf, Search
+            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer",         // Playlist page
+            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-panel-video-renderer"    // Playlist panel
         ].join(", ");
 
         // Find a hyperlink tag associated with this Video.

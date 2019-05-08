@@ -77,7 +77,8 @@ class Manager {
             this.fetchGridVideos(document),
             this.fetchSearchVideos(document),
             this.fetchSecondaryVideos(document),
-            this.fetchShelfVideos(document)
+            this.fetchShelfVideos(document),
+            this.fetchPlaylistVideos(document)
         );
 
         // Construct a list of viewed Videos from the Video elements.
@@ -92,8 +93,9 @@ class Manager {
         const elements = Array.from(element.querySelectorAll("ytd-item-section-renderer.style-scope.ytd-section-list-renderer"));
         return elements.filter(element => this.fetchGridVideos(element).length      == 1
                                        || this.fetchSearchVideos(element).length    == 1
-                                       || this.fetchSecondaryVideos(element).length == 1 
-                                       || this.fetchShelfVideos(element).length     == 1);
+                                       || this.fetchSecondaryVideos(element).length == 1
+                                       || this.fetchShelfVideos(element).length     == 1
+                                       || this.fetchPlaylistVideos(element).length  == 1);
     }
 
     // Fetches all the grid Videos in the given HTML element.
@@ -104,7 +106,7 @@ class Manager {
 
     // Fetches all the search Videos in the given HTML element.
     fetchSearchVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer")).concat(
+        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer:not([is-history])")).concat(
                Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-vertical-list-renderer")));
     }
 
@@ -116,6 +118,12 @@ class Manager {
     // Fetches all the shelf Videos in the given HTML element.
     fetchShelfVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-expanded-shelf-contents-renderer"));
+    }
+
+    // Fetches all the playlist Videos in the given HTML element.
+    fetchPlaylistVideos(element) {
+        return Array.from(element.querySelectorAll(":scope ytd-playlist-video-renderer.style-scope.ytd-playlist-video-list-renderer")).concat(
+               Array.from(element.querySelectorAll(":scope ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer")));
     }
 
     // -----------------------------------------------------------------------------
