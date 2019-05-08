@@ -1,5 +1,5 @@
 {
-    "manifest_version": 3,
+    "manifest_version": 2,
 
     "name": "FreshView for YouTube™",
     "short_name": "FreshView for YouTube™",
@@ -30,7 +30,7 @@
         "persistent": false
     },
     "content_scripts": [{
-            "matches": ["https://www.youtube.com/*"],
+            "matches": ["*://*.youtube.com/*"],
             "js": [
                 "js/logger.js",
                 "js/video.js",
