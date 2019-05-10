@@ -2,7 +2,7 @@
   <img src="img/icon24.png"/> FreshView for YouTube™
 </h1>
 
-FreshView for YouTube™ is a Chrome extension that hides YouTube™ videos which users have already watched.
+[FreshView for YouTube™](https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm) is a Chrome extension that hides YouTube™ videos which users have already watched.
 
 ---
 
