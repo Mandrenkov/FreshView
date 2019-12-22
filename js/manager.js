@@ -78,7 +78,8 @@ class Manager {
             this.fetchSearchVideos(document),
             this.fetchSecondaryVideos(document),
             this.fetchShelfVideos(document),
-            this.fetchPlaylistVideos(document)
+            this.fetchPlaylistVideos(document),
+            this.fetchItemVideos(document)
         );
 
         // Construct a list of viewed Videos from the Video elements.
@@ -95,7 +96,8 @@ class Manager {
                                        || this.fetchSearchVideos(element).length    == 1
                                        || this.fetchSecondaryVideos(element).length == 1
                                        || this.fetchShelfVideos(element).length     == 1
-                                       || this.fetchPlaylistVideos(element).length  == 1);
+                                       || this.fetchPlaylistVideos(element).length  == 1
+                                       || this.fetchItemVideos(element).length      == 1);
     }
 
     // Fetches all the grid Videos in the given HTML element.
@@ -124,6 +126,11 @@ class Manager {
     fetchPlaylistVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-playlist-video-renderer.style-scope.ytd-playlist-video-list-renderer")).concat(
                Array.from(element.querySelectorAll(":scope ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer")));
+    }
+
+    // Fetches all the item Videos in the given HTML element.
+    fetchItemVideos(element) {
+        return Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer"));
     }
 
     // -----------------------------------------------------------------------------
