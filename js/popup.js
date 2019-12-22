@@ -11,7 +11,7 @@ function addCheckboxEventListener() {
 // Updates the state of the given checkbox to reflect the synced "Hide Videos" checkbox state.
 function updateCheckboxState(checkbox, items) {
     const valid = !chrome.runtime.lastError && items.hasOwnProperty("hide");
-    checkbox.checked = valid ? items["hide"] : false;
+    checkbox.checked = valid ? items["hide"] : Manager.DEFAULT_HIDDEN;
 }
 
 // Publishes the state of the given checkbox as the synced "Hide Videos" checkbox state.
@@ -36,13 +36,13 @@ function updateSliderState(slider, percent, items) {
     const valid = !chrome.runtime.lastError && items.hasOwnProperty("threshold");
     const value = valid ? items["threshold"] : 90;
     slider.value = value;
-    percent.innerHTML = value + "%";
+    percent.textContent = value + "%";
 }
 
 // Publishes the state of the given slider as the local or synced "View Threshold" slider state.
 function publishSliderState(slider, percent, storage) {
     const value = slider.value;
-    percent.innerHTML = value + "%";
+    percent.textContent = value + "%";
     storage.set({"threshold": value});
 }
 
