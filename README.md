@@ -23,8 +23,8 @@ The [js](js) directory contains the following scripts:
 | **File**                          | **Purpose**                                            |
 | :---                              | :---                                                   |
 | [album.js](js/album.js)           | Implements a container for Videos.                     |
-| [background.js](js/background.js) | Activates the extension in the browser toolbar.         |
-| [injection.js](js/injection.js)   | Attaches listeners to browser storage events.           |
+| [background.js](js/background.js) | Activates the extension in the browser toolbar.        |
+| [injection.js](js/injection.js)   | Attaches listeners to browser storage events.          |
 | [logger.js](js/logger.js)         | Wraps `console` to control the visibility of messages. |
 | [manager.js](js/manager.js)       | Finds and manages Videos on a page.                    |
 | [popup.js](js/popup.js)           | Attaches listeners to the extension UI.                |

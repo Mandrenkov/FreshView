@@ -34,7 +34,7 @@ function addSliderEventListener() {
 // Updates the state of the given slider to reflect the synced "View Threshold" slider state.
 function updateSliderState(slider, percent, items) {
     const valid = !chrome.runtime.lastError && items.hasOwnProperty("threshold");
-    const value = valid ? items["threshold"] : 90;
+    const value = valid ? items["threshold"] : Manager.DEFAULT_THRESHOLD;
     slider.value = value;
     percent.textContent = value + "%";
 }
