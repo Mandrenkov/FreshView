@@ -130,7 +130,8 @@ class Manager {
 
     // Fetches all the item Videos in the given HTML element.
     fetchItemVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer"));
+        return Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer")).concat(
+               Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-shelf-renderer")));
     }
 
     // -----------------------------------------------------------------------------
