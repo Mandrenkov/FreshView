@@ -1,1 +1,4 @@
+# Local files that have no shared value.
 private/*
+# Intellisense for Visual Studio Code.
+jsconfig.json
