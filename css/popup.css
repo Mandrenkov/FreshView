@@ -1,63 +1,91 @@
 /*--------------------------------------
  | Common styles
  +----------------------------------------------------------------------------*/
-:root {
-    --ground-height: 30px;
-    --nether-height: 45px;
 
+
+/*
+=============== 
+Variables
+===============
+*/
+
+:root {
+    --ground-height: 40px;
+    --nether-height: 45px;
     --control-width: 140px;
     --panel-gap: 5px;
     --help-width: 20px;
+    /* added by vlad */
+    --clr-backgroup-main: hsl(0, 0%, 12.2%);
+    --clr-backgroup-header: hsl(0, 0%, 15.7%);
+    --clr-font-light: hsl(0, 0%, 100%);
 }
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 75%;
     height: 75px;
     min-width: 165px;
     width: 165px;
+    background-color: var(--clr-backgroup-main);
 }
+
 
 /*--------------------------------------
  | "Control" panel styles
  +----------------------------------------------------------------------------*/
+
 div.control {
-    background-color: #FFF;
+    /* background-color: #FFF; */
+    /* background-color: var(--clr-backgroup-main); */
     float: left;
     height: 100%;
     width: var(--control-width);
 }
 
+
 /* "Hide Videos" styles */
+
 div.ground {
     border-bottom: 1px solid #DDD;
     display: block;
     height: var(--ground-height);
-    text-align: center;
+    color: var(--clr-font-light);
+    background-color: var(--clr-backgroup-header);
+    z-index: 99;
 }
+
 input#hidebox {
     outline: none;
 }
+
 span.hidevid {
     display: inline-block;
     position: relative;
     bottom: 1px;
 }
 
+
 /* "View Threshold" styles */
+
 div.nether {
     display: block;
     height: var(--nether-height);
+    color: var(--clr-font-light);
 }
+
 div.threshold {
     display: block;
     padding-top: 8px;
-    text-align: center;
+    text-align: left;
 }
+
 div.slidebox {
     display: table-cell;
     padding: 2px 0 0 2px;
     vertical-align: middle;
 }
+
 input.slider {
     background: #DDD;
     height: 2px;
@@ -69,13 +97,17 @@ input.slider {
     -webkit-appearance: none;
     -webkit-transition: .2s;
     width: 99px;
+    position: relative;
 }
+
 input.slider:hover {
     opacity: 1;
 }
+
 input.slider::-moz-focus-outer {
     border: none;
 }
+
 input.slider::-moz-range-thumb {
     background: #D00;
     border: none;
@@ -84,6 +116,7 @@ input.slider::-moz-range-thumb {
     height: 10px;
     width: 10px;
 }
+
 input.slider::-webkit-slider-thumb {
     background: #D00;
     border-radius: 50%;
@@ -92,39 +125,55 @@ input.slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 10px;
 }
+
 label.percent {
     vertical-align: middle;
 }
 
+.hintext {
+    color: var(--clr-font-light);
+    font-size: 7px;
+}
+
+
 /*--------------------------------------
  | "Help" panel styles
  +----------------------------------------------------------------------------*/
+
 div.help {
     background-color: #FFF;
     float: right;
     margin-left: var(--panel-gap);
     height: 100%;
     width: var(--help-width);
+    background-color: var(--clr-backgroup-main);
 }
+
 div.symbol {
     color: #AAA;
     font-size: 110%;
     text-align: center;
     user-select: none;
 }
+
 div.symbol:hover {
     color: #F00;
 }
 
+
 /* "Ground" help styles */
+
 div.ground-symbol {
     position: relative;
     bottom: 3px;
 }
+
 div.ground-help {
     height: var(--ground-height);
     line-height: var(--ground-height);
+    background-color: var(--clr-backgroup-header);
 }
+
 div.ground-help:hover div.ground-info::after {
     background-color: #FFF;
     color: #333;
@@ -137,18 +186,24 @@ div.ground-help:hover div.ground-info::after {
     top: 4px;
     width: var(--control-width);
 }
+
 div.ground-help div.ground-info:hover {
     display: none;
 }
 
+
 /* "Nether" help styles */
+
 div.nether-symbol {
     position: relative;
+    background-color: var(--clr-backgroup-main);
 }
+
 div.nether-help {
     height: var(--nether-height);
     line-height: var(--nether-height);
 }
+
 div.nether-help:hover div.nether-info::after {
     background-color: #FFF;
     bottom: 3px;
@@ -161,7 +216,74 @@ div.nether-help:hover div.nether-info::after {
     text-align: center;
     white-space: pre;
     width: var(--control-width);
+    /* background-color: var(--clr-backgroup-header); */
 }
+
 div.nether-help div.nether-info:hover {
     display: none;
+}
+
+
+/*toggle button*/
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 17px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tslider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.tslider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 0px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.tslider {
+    background-color: #2196F3;
+}
+
+input:focus+.tslider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.tslider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+
+/* Rounded sliders */
+
+.tslider.round {
+    border-radius: 17px;
+}
+
+.tslider.round:before {
+    border-radius: 50%;
 }

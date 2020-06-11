@@ -8,15 +8,33 @@ function addCheckboxEventListener() {
     checkbox.addEventListener("change", () => publishCheckboxState(checkbox));
 }
 
+// Initializes the event listeners for the "View Threshold" checkbox.
+function addThresholdCheckboxEventListener() {
+    const checkboxview = document.getElementById("viewbox");
+    chrome.storage.sync.get("usethreshold", items => updateCheckboxvewState(checkboxview, items));
+    checkboxview.addEventListener("change", () => publishCheckboxViewState(checkboxview));
+}
+
 // Updates the state of the given checkbox to reflect the synced "Hide Videos" checkbox state.
 function updateCheckboxState(checkbox, items) {
     const valid = !chrome.runtime.lastError && items.hasOwnProperty("hide");
     checkbox.checked = valid ? items["hide"] : Manager.DEFAULT_HIDDEN;
 }
 
+// Updates the state of the given checkbox to reflect the synced "View Threshold" checkbox state.
+function updateCheckboxvewState(checkbox, items) {
+    const validView = !chrome.runtime.lastError && items.hasOwnProperty("usethreshold");
+    checkbox.checked = validView ? items["usethreshold"] : Manager.DEFAULT_VIEW;
+}
+
 // Publishes the state of the given checkbox as the synced "Hide Videos" checkbox state.
 function publishCheckboxState(checkbox) {
-    chrome.storage.sync.set({"hide": checkbox.checked});
+    chrome.storage.sync.set({ "hide": checkbox.checked });
+}
+
+// Publishes the state of the given checkbox as the synced "View Threshold" checkbox state.
+function publishCheckboxViewState(checkbox) {
+    chrome.storage.sync.set({ "usethreshold": checkbox.checked });
 }
 
 // -----------------------------------------------------------------------------
@@ -43,7 +61,7 @@ function updateSliderState(slider, percent, items) {
 function publishSliderState(slider, percent, storage) {
     const value = slider.value;
     percent.textContent = value + "%";
-    storage.set({"threshold": value});
+    storage.set({ "threshold": value });
 }
 
 // -----------------------------------------------------------------------------
@@ -51,5 +69,6 @@ function publishSliderState(slider, percent, storage) {
 // Add the "Hide Videos" checkbox and "View Threshold" slider event listeners once the DOM is loaded.
 document.addEventListener("DOMContentLoaded", () => {
     addCheckboxEventListener();
+    addThresholdCheckboxEventListener();
     addSliderEventListener();
 });

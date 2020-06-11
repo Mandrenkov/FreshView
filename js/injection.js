@@ -5,7 +5,7 @@
 // Execution entry point.
 function main() {
     // Activate the extension icon in the Chrome toolbar.
-    chrome.runtime.sendMessage({type: "showPageAction"});
+    chrome.runtime.sendMessage({ type: "showPageAction" });
     // Add a listener for Chrome storage change events.
     chrome.storage.onChanged.addListener(onStorageChangedListener);
 }
@@ -22,13 +22,21 @@ function onStorageChangedListener(changes, namespace) {
 
     const handled = hideListener(changes) || thresholdListener(changes);
     if (!handled) {
-       Logger.warning("onStorageChangedListener(): Failed to process event: no keys matched", changes, ".");
+        Logger.warning("onStorageChangedListener(): Failed to process event: no keys matched", changes, ".");
     }
 }
 
 // Listens for events related to the "Hide Videos" checkbox.
 function hideListener(changes) {
     return listenerWrapper("hide", changes, (hidden) => {
+        manager.hidden = hidden;
+        manager.refresh();
+    });
+}
+
+// Listens for events related to the "View Threshol" checkbox.
+function viewListener(changes) {
+    return listenerWrapper("usethreshold", changes, (hidden) => {
         manager.hidden = hidden;
         manager.refresh();
     });

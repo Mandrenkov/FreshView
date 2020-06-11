@@ -23,6 +23,13 @@ class Manager {
             Logger.info("Manager.restore(): Setting hidden to", this.hidden, ".");
         });
 
+        // Retrieve the "Usethreshold" checkbox state using the synchronized Chrome storage API.
+        chrome.storage.sync.get("usethreshold", items => {
+            const valid = !chrome.runtime.lastError && items.hasOwnProperty("usethreshold");
+            this.usethreshold = valid ? items["usethreshold"] : Manager.DEFAULT_VIEW;
+            Logger.info("Manager.restore(): Setting usethreshold to", this.usethreshold, ".");
+        });
+
         // Retrieve the "View Threshold" slider state using the synchronized Chrome storage API.
         chrome.storage.sync.get("threshold", items => {
             const valid = !chrome.runtime.lastError && items.hasOwnProperty("threshold");
@@ -38,7 +45,7 @@ class Manager {
 
         // Attach the MutationObserver to all childList mutations in the DOM.
         const node = document.getRootNode();
-        const conf = {childList: true, subtree: true};
+        const conf = { childList: true, subtree: true };
         observer.observe(node, conf);
     }
 
@@ -92,24 +99,24 @@ class Manager {
     // Fetches all the section Videos in the given HTML element.
     fetchSectionVideos(element) {
         const elements = Array.from(element.querySelectorAll("ytd-item-section-renderer.style-scope.ytd-section-list-renderer"));
-        return elements.filter(element => this.fetchGridVideos(element).length      == 1
-                                       || this.fetchSearchVideos(element).length    == 1
-                                       || this.fetchSecondaryVideos(element).length == 1
-                                       || this.fetchShelfVideos(element).length     == 1
-                                       || this.fetchPlaylistVideos(element).length  == 1
-                                       || this.fetchItemVideos(element).length      == 1);
+        return elements.filter(element => this.fetchGridVideos(element).length == 1 ||
+            this.fetchSearchVideos(element).length == 1 ||
+            this.fetchSecondaryVideos(element).length == 1 ||
+            this.fetchShelfVideos(element).length == 1 ||
+            this.fetchPlaylistVideos(element).length == 1 ||
+            this.fetchItemVideos(element).length == 1);
     }
 
     // Fetches all the grid Videos in the given HTML element.
     fetchGridVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-grid-video-renderer.style-scope.yt-horizontal-list-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-grid-video-renderer.style-scope.ytd-grid-renderer")));
+            Array.from(element.querySelectorAll(":scope ytd-grid-video-renderer.style-scope.ytd-grid-renderer")));
     }
 
     // Fetches all the search Videos in the given HTML element.
     fetchSearchVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer:not([is-history])")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-vertical-list-renderer")));
+            Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-vertical-list-renderer")));
     }
 
     // Fetches all the secondary Videos in the given HTML element.
@@ -125,13 +132,13 @@ class Manager {
     // Fetches all the playlist Videos in the given HTML element.
     fetchPlaylistVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-playlist-video-renderer.style-scope.ytd-playlist-video-list-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer")));
+            Array.from(element.querySelectorAll(":scope ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer")));
     }
 
     // Fetches all the item Videos in the given HTML element.
     fetchItemVideos(element) {
         return Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-shelf-renderer")));
+            Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-shelf-renderer")));
     }
 
     // -----------------------------------------------------------------------------
@@ -147,6 +154,7 @@ class Manager {
 
 // Default "Hide Videos" and "View Threshold" state values.
 Manager.DEFAULT_HIDDEN = false;
+Manager.DEFAULT_VIEW = true;
 Manager.DEFAULT_THRESHOLD = 90;
 
 // Time interval to batch poll requests.
