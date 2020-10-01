@@ -1,43 +1,50 @@
-// This script implements listeners for the Chrome storage API and is executed
+// This script implements listeners for the browser storage API and is executed
 // when the user navigates to a page on YouTube.
 // -----------------------------------------------------------------------------
 
 // Execution entry point.
 function main() {
-    // Activate the extension icon in the Chrome toolbar.
+    // Activate the extension icon in the browser toolbar.
     chrome.runtime.sendMessage({type: "showPageAction"});
     // Add a listener for Chrome storage change events.
     chrome.storage.onChanged.addListener(onStorageChangedListener);
 }
 
-// Listens to Chrome storage change events.
+// Listens to browser storage change events.
 function onStorageChangedListener(changes, namespace) {
-    Logger.info("onStorageChangedListener(): Processing event in namespace \"" + namespace + "\":", changes, ".");
-
-    const expected = namespace == "sync" || namespace == "local";
-    if (!expected) {
-        Logger.warning("onStorageChangedListener(): Failed to process event: unexpected namespace \"%s\".", namespace);
-        return;
-    }
-
-    const handled = hideListener(changes) || thresholdListener(changes);
-    if (!handled) {
-       Logger.warning("onStorageChangedListener(): Failed to process event: no keys matched", changes, ".");
+    Logger.info("onStorageChangedListener(): processing event in namespace \"" + namespace + "\":", changes, ".");
+    if (!(namespace == "sync" || namespace == "local")) {
+        Logger.warning("onStorageChangedListener(): unexpected namespace \"%s\".", namespace);
+    } else {
+        const handled = hideVideosCheckboxListener(changes) | viewThresholdCheckboxListener(changes) | viewThresholdSliderListener(changes);
+        if (!handled) {
+            Logger.warning("onStorageChangedListener(): no keys matched", changes, ".");
+        }
     }
 }
 
 // Listens for events related to the "Hide Videos" checkbox.
-function hideListener(changes) {
-    return listenerWrapper("effective-hide-videos", changes, (hidden) => {
+function hideVideosCheckboxListener(changes) {
+    return listenerWrapper("hide-videos-checkbox-state", changes, hidden => {
         manager.hidden = hidden;
         manager.refresh();
     });
 }
 
+// Listens for events related to the "View Threshold" checkbox.
+function viewThresholdCheckboxListener(changes) {
+    return listenerWrapper("view-threshold-checkbox-state", changes, enabled => {
+        manager.view_threshold_checkbox_state = enabled;
+        manager.threshold = enabled ? manager.view_threshold_slider_value : 100;
+        manager.request();
+    });
+}
+
 // Listens for events related to the "View Threshold" slider.
-function thresholdListener(changes) {
-    return listenerWrapper("effective-view-threshold", changes, (threshold) => {
-        manager.threshold = threshold;
+function viewThresholdSliderListener(changes) {
+    return listenerWrapper("view-threshold-slider-value", changes, value => {
+        manager.view_threshold_slider_value = value;
+        manager.threshold = manager.view_threshold_checkbox_state ? value : 100;
         manager.request();
     });
 }

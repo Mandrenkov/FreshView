@@ -24,6 +24,14 @@
         "default_popup": "html/popup.html",
         "default_title": "FreshView for YouTube™"
     },
+    "commands": {
+        "toggle-hide-videos-checkbox": {
+            "description": "Toggle \"Hide Videos\""
+        },
+        "toggle-view-threshold-checkbox": {
+            "description": "Toggle \"View Threshold\""
+        }
+    },
 
     "background": {
         "scripts": ["js/background.js"],

@@ -16,18 +16,21 @@ class Manager {
 
     // Restores the Manager state using the synchronized Chrome storage API.
     restore() {
-        // Retrieve the "Hide Videos" checkbox state using the synchronized Chrome storage API.
-        chrome.storage.sync.get("hide", items => {
-            const valid = !chrome.runtime.lastError && items.hasOwnProperty("hide");
-            this.hidden = valid ? items["hide"] : Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE;
-            Logger.info("Manager.restore(): Setting hidden to", this.hidden, ".");
-        });
+        // Retrieve the "Hide Videos" and "View Threshold" states using the synchronized Chrome storage API.
+        chrome.storage.sync.get(["hide-videos-checkbox-state", "view-threshold-checkbox-state", "view-threshold-slider-value"], items => {
+            // Returns the value associated with the specified key. If something goes wrong, the default value is returned instead.
+            function extractStorageItem(key, value) {
+                const valid = !chrome.runtime.lastError && items.hasOwnProperty(key);
+                return valid ? items[key] : value;
+            }
 
-        // Retrieve the "View Threshold" slider state using the synchronized Chrome storage API.
-        chrome.storage.sync.get("threshold", items => {
-            const valid = !chrome.runtime.lastError && items.hasOwnProperty("threshold");
-            this.threshold = valid ? items["threshold"] : Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE;
-            Logger.info("Manager.restore(): Setting threshold to", this.threshold, ".");
+            this.hidden = extractStorageItem("hide-videos-checkbox-state", Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE);
+            Logger.info("Manager.restore(): Setting hidden to %s.", this.hidden);
+
+            this.view_threshold_checkbox_state = extractStorageItem("view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
+            this.view_threshold_slider_value = extractStorageItem("view-threshold-slider-value", Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE);
+            this.threshold = this.view_threshold_checkbox_state ? this.view_threshold_slider_value : 100;
+            Logger.info("Manager.restore(): Setting threshold to %s.", this.threshold);
         });
     }
 
