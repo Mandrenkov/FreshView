@@ -2,36 +2,67 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../css/popup.css">
         <script src="../js/manager.js"></script>
         <script src="../js/popup.js"></script>
     </head>
     <body>
-        <!-- "Control" panel -->
-        <div class="control">
-            <!-- "Hide Videos" checkbox -->
-            <div class="ground">
-                <input type="checkbox" id="hidebox"/>
-                <span class="hidevid">Hide Videos</span>
-            </div>
-            <!-- "View Threshold" slider -->
-            <div class="nether">
-                <div class="threshold">View Threshold</div>
-                <div class="slidebox">
-                    <input type="range" class="slider" id="slider" min="1" max="100" step="1" value="90">
-                    <label class="percent" id="percent" for="slider">100%</label>
+        <div id="header">
+            <img id="logo" src="../img/icon.png"/>
+            <span id="title">FreshView</span>
+            <div id="actions">
+                <div class="action">
+                    <input type="checkbox" id="dark-mode-checkbox">
+                    <label class="material-icons" for="dark-mode-checkbox">brightness_4</label>
+                </div>
+                <div class="action">
+                    <!-- Chrome Link -->
+                    <a class="material-icons action" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">home</a>
+                    <!-- Firefox Link -->
+                    <!-- <a class="material-icons action" href="https://addons.mozilla.org/en-CA/firefox/addon/freshview-for-youtube" target="_blank">home</a> -->
                 </div>
             </div>
         </div>
-        <!-- "Help" panel -->
-        <div class="help">
-            <div class="ground-help">
-                <div class="symbol ground-symbol">&#9432;</div>
-                <div class="ground-info"></div>
+        <div id="controls">
+            <!-- "Hide Videos" controls -->
+            <div class="control">
+                <div class="control-margin">
+                    <div class="control-toggle">
+                        <label class="control-toggle">
+                            <input id="hide-videos-checkbox" type="checkbox">
+                            <span class="control-toggle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="control-panel">
+                    <div class="control-description">
+                        <div class="control-name">Hide Videos</div>
+                        <div class="control-help">Toggles the visibility of watched videos.</div>
+                    </div>
+                </div>
             </div>
-            <div class="nether-help">
-                <div class="symbol nether-symbol">&#9432;</div>
-                <div class="nether-info"></div>
+            <!-- "View Threshold" controls -->
+            <div class="control">
+                <div class="control-margin">
+                    <div class="control-toggle">
+                        <label class="control-toggle">
+                            <input id="view-threshold-checkbox" type="checkbox">
+                            <span class="control-toggle"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="control-panel">
+                    <div class="control-description">
+                        <div class="control-name">View Threshold</div>
+                        <div class="control-help">Adjusts the viewing threshold of watched videos.</div>
+                    </div>
+                    <div class="control-slider">
+                        <input id="view-threshold-slider" class="control-slider" type="range" min="1" max="100" step="1" value="90">
+                        <label id="view-threshold-percent" class="control-slider" for="view-threshold-slider">100%</label>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

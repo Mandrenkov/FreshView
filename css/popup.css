@@ -1,167 +1,331 @@
-/*--------------------------------------
- | Common styles
- +----------------------------------------------------------------------------*/
+/* Section 0: Testing Styles -------------------------------------------------*/
+.red {
+    background-color: #F00;
+}
+
+.green {
+    background-color: #0F0;
+}
+
+.blue {
+    background-color: #00F;
+}
+
+/* Section 1: Global Styles --------------------------------------------------*/
 :root {
-    --ground-height: 30px;
-    --nether-height: 45px;
-
-    --control-width: 140px;
-    --panel-gap: 5px;
-    --help-width: 20px;
+    --accent-colour: #065FD4;
+    --background-colour-header: #FFFFFF;
+    --background-colour-controls: #F9F9F9;
+    --disabled-colour: #909090;
+    --font-colour-title: #282828;
+    --font-colour-primary: #0D0D0D;
+    --font-colour-secondary: #757575;
+    --font-colour-icons: #909090;
+    --font-weight-title: 600;
+    --font-weight-primary: 600;
+    --font-weight-secondary: 400;
+    --thumb-translation: 0px;
+    --thumb-size: 14px;
+    --track-colour-toggle: #E7E7E7;
+    --track-colour-slider: #CCCCCC;
+    --transition-duration-colour: 0s;
+    --transition-duration-slider: 0s;
+    --transition-duration-toggle: 0s;
 }
+
+:root[theme='dark'] {
+    --accent-colour: #3EA6FF;
+    --background-colour-header: #202020;
+    --background-colour-controls: #181818;
+    --disabled-colour: #909090;
+    --font-colour-title: #FFFFFF;
+    --font-colour-primary: #FFFFFF;
+    --font-colour-secondary: #AAAAAA;
+    --font-colour-icons: #909090; 
+    --font-weight-title: 500;
+    --font-weight-primary: 500;
+    --font-weight-secondary: 400;
+    --thumb-translation: 0px;
+    --thumb-size: 14px;
+    --track-colour-toggle: #3C3C3C;
+    --track-colour-slider: #2F2F2F;
+    --transition-duration-colour: 0s;
+    --transition-duration-slider: 0s;
+    --transition-duration-toggle: 0s;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 75%;
-    height: 75px;
-    min-width: 165px;
-    width: 165px;
+    margin: 0;
+    min-width: 360px;
+    max-width: 360px;
 }
 
-/*--------------------------------------
- | "Control" panel styles
- +----------------------------------------------------------------------------*/
-div.control {
-    background-color: #FFF;
+body * {
+    cursor: default;
+    font-family: 'Roboto', sans-serif;
+    font-size: 100%;
+    transition-duration: var(--transition-duration-colour);
+}
+
+/* Section 2: Header Styles --------------------------------------------------*/
+#header {
+    background-color: var(--background-colour-header);
+    height: 60px;
+    width: 100%;
+}
+
+#logo {
     float: left;
-    height: 100%;
-    width: var(--control-width);
+    height: 24px;
+    padding: 18px;
+    width: auto;
 }
 
-/* "Hide Videos" styles */
-div.ground {
-    border-bottom: 1px solid #DDD;
-    display: block;
-    height: var(--ground-height);
-    text-align: center;
-}
-input#hidebox {
-    outline: none;
-}
-span.hidevid {
-    display: inline-block;
-    position: relative;
-    bottom: 1px;
-}
-
-/* "View Threshold" styles */
-div.nether {
-    display: block;
-    height: var(--nether-height);
-}
-div.threshold {
-    display: block;
-    padding-top: 8px;
-    text-align: center;
-}
-div.slidebox {
-    display: table-cell;
-    padding: 2px 0 0 2px;
-    vertical-align: middle;
-}
-input.slider {
-    background: #DDD;
-    height: 2px;
-    opacity: 0.75;
-    outline: none;
-    transition: opacity .2s;
-    transition-duration: .2s;
-    vertical-align: middle;
-    -webkit-appearance: none;
-    -webkit-transition: .2s;
-    width: 99px;
-}
-input.slider:hover {
-    opacity: 1;
-}
-input.slider::-moz-focus-outer {
-    border: none;
-}
-input.slider::-moz-range-thumb {
-    background: #D00;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 10px;
-    width: 10px;
-}
-input.slider::-webkit-slider-thumb {
-    background: #D00;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 10px;
-    -webkit-appearance: none;
-    width: 10px;
-}
-label.percent {
+#title {
+    color: var(--font-colour-title);
+    float: left;
+    line-height: 60px;
+    font-size: 160%;
+    font-weight: var(--font-weight-title);
+    transition-duration: 0s;
     vertical-align: middle;
 }
 
-/*--------------------------------------
- | "Help" panel styles
- +----------------------------------------------------------------------------*/
-div.help {
-    background-color: #FFF;
+/* Section 2.1: Action Styles ------------------------------------------------*/
+#actions {
+    align-content: center;
+    display: flex;
+    flex-direction: row;
     float: right;
-    margin-left: var(--panel-gap);
-    height: 100%;
-    width: var(--help-width);
+    justify-content: center;
+    height: 60px;
+    padding-right: 15px;
 }
-div.symbol {
-    color: #AAA;
-    font-size: 110%;
-    text-align: center;
+
+div.action {
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px 0 20px 10px;
     user-select: none;
 }
-div.symbol:hover {
-    color: #F00;
-}
 
-/* "Ground" help styles */
-div.ground-symbol {
-    position: relative;
-    bottom: 3px;
-}
-div.ground-help {
-    height: var(--ground-height);
-    line-height: var(--ground-height);
-}
-div.ground-help:hover div.ground-info::after {
-    background-color: #FFF;
-    color: #333;
-    content: "Toggle the visibility of watched videos.";
-    height: var(--ground-height);
-    line-height: 15px;
-    left: 8px;
-    position: absolute;
-    text-align: center;
-    top: 4px;
-    width: var(--control-width);
-}
-div.ground-help div.ground-info:hover {
+div.action input {
     display: none;
 }
 
-/* "Nether" help styles */
-div.nether-symbol {
+div.action label {
+    color: var(--font-colour-icons);
+    font-size: 160%;
+    line-height: 20px;
+    text-decoration: none;
+}
+
+div.action a {
+    color: var(--font-colour-icons);
+    display: inline-block;
+    font-size: 160%;
+    line-height: 20px;
+    text-decoration: none;
+}
+
+.material-icons:hover {
+    color: var(--font-colour-primary);
+    cursor: pointer;
+}
+
+/* Section 3: Control Styles -------------------------------------------------*/
+#controls {
+    background-color: var(--background-colour-controls);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+div.control {
+    vertical-align: middle;
+    width: 100%;
+}
+
+div.control-margin {
+    align-items: center;
+    display: flex;
+    float: left;
+    height: 60px;
+    width: 60px;
+}
+
+div.control-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
+    width: 300px;
 }
-div.nether-help {
-    height: var(--nether-height);
-    line-height: var(--nether-height);
+
+div.control-description {
+    display: flex;
+    flex-direction: column;
+    height: 60px;
+    justify-content: center;
+    width: 100%;
 }
-div.nether-help:hover div.nether-info::after {
-    background-color: #FFF;
-    bottom: 3px;
-    color: #333;
-    content: "Adjust the minimum \A view progress of a \A watched video.";
-    height: var(--nether-height);
-    line-height: 15px;
-    left: 8px;
-    position: absolute;
-    text-align: center;
-    white-space: pre;
-    width: var(--control-width);
+
+div.control-name {
+    color: var(--font-colour-primary);
+    display: inline-block;
+    font-size: 110%;
+    font-weight: var(--font-weight-primary);
+    transition-duration: 0s;
 }
-div.nether-help div.nether-info:hover {
+
+div.control-help {
+    color: var(--font-colour-secondary);
+    display: inline-block;
+    font-size: 110%;
+    font-weight: var(--font-weight-secondary);
+    transition-duration: 0s;
+}
+
+/* Section 4: Toggle Styles --------------------------------------------------*/
+div.control-toggle {
+    align-items: center;
+    display: flex;
+    height: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+label.control-toggle {
+    display: inline-block;
+    position: relative;
+    width: 32px;
+    height: 12px;
+}
+
+/* Section 4.1: Toggle Checkbox Styles ---------------------------------------*/
+label.control-toggle input { 
+    -moz-appearance: none;
     display: none;
+    height: 0;
+    width: 0;
+}
+
+/* Section 4.2: Toggle Thumb Styles ------------------------------------------*/
+span.control-toggle::before {
+    background-color: var(--disabled-colour);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    content: "";
+    height: 18px;
+    position: absolute;
+    top: -3px;
+    transition-duration: var(--transition-duration-toggle);
+    width: 18px;
+}
+
+input:checked + span.control-toggle::before {
+    background-color: var(--accent-colour);
+    transform: translateX(16px);
+    transition-duration: var(--transition-duration-toggle);
+}
+
+/* Section 4.3: Toggle Track Styles ------------------------------------------*/
+span.control-toggle {
+    background-color: var(--track-colour-toggle);
+    border-radius: 32px;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* Section 5: Slider Styles --------------------------------------------------*/
+div.control-slider {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Section 5.1: Slider Track Styles ------------------------------------------*/
+input.control-slider {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: var(--track-colour-slider);
+    border-radius: 2px;
+    cursor: pointer;
+    flex: 1;
+    height: 4px;
+    margin-top: 8px;
+    outline: none;
+    vertical-align: middle;
+}
+
+input.control-slider:disabled {
+    background: var(--track-colour-slider);
+    cursor: default;
+}
+
+input.control-slider::-moz-focus-outer {
+    border: none;
+}
+
+/* Section 5.2: Enabled Slider Thumb Styles ----------------------------------*/
+input.control-slider::-moz-range-thumb {
+    -moz-appearance: none;
+    background: var(--accent-colour);
+    border-radius: 50%;
+    border: 2px solid var(--background-colour-controls);
+    height: var(--thumb-size);
+    transition-duration: var(--transition-duration-slider);
+    width: var(--thumb-size);
+}
+
+input.control-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: var(--accent-colour);
+    border-radius: 50%;
+    border: 2px solid var(--background-colour-controls);
+    height: var(--thumb-size);
+    transition-duration: var(--transition-duration-colour), var(--transition-duration-slider);
+    transition-property: all, transform;
+    width: var(--thumb-size);
+}
+
+/* Section 5.3: Disabled Slider Thumb Styles ---------------------------------*/
+input.control-slider:disabled::-webkit-slider-thumb {
+    background: var(--track-colour-slider);
+    transform: translateX(var(--thumb-translation));
+    transition-duration: var(--transition-duration-colour), var(--transition-duration-slider);
+    transition-property: all, transform;
+}
+
+input.control-slider:disabled::-moz-range-thumb {
+    background: var(--track-colour-slider);
+    transform: translateX(var(--thumb-translation));
+    transition-duration: var(--transition-duration-slider);
+}
+
+/* Section 5.4: Slider Label Styles ------------------------------------------*/
+label.control-slider {
+    color: var(--font-colour-primary);
+    display: inline-block;
+    font-weight: var(--font-weight-primary);
+    line-height: 20px;
+    margin: 0 10px 10px 0;
+    text-align: right;
+    transition-duration: var(--transition-duration-colour), 0s;
+    transition-property: all, font-weight;
+    vertical-align: top;
+    width: 35px;
+}
+
+input.control-slider:disabled + label.control-slider {
+    color: var(--disabled-colour);
 }

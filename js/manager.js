@@ -19,14 +19,14 @@ class Manager {
         // Retrieve the "Hide Videos" checkbox state using the synchronized Chrome storage API.
         chrome.storage.sync.get("hide", items => {
             const valid = !chrome.runtime.lastError && items.hasOwnProperty("hide");
-            this.hidden = valid ? items["hide"] : Manager.DEFAULT_HIDDEN;
+            this.hidden = valid ? items["hide"] : Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE;
             Logger.info("Manager.restore(): Setting hidden to", this.hidden, ".");
         });
 
         // Retrieve the "View Threshold" slider state using the synchronized Chrome storage API.
         chrome.storage.sync.get("threshold", items => {
             const valid = !chrome.runtime.lastError && items.hasOwnProperty("threshold");
-            this.threshold = valid ? items["threshold"] : Manager.DEFAULT_THRESHOLD;
+            this.threshold = valid ? items["threshold"] : Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE;
             Logger.info("Manager.restore(): Setting threshold to", this.threshold, ".");
         });
     }
@@ -145,9 +145,16 @@ class Manager {
 
 // -----------------------------------------------------------------------------
 
-// Default "Hide Videos" and "View Threshold" state values.
-Manager.DEFAULT_HIDDEN = false;
-Manager.DEFAULT_THRESHOLD = 90;
+// Default "Hide Videos", "View Threshold", and "Dark Mode" state values.
+Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE = false;
+Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE = true;
+Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE = 90;
+Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE = false;
+
+// Default CSS transition duration.
+Manager.DEFAULT_COLOUR_TRANSITION_DURATION = "0.2s";
+Manager.DEFAULT_SLIDER_TRANSITION_DURATION = "0.4s";
+Manager.DEFAULT_TOGGLE_TRANSITION_DURATION = "0.4s";
 
 // Time interval to batch poll requests.
 Manager.BATCH_TIME = 200;

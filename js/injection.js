@@ -28,7 +28,7 @@ function onStorageChangedListener(changes, namespace) {
 
 // Listens for events related to the "Hide Videos" checkbox.
 function hideListener(changes) {
-    return listenerWrapper("hide", changes, (hidden) => {
+    return listenerWrapper("effective-hide-videos", changes, (hidden) => {
         manager.hidden = hidden;
         manager.refresh();
     });
@@ -36,7 +36,7 @@ function hideListener(changes) {
 
 // Listens for events related to the "View Threshold" slider.
 function thresholdListener(changes) {
-    return listenerWrapper("threshold", changes, (threshold) => {
+    return listenerWrapper("effective-view-threshold", changes, (threshold) => {
         manager.threshold = threshold;
         manager.request();
     });
