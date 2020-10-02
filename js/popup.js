@@ -1,57 +1,44 @@
 // This script initializes the FreshView UI.
 // -----------------------------------------------------------------------------
 
-// Returns the value of the specified key from the provided storage dictionary.
-// If something goes wrong, the given default value is returned.
-function extractStorageItem(items, key, value) {
-    const valid = !chrome.runtime.lastError && items.hasOwnProperty(key);
-    return valid ? items[key] : value;
-}
-
-// -----------------------------------------------------------------------------
-
 // Initializes the "Dark Mode" widget.
 function initDarkModeWidget() {
     const checkbox = document.getElementById("dark-mode-checkbox");
-
     // Initializes the state of the "Dark Mode" widget.
-    function setup(items) {
-        checkbox.checked = extractStorageItem(items, "dark-mode-checkbox-state", Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE);
+    const setup = (values) => {
+        checkbox.checked = values["dark-mode-checkbox-state"];
         render();
     }
-
     // Publishes the state of the "Dark Mode" widget.
-    function publish(storage) {
-        storage.set({"dark-mode-checkbox-state": checkbox.checked}, render);
-    }
-
+    const publish = () => {
+        Storage.set({"dark-mode-checkbox-state": checkbox.checked}, render);
+    };
     // Renders the state of the "Dark Mode" widget.
-    function render() {
+    const render = () => {
         const theme = checkbox.checked ? "dark" : "light";
         document.documentElement.setAttribute('theme', theme);
     }
-
-    chrome.storage.sync.get("dark-mode-checkbox-state", setup);
-    checkbox.addEventListener("change", () => publish(chrome.storage.sync));
+    // Initialize the state of the "Dark Mode" widget and attach an event listener for changes.
+    Storage.get({"dark-mode-checkbox-state": Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE}, setup);
+    checkbox.addEventListener("change", publish);
 }
 
 // Initializes the "Hide Videos" widget.
 function initHideVideosWidget() {
     const checkbox = document.getElementById("hide-videos-checkbox");
-
     // Initializes the state of the "Hide Videos" widget.
-    function setup(items) {
-        checkbox.checked = extractStorageItem(items, "hide-videos-checkbox-state", Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE);
-        chrome.storage.sync.set({"hide-videos-checkbox-state": checkbox.checked});
+    const setup = (values) => {
+        console.log("Setup checkbox state to", values);
+        checkbox.checked = values["hide-videos-checkbox-state"];
     }
-
     // Publishes the state of the "Hide Videos" widget.
-    function publish(storage) {
-        storage.set({"hide-videos-checkbox-state": checkbox.checked});
+    const publish = () => {
+        console.log("Published checkbox state to", checkbox.checked);
+        Storage.set({"hide-videos-checkbox-state": checkbox.checked});
     }
-
-    chrome.storage.sync.get("hide-videos-checkbox-state", setup);
-    checkbox.addEventListener("change", () => publish(chrome.storage.sync));
+    // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
+    Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE}, setup);
+    checkbox.addEventListener("change", publish);
 }
 
 // Initializes the "View Threshold" widget.
@@ -59,21 +46,19 @@ function initViewThresholdWidget() {
     const checkbox = document.getElementById("view-threshold-checkbox");
     const slider = document.getElementById("view-threshold-slider");
     const percent = document.getElementById("view-threshold-percent");
-
     // Initializes the state of the "View Threshold" widget.
-    function setup(items) {
-        checkbox.checked = extractStorageItem(items, "view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
-        slider.value = extractStorageItem(items, "view-threshold-slider-value", Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE);
+    const setup = (values) => {
+        checkbox.checked = values["view-threshold-checkbox-state"];
+        slider.value = values["view-threshold-slider-value"];
         render();
     }
-
     // Publishes the state of the "View Threshold" widget.
-    function publish(storage) {
-        storage.set({"view-threshold-checkbox-state": checkbox.checked, "view-threshold-slider-value": slider.value}, render);
+    const publish = () => {
+        Storage.set({"view-threshold-checkbox-state": checkbox.checked,
+                     "view-threshold-slider-value": slider.value}, render);
     }
-
     // Renders the state of the "View Threshold" widget.
-    function render() {
+    const render = () => {
         const track_width = slider.clientWidth;
         const thumb_width = parseInt(window.getComputedStyle(document.documentElement).getPropertyValue("--thumb-size"));
         const distance = Math.ceil((1 - (slider.value - 1) / 99) * (track_width - thumb_width));
@@ -81,12 +66,11 @@ function initViewThresholdWidget() {
         slider.disabled = !checkbox.checked;
         percent.textContent = checkbox.checked ? slider.value + "%" : "100%";
     }
-
-    chrome.storage.sync.get(["view-threshold-checkbox-state", "view-threshold-slider-value"], setup);
-    // Limit the number of updates to the synced slider state to avoid exhausting the storage API quota.
-    slider.addEventListener("input", () => publish(chrome.storage.local));
-    slider.addEventListener("mouseup", () => publish(chrome.storage.sync));
-    checkbox.addEventListener("change", () => publish(chrome.storage.sync));
+    // Initialize the state of the "View Threshold" widget and attach event listeners for changes.
+    Storage.get({"view-threshold-checkbox-state": Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+                 "view-threshold-slider-value": Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}, setup);
+    slider.addEventListener("input", publish);
+    checkbox.addEventListener("change", publish);
 }
 
 // -----------------------------------------------------------------------------

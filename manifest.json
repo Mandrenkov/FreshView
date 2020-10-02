@@ -34,7 +34,10 @@
     },
 
     "background": {
-        "scripts": ["js/background.js"],
+        "scripts": [
+            "js/background.js",
+            "js/storage.js"
+        ],
         "persistent": false
     },
     "content_scripts": [{
@@ -44,6 +47,7 @@
                 "js/video.js",
                 "js/album.js",
                 "js/manager.js",
+                "js/storage.js",
                 "js/injection.js"
             ],
             "run_at": "document_idle"

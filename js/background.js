@@ -11,15 +11,15 @@ chrome.runtime.onMessage.addListener((message, sender, _) => {
 
 // Add a listener for browser command events (i.e., keyboard shortcuts).
 chrome.commands.onCommand.addListener(command => {
-    // Toggles the state of an item in the storage dictionary.
-    function toggle(key) {
-        chrome.storage.sync.get(key, items => {
-            if (!chrome.runtime.lastError && items.hasOwnProperty(key)) {
-                chrome.storage.sync.set({[key]: !items[key]});
+    // Toggles the Boolean value of an item in storage if it exists.
+    const toggle = (key) => {
+        Storage.get({[key]: undefined}, values => {
+            const value = values[[key]];
+            if (value !== undefined) {
+                Storage.set({[key]: !value});
             }
         });
     }
-
     if (command === "toggle-hide-videos-checkbox") {
         toggle("hide-videos-checkbox-state");
     } else if (command === "toggle-view-threshold-checkbox") {

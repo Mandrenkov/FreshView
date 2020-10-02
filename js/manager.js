@@ -14,24 +14,38 @@ class Manager {
         this.listen();
     }
 
-    // Restores the Manager state using the synchronized Chrome storage API.
+    // Restores the Manager state to reflect the stored "Hide Videos" and "View Threshold" values.
     restore() {
-        // Retrieve the "Hide Videos" and "View Threshold" states using the synchronized Chrome storage API.
-        chrome.storage.sync.get(["hide-videos-checkbox-state", "view-threshold-checkbox-state", "view-threshold-slider-value"], items => {
-            // Returns the value associated with the specified key. If something goes wrong, the default value is returned instead.
-            function extractStorageItem(key, value) {
-                const valid = !chrome.runtime.lastError && items.hasOwnProperty(key);
-                return valid ? items[key] : value;
-            }
+        const callback = (values) => {
+            this.hidden = values["hide-videos-checkbox-state"];
+            Logger.info(`Manager.restore(): Setting hidden to "${this.hidden}".`);
 
-            this.hidden = extractStorageItem("hide-videos-checkbox-state", Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE);
-            Logger.info("Manager.restore(): Setting hidden to %s.", this.hidden);
-
-            this.view_threshold_checkbox_state = extractStorageItem("view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
-            this.view_threshold_slider_value = extractStorageItem("view-threshold-slider-value", Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE);
+            this.view_threshold_checkbox_state = values["view-threshold-checkbox-state"];
+            this.view_threshold_slider_value = values["view-threshold-slider-value"];
             this.threshold = this.view_threshold_checkbox_state ? this.view_threshold_slider_value : 100;
-            Logger.info("Manager.restore(): Setting threshold to %s.", this.threshold);
-        });
+            Logger.info(`Manager.restore(): Setting threshold to "${this.threshold}".`);
+        }
+        Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                     "view-threshold-checkbox-state": Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+                     "view-threshold-slider-value": Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}, callback);
+        
+
+        // Retrieve the "Hide Videos" and "View Threshold" states using the synchronized Chrome storage API.
+        // chrome.storage.sync.get(["hide-videos-checkbox-state", "view-threshold-checkbox-state", "view-threshold-slider-value"], items => {
+        //     // Returns the value associated with the specified key. If something goes wrong, the default value is returned instead.
+        //     function extractStorageItem(key, value) {
+        //         const valid = !chrome.runtime.lastError && items.hasOwnProperty(key);
+        //         return valid ? items[key] : value;
+        //     }
+
+        //     this.hidden = extractStorageItem("hide-videos-checkbox-state", Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE);
+        //     Logger.info("Manager.restore(): Setting hidden to %s.", this.hidden);
+
+        //     this.view_threshold_checkbox_state = extractStorageItem("view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
+        //     this.view_threshold_slider_value = extractStorageItem("view-threshold-slider-value", Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE);
+        //     this.threshold = this.view_threshold_checkbox_state ? this.view_threshold_slider_value : 100;
+        //     Logger.info("Manager.restore(): Setting threshold to %s.", this.threshold);
+        // });
     }
 
     // Attaches a MutationObserver which listens for DOM mutation events to this Manager.
