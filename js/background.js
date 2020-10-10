@@ -1,13 +1,16 @@
-// This script monitors background events.  Specifically,it activates the
+// This script monitors background events.  Specifically, it activates the
 // extension in the browser toolbar and processes keyboard shortcuts.
 // -----------------------------------------------------------------------------
 
-// Add a listener to activate the extension icon in the browser toolbar.
-chrome.runtime.onMessage.addListener((message, sender, _) => {
+// Activates the extension icon in the browser toolbar.
+function onMessageListener(message, sender, _) {
     if (message.type === "showPageAction") {
         chrome.pageAction.show(sender.tab.id);
     }
-});
+}
+
+// Add a listener to activate the extension icon in the browser toolbar.
+chrome.runtime.onMessage.addListener(onMessageListener);
 
 // Add a listener for browser command events (i.e., keyboard shortcuts).
 chrome.commands.onCommand.addListener(command => {
