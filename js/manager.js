@@ -17,7 +17,11 @@ class Manager {
     // Restores the Manager state to reflect the stored "Hide Videos" and "View Threshold" values.
     restore() {
         const callback = (values) => {
-            this.hidden = values["hide-videos-checkbox-state"];
+            const url = new URL(window.location.toString());
+            const page = url.pathname + url.search;
+            this.hide_videos_checkbox_state = values["hide-videos-checkbox-state"];
+            this.hide_videos_bookmark_state = values["hide-videos-bookmarks"][page];
+            this.hidden = this.hide_videos_bookmark_state !== undefined ? this.hide_videos_bookmark_state : this.hide_videos_checkbox_state;
             Logger.info(`Manager.restore(): Setting hidden to "${this.hidden}".`);
 
             this.view_threshold_checkbox_state = values["view-threshold-checkbox-state"];
@@ -26,26 +30,9 @@ class Manager {
             Logger.info(`Manager.restore(): Setting threshold to "${this.threshold}".`);
         }
         Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                     "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS,
                      "view-threshold-checkbox-state": Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
                      "view-threshold-slider-value": Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}, callback);
-        
-
-        // Retrieve the "Hide Videos" and "View Threshold" states using the synchronized Chrome storage API.
-        // chrome.storage.sync.get(["hide-videos-checkbox-state", "view-threshold-checkbox-state", "view-threshold-slider-value"], items => {
-        //     // Returns the value associated with the specified key. If something goes wrong, the default value is returned instead.
-        //     function extractStorageItem(key, value) {
-        //         const valid = !chrome.runtime.lastError && items.hasOwnProperty(key);
-        //         return valid ? items[key] : value;
-        //     }
-
-        //     this.hidden = extractStorageItem("hide-videos-checkbox-state", Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE);
-        //     Logger.info("Manager.restore(): Setting hidden to %s.", this.hidden);
-
-        //     this.view_threshold_checkbox_state = extractStorageItem("view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
-        //     this.view_threshold_slider_value = extractStorageItem("view-threshold-slider-value", Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE);
-        //     this.threshold = this.view_threshold_checkbox_state ? this.view_threshold_slider_value : 100;
-        //     Logger.info("Manager.restore(): Setting threshold to %s.", this.threshold);
-        // });
     }
 
     // Attaches a MutationObserver which listens for DOM mutation events to this Manager.
@@ -125,7 +112,7 @@ class Manager {
 
     // Fetches all the search Videos in the given HTML element.
     fetchSearchVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer:not([is-history])")).concat(
+        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer")).concat(
                Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-vertical-list-renderer")));
     }
 
@@ -163,10 +150,11 @@ class Manager {
 // -----------------------------------------------------------------------------
 
 // Default "Hide Videos", "View Threshold", and "Dark Mode" state values.
-Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE = false;
+Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE = false;
 Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE = true;
 Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE = 90;
-Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE = false;
+Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE = false;
+Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS = {"/feed/history": false};
 
 // Default CSS transition duration.
 Manager.DEFAULT_COLOUR_TRANSITION_DURATION = "0.2s";
