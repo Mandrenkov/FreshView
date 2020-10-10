@@ -18,6 +18,17 @@ class Album {
         this.videos.set(id, video);
     }
 
+    // Updates the given Video in this Album.
+    update(video) {
+        const id = video.getID();
+        if (id === undefined) {
+            Logger.warning("Album.update(): Failed to update Video", video, ": Video does not have an ID.");
+            return;
+        }
+        video.display = this.videos.get(id).display;
+        this.videos.set(id, video);
+    }
+
     // Reports whether the given Album is tha same as this Album.
     equals(that) {
         // Two Albums are the same if:
@@ -30,8 +41,12 @@ class Album {
     // Merges this Album with the given Album, refreshing Videos as needed.
     merge(that) {
         const dropped = this.getIDs().filter(id => !that.videos.has(id));
-        dropped.forEach(id => {this.videos.get(id).show(); this.videos.delete(id)});
+        dropped.forEach(id => {this.videos.get(id).show(); this.videos.delete(id);});
         Logger.info("Album.merge(): Dropped", dropped, ".");
+
+        const updated = that.getIDs().filter(id => this.videos.has(id));
+        updated.forEach(id => this.update(that.videos.get(id)));
+        Logger.info("Album.merge(): Updated", updated, ".");
 
         const added = that.getIDs().filter(id => !this.videos.has(id));
         added.forEach(id => this.add(that.videos.get(id)));
