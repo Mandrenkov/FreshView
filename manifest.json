@@ -54,6 +54,7 @@
     }],
 
     "permissions": [
-        "storage"
+        "storage",
+        "tabs"
     ]
 }
