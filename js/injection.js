@@ -16,33 +16,56 @@ function onStorageChangedListener(changes, namespace) {
     if (!(namespace == "sync" || namespace == "local")) {
         Logger.warning("onStorageChangedListener(): unexpected namespace \"%s\".", namespace);
     } else {
-        const handled = hideVideosCheckboxListener(changes) | viewThresholdCheckboxListener(changes) | viewThresholdSliderListener(changes);
+        const handled = darkModeCheckboxListener(changes) |
+                        hideVideosCheckboxListener(changes) | hideVideosBookmarkListener(changes) |
+                        viewThresholdCheckboxListener(changes) | viewThresholdSliderListener(changes);
         if (!handled) {
-            Logger.warning("onStorageChangedListener(): no keys matched", changes, ".");
+            Logger.warning(`onStorageChangedListener(): no keys matched ${JSON.stringify(changes)}.`);
         }
     }
 }
 
+// Listens for events related to the "Dark Mode" checkbox.
+function hideVideosCheckboxListener(changes) {
+    return "dark-mode-checkbox-state" in changes;
+}
+
 // Listens for events related to the "Hide Videos" checkbox.
 function hideVideosCheckboxListener(changes) {
-    return listenerWrapper("hide-videos-checkbox-state", changes, hidden => {
-        manager.hidden = hidden;
+    return listenerWrapper("hide-videos-checkbox-state", changes, (checked) => {
+        if (manager.hide_videos_bookmark_state !== undefined) {
+            manager.hide_videos_bookmark_state = checked;
+        } else {
+            manager.hide_videos_checkbox_state = checked;
+        }
+        manager.hidden = checked;
+        manager.refresh();
+    });
+}
+
+// Listens for events related to the "Hide Videos" bookmark.
+function hideVideosBookmarkListener(changes) {
+    return listenerWrapper("hide-videos-bookmarks", changes, (bookmarks) => {
+        const url = new URL(window.location.toString());
+        const page = url.pathname + url.search;
+        manager.hide_videos_bookmark_state = bookmarks[page];
+        manager.hidden = manager.hide_videos_bookmark_state !== undefined ? manager.hide_videos_bookmark_state : manager.hide_videos_checkbox_state;
         manager.refresh();
     });
 }
 
 // Listens for events related to the "View Threshold" checkbox.
 function viewThresholdCheckboxListener(changes) {
-    return listenerWrapper("view-threshold-checkbox-state", changes, enabled => {
-        manager.view_threshold_checkbox_state = enabled;
-        manager.threshold = enabled ? manager.view_threshold_slider_value : 100;
+    return listenerWrapper("view-threshold-checkbox-state", changes, (checked) => {
+        manager.view_threshold_checkbox_state = checked;
+        manager.threshold = checked ? manager.view_threshold_slider_value : 100;
         manager.request();
     });
 }
 
 // Listens for events related to the "View Threshold" slider.
 function viewThresholdSliderListener(changes) {
-    return listenerWrapper("view-threshold-slider-value", changes, value => {
+    return listenerWrapper("view-threshold-slider-value", changes, (value) => {
         manager.view_threshold_slider_value = value;
         manager.threshold = manager.view_threshold_checkbox_state ? value : 100;
         manager.request();

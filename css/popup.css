@@ -14,13 +14,17 @@
 /* Section 1: Global Styles --------------------------------------------------*/
 :root {
     --accent-colour: #065FD4;
+    --accent-colour-hover: #0048B8;
     --background-colour-header: #FFFFFF;
     --background-colour-controls: #F9F9F9;
+    --background-colour-tooltips: #616161;
     --disabled-colour: #909090;
     --font-colour-title: #282828;
     --font-colour-primary: #0D0D0D;
     --font-colour-secondary: #757575;
     --font-colour-icons: #909090;
+    --font-colour-icons-hover: #5E5E5E;
+    --font-colour-tooltips: #FFFFFF;
     --font-weight-title: 600;
     --font-weight-primary: 600;
     --font-weight-secondary: 400;
@@ -28,6 +32,7 @@
     --thumb-size: 14px;
     --track-colour-toggle: #E7E7E7;
     --track-colour-slider: #CCCCCC;
+    --transition-delay-tooltip: 0.5s;
     --transition-duration-colour: 0s;
     --transition-duration-slider: 0s;
     --transition-duration-toggle: 0s;
@@ -35,13 +40,17 @@
 
 :root[theme='dark'] {
     --accent-colour: #3EA6FF;
+    --accent-colour-hover: #73CFFF;
     --background-colour-header: #202020;
     --background-colour-controls: #181818;
+    --background-colour-tooltips: #616161;
     --disabled-colour: #909090;
     --font-colour-title: #FFFFFF;
     --font-colour-primary: #FFFFFF;
     --font-colour-secondary: #AAAAAA;
-    --font-colour-icons: #909090; 
+    --font-colour-icons: #909090;
+    --font-colour-icons-hover: #D4D4D4;
+    --font-colour-tooltips: #FFFFFF;
     --font-weight-title: 500;
     --font-weight-primary: 500;
     --font-weight-secondary: 400;
@@ -49,6 +58,7 @@
     --thumb-size: 14px;
     --track-colour-toggle: #3C3C3C;
     --track-colour-slider: #2F2F2F;
+    --transition-delay-tooltip: 0.5s;
     --transition-duration-colour: 0s;
     --transition-duration-slider: 0s;
     --transition-duration-toggle: 0s;
@@ -131,7 +141,7 @@ div.action a {
 }
 
 .material-icons:hover {
-    color: var(--font-colour-primary);
+    color: var(--font-colour-icons-hover);
     cursor: pointer;
 }
 
@@ -162,6 +172,15 @@ div.control-panel {
     justify-content: center;
     position: relative;
     width: 300px;
+}
+
+div.control-split {
+    align-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    user-select: none;
 }
 
 div.control-description {
@@ -328,4 +347,76 @@ label.control-slider {
 
 input.control-slider:disabled + label.control-slider {
     color: var(--disabled-colour);
+}
+
+/* Section 6: Bookmark Styles ------------------------------------------------*/
+div.control-bookmark {
+    align-content: center;
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px 20px 0;
+    user-select: none;
+}
+
+div.control-bookmark input {
+    display: none;
+}
+
+div.control-bookmark label {
+    color: var(--font-colour-icons);
+    font-size: 170%;
+    line-height: 20px;
+    vertical-align: center;
+}
+
+div.control-bookmark input:checked + label {
+    color: var(--accent-colour);
+}
+
+div.control-bookmark input:checked + label:hover {
+    color: var(--accent-colour-hover);
+}
+
+/* Section 7: Tooltip Styles -------------------------------------------------*/
+div.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+span.tooltip {
+    background-color: var(--background-colour-tooltips);
+    color: var(--font-colour-tooltips);
+    display: inline-block;
+    border-radius: 4px;
+    height: 24px;
+    line-height: 24px;
+    position: absolute;
+    opacity: 0;
+    text-align: center;
+    vertical-align: center;
+    visibility: hidden;
+    z-index: 1;
+}
+
+#hide-videos-tooltip {
+    right: 22px;
+    top: 50px;
+    width: 250px;
+}
+
+label.tooltip:hover ~ span.tooltip {
+    opacity: 1;
+    transition-delay: var(--transition-delay-tooltip);
+    visibility: visible;
+}
+
+span.tooltip::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    right: 5px;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--background-colour-tooltips) transparent;
 }

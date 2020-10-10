@@ -25,20 +25,60 @@ function initDarkModeWidget() {
 
 // Initializes the "Hide Videos" widget.
 function initHideVideosWidget() {
-    const checkbox = document.getElementById("hide-videos-checkbox");
-    // Initializes the state of the "Hide Videos" widget.
-    const setup = (values) => {
-        console.log("Setup checkbox state to", values);
-        checkbox.checked = values["hide-videos-checkbox-state"];
-    }
-    // Publishes the state of the "Hide Videos" widget.
-    const publish = () => {
-        console.log("Published checkbox state to", checkbox.checked);
-        Storage.set({"hide-videos-checkbox-state": checkbox.checked});
-    }
-    // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
-    Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE}, setup);
-    checkbox.addEventListener("change", publish);
+    const callback = (tabs) => {
+        const url = new URL(tabs[0].url);
+        const page = url.pathname + url.search;
+        const checkbox = document.getElementById("hide-videos-checkbox");
+        const bookmark = document.getElementById("hide-videos-bookmark");
+        Logger.info(`initHideVideosWidget(): page URL is "${page}".`);
+        // Initializes the state of the "Hide Videos" widget.
+        const setup = (values) => {
+            const bookmarks = values["hide-videos-bookmarks"];
+            bookmark.checked = bookmarks[page] !== undefined;
+            checkbox.checked = bookmark.checked ? bookmarks[page] : values["hide-videos-checkbox-state"];
+        }
+        // Publishes the state of the "Hide Videos" widget on a "Hide Videos" checkbox change.
+        const publish_checkbox = () => {
+            if (bookmark.checked) {
+                const callback = (values) => {
+                    const bookmarks = values["hide-videos-bookmarks"];
+                    bookmarks[page] = checkbox.checked;
+                    Storage.set({"hide-videos-bookmarks": bookmarks});
+                };
+                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+            } else {
+                Storage.set({"hide-videos-checkbox-state": checkbox.checked});
+            }
+        }
+        // Publishes the state of the "Hide Videos" widget on a "Hide Videos" bookmark change.
+        const publish_bookmark = () => {
+            if (bookmark.checked) {
+                // Create a new entry in the bookmark object for the current URL.
+                const callback = (values) => {
+                    const bookmarks = values["hide-videos-bookmarks"];
+                    bookmarks[page] = checkbox.checked;
+                    Storage.set({"hide-videos-bookmarks": bookmarks});
+                };
+                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+            } else {
+                // Delete the entry in the bookmark object for the current URL.
+                const callback = (values) => {
+                    checkbox.checked = values["hide-videos-checkbox-state"];
+                    const bookmarks = values["hide-videos-bookmarks"];
+                    delete bookmarks[page];
+                    Storage.set({"hide-videos-bookmarks": bookmarks});
+                };
+                Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                             "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+            }
+        }
+        // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
+        Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                     "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, setup);
+        checkbox.addEventListener("change", publish_checkbox);
+        bookmark.addEventListener("change", publish_bookmark);
+    };
+    chrome.tabs.query({active: true, lastFocusedWindow: true}, callback);
 }
 
 // Initializes the "View Threshold" widget.
@@ -79,21 +119,30 @@ function initViewThresholdWidget() {
 function onStorageChangedListener(changes, _) {
     if ("hide-videos-checkbox-state" in changes) {
         const checkbox = document.getElementById("hide-videos-checkbox");
-        checkbox.checked = changes["hide-videos-checkbox-state"].newValue;
-        const event = new Event('change');
-        checkbox.dispatchEvent(event);
+        const value = changes["hide-videos-checkbox-state"]["newValue"];
+        if (checkbox.checked !== value) {
+            checkbox.checked = value;
+            const event = new Event("change");
+            checkbox.dispatchEvent(event);
+        }
     }
     if ("view-threshold-checkbox-state" in changes) {
         const checkbox = document.getElementById("view-threshold-checkbox");
-        checkbox.checked = changes["view-threshold-checkbox-state"].newValue;
-        const event = new Event('change');
-        checkbox.dispatchEvent(event);
+        const value = changes["view-threshold-checkbox-state"]["newValue"];
+        if (checkbox.checked !== value) {
+            checkbox.checked = value;
+            const event = new Event("change");
+            checkbox.dispatchEvent(event);
+        }
     }
     if ("view-threshold-slider-value" in changes) {
         const slider = document.getElementById("view-threshold-slider");
-        slider.value = changes["view-threshold-slider-value"].newValue;
-        const event = new Event('mouseup');
-        slider.dispatchEvent(event);
+        const value = changes["view-threshold-slider-value"]["newValue"];
+        if (slider.value !== value) {
+            slider.value = value;
+            const event = new Event("mouseup");
+            slider.dispatchEvent(event);
+        }
     }
 }
 
