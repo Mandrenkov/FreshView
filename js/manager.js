@@ -22,12 +22,12 @@ class Manager {
             this.hide_videos_checkbox_state = values["hide-videos-checkbox-state"];
             this.hide_videos_bookmark_state = values["hide-videos-bookmarks"][page];
             this.hidden = this.hide_videos_bookmark_state !== undefined ? this.hide_videos_bookmark_state : this.hide_videos_checkbox_state;
-            Logger.info(`Manager.restore(): Setting hidden to "${this.hidden}".`);
+            Logger.info(`Manager.restore(): setting hidden to ${this.hidden}.`);
 
             this.view_threshold_checkbox_state = values["view-threshold-checkbox-state"];
             this.view_threshold_slider_value = values["view-threshold-slider-value"];
             this.threshold = this.view_threshold_checkbox_state ? this.view_threshold_slider_value : 100;
-            Logger.info(`Manager.restore(): Setting threshold to "${this.threshold}".`);
+            Logger.info(`Manager.restore(): setting threshold to ${this.threshold}.`);
         }
         Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
                      "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS,
@@ -142,7 +142,7 @@ class Manager {
 
     // Refreshes the Album associated with this Manager.
     refresh() {
-        Logger.info("Manager.refresh():", this.hidden ? "Hiding" : "Showing", "Videos.");
+        Logger.info("Manager.refresh():", this.hidden ? "hiding" : "showing", "Videos.");
         this.album.refresh(!this.hidden);
     }
 }

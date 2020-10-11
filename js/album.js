@@ -12,7 +12,7 @@ class Album {
     add(video) {
         const id = video.getID();
         if (id === undefined) {
-            Logger.warning("Album.add(): Failed to add Video", video, ": Video does not have an ID.");
+            Logger.warning("Album.add(): failed to add Video", video, ": Video does not have an ID.");
             return;
         }
         this.videos.set(id, video);
@@ -22,7 +22,7 @@ class Album {
     update(video) {
         const id = video.getID();
         if (id === undefined) {
-            Logger.warning("Album.update(): Failed to update Video", video, ": Video does not have an ID.");
+            Logger.warning("Album.update(): failed to update Video", video, ": Video does not have an ID.");
             return;
         }
         video.display = this.videos.get(id).display;
@@ -42,15 +42,15 @@ class Album {
     merge(that) {
         const dropped = this.getIDs().filter(id => !that.videos.has(id));
         dropped.forEach(id => {this.videos.get(id).show(); this.videos.delete(id);});
-        Logger.info("Album.merge(): Dropped", dropped, ".");
+        Logger.info("Album.merge(): dropped Videos", dropped, ".");
 
         const updated = that.getIDs().filter(id => this.videos.has(id));
         updated.forEach(id => this.update(that.videos.get(id)));
-        Logger.info("Album.merge(): Updated", updated, ".");
+        Logger.info("Album.merge(): updated Videos", updated, ".");
 
         const added = that.getIDs().filter(id => !this.videos.has(id));
         added.forEach(id => this.add(that.videos.get(id)));
-        Logger.info("Album.merge(): Added", added, ".");
+        Logger.info("Album.merge(): added Videos", added, ".");
     }
 
     // Refreshes the visibility of all Videos in this Album.

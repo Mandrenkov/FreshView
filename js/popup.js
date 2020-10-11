@@ -30,7 +30,6 @@ function initHideVideosWidget() {
         const page = url.pathname + url.search;
         const checkbox = document.getElementById("hide-videos-checkbox");
         const bookmark = document.getElementById("hide-videos-bookmark");
-        Logger.info(`initHideVideosWidget(): page URL is "${page}".`);
         // Initializes the state of the "Hide Videos" widget.
         const setup = (values) => {
             const bookmarks = values["hide-videos-bookmarks"];

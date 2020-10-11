@@ -30,7 +30,7 @@ class Video {
         // Find a hyperlink tag associated with this Video.
         const hyperlink = this.element.querySelector(selectors);
         if (hyperlink === null) {
-            Logger.warning("Video.deriveURL(): Failed to find hyperlink element for Video", this.element, ".");
+            Logger.warning("Video.deriveURL(): failed to find hyperlink element for Video", this.element, ".");
             return undefined;
         }
 
@@ -40,7 +40,7 @@ class Video {
         const href = hyperlink.getAttribute("href");
         const matches = href.match(regex);
         if (matches === null) {
-            Logger.warning("Video.deriveURL(): Failed to find relative Video URL in attribute", href, "for Video", this.element, ".");
+            Logger.warning("Video.deriveURL(): failed to find relative Video URL in attribute", href, "for Video", this.element, ".");
             return undefined;
         }
         return matches[1];
@@ -76,7 +76,7 @@ class Video {
         // Find the title tag associated with this Video.
         const title = this.element.querySelector(":scope #video-title[title]");
         if (title === null) {
-            Logger.warning("Video.fetchTitle(): Failed to find title element for Video", this.element, ".");
+            Logger.warning("Video.fetchTitle(): failed to find title element for Video", this.element, ".");
             return undefined;
         }
 
@@ -89,7 +89,7 @@ class Video {
         // Find the progress bar tag associated with this Video.
         const bar = this.element.querySelector("div#progress.style-scope.ytd-thumbnail-overlay-resume-playback-renderer");
         if (bar === null) {
-            Logger.debug("Video.fetchViewed(): Failed to find bar element for Video", this.element, ".");
+            Logger.debug("Video.fetchViewed(): failed to find bar element for Video", this.element, ".");
             return undefined;
         }
 
