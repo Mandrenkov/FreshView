@@ -26,7 +26,7 @@ function onStorageChangedListener(changes, namespace) {
 }
 
 // Listens for events related to the "Dark Mode" checkbox.
-function hideVideosCheckboxListener(changes) {
+function darkModeCheckboxListener(changes) {
     return "dark-mode-checkbox-state" in changes;
 }
 
