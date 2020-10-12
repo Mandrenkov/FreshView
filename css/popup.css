@@ -13,6 +13,7 @@
 
 /* Section 1: Global Styles --------------------------------------------------*/
 :root {
+    font-size: 12px;
     --accent-colour: #065FD4;
     --accent-colour-hover: #0048B8;
     --background-colour-header: #FFFFFF;
@@ -25,8 +26,8 @@
     --font-colour-icons: #909090;
     --font-colour-icons-hover: #5E5E5E;
     --font-colour-tooltips: #FFFFFF;
-    --font-weight-title: 600;
-    --font-weight-primary: 600;
+    --font-weight-title: 500;
+    --font-weight-primary: 500;
     --font-weight-secondary: 400;
     --thumb-translation: 0px;
     --thumb-size: 14px;
@@ -39,6 +40,7 @@
 }
 
 :root[theme='dark'] {
+    font-size: 12px;
     --accent-colour: #3EA6FF;
     --accent-colour-hover: #73CFFF;
     --background-colour-header: #202020;
@@ -73,7 +75,6 @@ body {
 body * {
     cursor: default;
     font-family: 'Roboto', sans-serif;
-    font-size: 100%;
     transition-duration: var(--transition-duration-colour);
 }
 
@@ -95,7 +96,7 @@ body * {
     color: var(--font-colour-title);
     float: left;
     line-height: 60px;
-    font-size: 160%;
+    font-size: 1.70rem;
     font-weight: var(--font-weight-title);
     transition-duration: 0s;
     vertical-align: middle;
@@ -127,7 +128,7 @@ div.action input {
 
 div.action label {
     color: var(--font-colour-icons);
-    font-size: 160%;
+    font-size: 1.60rem;
     line-height: 20px;
     text-decoration: none;
 }
@@ -135,7 +136,7 @@ div.action label {
 div.action a {
     color: var(--font-colour-icons);
     display: inline-block;
-    font-size: 160%;
+    font-size: 1.60rem;
     line-height: 20px;
     text-decoration: none;
 }
@@ -194,7 +195,7 @@ div.control-description {
 div.control-name {
     color: var(--font-colour-primary);
     display: inline-block;
-    font-size: 110%;
+    font-size: 1.15rem;
     font-weight: var(--font-weight-primary);
     transition-duration: 0s;
 }
@@ -202,7 +203,7 @@ div.control-name {
 div.control-help {
     color: var(--font-colour-secondary);
     display: inline-block;
-    font-size: 110%;
+    font-size: 1.10rem;
     font-weight: var(--font-weight-secondary);
     transition-duration: 0s;
 }
@@ -335,6 +336,7 @@ input.control-slider:disabled::-moz-range-thumb {
 label.control-slider {
     color: var(--font-colour-primary);
     display: inline-block;
+    font-size: 1.10rem;
     font-weight: var(--font-weight-primary);
     line-height: 20px;
     margin: 0 10px 10px 0;
@@ -364,7 +366,7 @@ div.control-bookmark input {
 
 div.control-bookmark label {
     color: var(--font-colour-icons);
-    font-size: 170%;
+    font-size: 1.70rem;
     line-height: 20px;
     vertical-align: center;
 }
@@ -388,8 +390,9 @@ span.tooltip {
     color: var(--font-colour-tooltips);
     display: inline-block;
     border-radius: 4px;
-    height: 24px;
-    line-height: 24px;
+    font-size: 0.96rem;
+    height: 22px;
+    line-height: 22px;
     position: absolute;
     opacity: 0;
     text-align: center;
@@ -401,7 +404,7 @@ span.tooltip {
 #hide-videos-tooltip {
     right: 22px;
     top: 50px;
-    width: 250px;
+    width: 240px;
 }
 
 label.tooltip:hover ~ span.tooltip {
