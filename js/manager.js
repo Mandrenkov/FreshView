@@ -154,7 +154,7 @@ Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE = false;
 Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE = true;
 Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE = 90;
 Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE = false;
-Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS = {"/feed/history": false};
+Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS = {"/feed/history": false};
 
 // Default CSS transition duration.
 Manager.DEFAULT_COLOUR_TRANSITION_DURATION = "0.2s";

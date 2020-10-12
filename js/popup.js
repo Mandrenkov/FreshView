@@ -44,7 +44,7 @@ function initHideVideosWidget() {
                     bookmarks[page] = checkbox.checked;
                     Storage.set({"hide-videos-bookmarks": bookmarks});
                 };
-                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
             } else {
                 Storage.set({"hide-videos-checkbox-state": checkbox.checked});
             }
@@ -58,7 +58,7 @@ function initHideVideosWidget() {
                     bookmarks[page] = checkbox.checked;
                     Storage.set({"hide-videos-bookmarks": bookmarks});
                 };
-                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
             } else {
                 // Delete the entry in the bookmark object for the current URL.
                 const callback = (values) => {
@@ -68,12 +68,12 @@ function initHideVideosWidget() {
                     Storage.set({"hide-videos-bookmarks": bookmarks});
                 };
                 Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                             "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, callback);
+                             "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
             }
         }
         // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
         Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                     "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEO_BOOKMARKS}, setup);
+                     "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, setup);
         checkbox.addEventListener("change", publish_checkbox);
         bookmark.addEventListener("change", publish_bookmark);
     };
@@ -117,9 +117,10 @@ function initViewThresholdWidget() {
 // Propagates browser storage change events to their corresponding UI widgets.
 function onStorageChangedListener(changes, _) {
     if ("hide-videos-checkbox-state" in changes) {
+        const bookmark = document.getElementById("hide-videos-bookmark");
         const checkbox = document.getElementById("hide-videos-checkbox");
         const value = changes["hide-videos-checkbox-state"]["newValue"];
-        if (checkbox.checked !== value) {
+        if (!bookmark.checked && checkbox.checked !== value) {
             checkbox.checked = value;
             const event = new Event("change");
             checkbox.dispatchEvent(event);

@@ -33,13 +33,11 @@ function darkModeCheckboxListener(changes) {
 // Listens for events related to the "Hide Videos" checkbox.
 function hideVideosCheckboxListener(changes) {
     return listenerWrapper("hide-videos-checkbox-state", changes, (checked) => {
-        if (manager.hide_videos_bookmark_state !== undefined) {
-            manager.hide_videos_bookmark_state = checked;
-        } else {
-            manager.hide_videos_checkbox_state = checked;
+        manager.hide_videos_checkbox_state = checked;
+        if (manager.hide_videos_bookmark_state === undefined) {
+            manager.hidden = checked;
+            manager.refresh();
         }
-        manager.hidden = checked;
-        manager.refresh();
     });
 }
 
