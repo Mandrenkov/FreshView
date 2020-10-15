@@ -15,15 +15,17 @@
             <img id="logo" src="../img/icon.png"/>
             <span id="title">FreshView</span>
             <div id="actions">
-                <div class="action">
+                <div class="action tooltip">
                     <input type="checkbox" id="dark-mode-checkbox">
-                    <label class="material-icons" for="dark-mode-checkbox">brightness_4</label>
+                    <label class="material-icons tooltip" for="dark-mode-checkbox">brightness_4</label>
+                    <span id="theme-tooltip" class="tooltip">Theme</span>
                 </div>
-                <div class="action">
+                <div class="action tooltip">
                     <!-- Chrome Link -->
-                    <a class="material-icons action" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">home</a>
+                    <a class="material-icons action tooltip" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">mode_comment</a>
                     <!-- Firefox Link -->
-                    <!-- <a class="material-icons action" href="https://addons.mozilla.org/en-CA/firefox/addon/freshview-for-youtube" target="_blank">home</a> -->
+                    <!-- <a class="material-icons action tooltip" href="https://addons.mozilla.org/en-CA/firefox/addon/freshview-for-youtube" target="_blank">mode_comment</a> -->
+                    <span id="feedback-tooltip" class="tooltip">Feedback</span>
                 </div>
             </div>
         </div>
@@ -32,10 +34,8 @@
             <div class="control">
                 <div class="control-margin">
                     <div class="control-toggle">
-                        <label class="control-toggle">
-                            <input id="hide-videos-checkbox" type="checkbox">
-                            <span class="control-toggle"></span>
-                        </label>
+                        <input id="hide-videos-checkbox" type="checkbox"/>
+                        <label class="control-toggle" for="hide-videos-checkbox"></label>
                     </div>
                 </div>
                 <div class="control-panel">
@@ -46,9 +46,8 @@
                         </div>
                         <div class="control-bookmark tooltip">
                             <input type="checkbox" id="hide-videos-bookmark">
-                            <label class="material-icons tooltip" for="hide-videos-bookmark">bookmarks</label>
-                            <span id="hide-videos-tooltip" class="tooltip">Use local &quot;Hide Videos&quot; setting on this page.
-                            </span>
+                            <label class="material-icons tooltip" for="hide-videos-bookmark">vpn_lock</label>
+                            <span id="hide-videos-tooltip" class="tooltip">Lock the &quot;Hide Videos&quot; toggle on this page</span>
                         </div>
                     </div>
                 </div>
@@ -57,10 +56,8 @@
             <div class="control">
                 <div class="control-margin">
                     <div class="control-toggle">
-                        <label class="control-toggle">
-                            <input id="view-threshold-checkbox" type="checkbox">
-                            <span class="control-toggle"></span>
-                        </label>
+                        <input id="view-threshold-checkbox" type="checkbox">
+                        <label class="control-toggle" for="view-threshold-checkbox"></label>
                     </div>
                 </div>
                 <div class="control-panel">

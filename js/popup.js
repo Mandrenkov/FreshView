@@ -16,7 +16,7 @@ function initDarkModeWidget() {
     // Renders the state of the "Dark Mode" widget.
     const render = () => {
         const theme = checkbox.checked ? "dark" : "light";
-        document.documentElement.setAttribute('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
     }
     // Initialize the state of the "Dark Mode" widget and attach an event listener for changes.
     Storage.get({"dark-mode-checkbox-state": Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE}, setup);
@@ -25,59 +25,49 @@ function initDarkModeWidget() {
 
 // Initializes the "Hide Videos" widget.
 function initHideVideosWidget() {
-    const callback = (tabs) => {
-        const url = new URL(tabs[0].url);
-        const page = url.pathname + url.search;
-        const checkbox = document.getElementById("hide-videos-checkbox");
-        const bookmark = document.getElementById("hide-videos-bookmark");
-        // Initializes the state of the "Hide Videos" widget.
-        const setup = (values) => {
-            const bookmarks = values["hide-videos-bookmarks"];
-            bookmark.checked = bookmarks[page] !== undefined;
-            checkbox.checked = bookmark.checked ? bookmarks[page] : values["hide-videos-checkbox-state"];
+    const checkbox = document.getElementById("hide-videos-checkbox");
+    const bookmark = document.getElementById("hide-videos-bookmark");
+    // Initializes the state of the "Hide Videos" widget.
+    const setup = (values) => {
+        const bookmarks = values["hide-videos-bookmarks"];
+        bookmark.checked = bookmarks[page] !== undefined;
+        checkbox.checked = bookmark.checked ? bookmarks[page] : values["hide-videos-checkbox-state"];
+        checkbox.disabled = bookmark.checked;
+    }
+    // Publishes the state of the "Hide Videos" widget on a "Hide Videos" checkbox change.
+    const publish_checkbox = () => {
+        if (!bookmark.checked) {
+            Storage.set({"hide-videos-checkbox-state": checkbox.checked});
         }
-        // Publishes the state of the "Hide Videos" widget on a "Hide Videos" checkbox change.
-        const publish_checkbox = () => {
-            if (bookmark.checked) {
-                const callback = (values) => {
-                    const bookmarks = values["hide-videos-bookmarks"];
-                    bookmarks[page] = checkbox.checked;
-                    Storage.set({"hide-videos-bookmarks": bookmarks});
-                };
-                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
-            } else {
-                Storage.set({"hide-videos-checkbox-state": checkbox.checked});
-            }
+    }
+    // Publishes the state of the "Hide Videos" widget on a "Hide Videos" bookmark change.
+    const publish_bookmark = () => {
+        if (bookmark.checked) {
+            // Create a new entry in the bookmark object for the current URL.
+            const callback = (values) => {
+                const bookmarks = values["hide-videos-bookmarks"];
+                bookmarks[page] = checkbox.checked;
+                Storage.set({"hide-videos-bookmarks": bookmarks});
+            };
+            Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
+        } else {
+            // Delete the entry in the bookmark object for the current URL.
+            const callback = (values) => {
+                checkbox.checked = values["hide-videos-checkbox-state"];
+                const bookmarks = values["hide-videos-bookmarks"];
+                delete bookmarks[page];
+                Storage.set({"hide-videos-bookmarks": bookmarks});
+            };
+            Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                            "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
         }
-        // Publishes the state of the "Hide Videos" widget on a "Hide Videos" bookmark change.
-        const publish_bookmark = () => {
-            if (bookmark.checked) {
-                // Create a new entry in the bookmark object for the current URL.
-                const callback = (values) => {
-                    const bookmarks = values["hide-videos-bookmarks"];
-                    bookmarks[page] = checkbox.checked;
-                    Storage.set({"hide-videos-bookmarks": bookmarks});
-                };
-                Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
-            } else {
-                // Delete the entry in the bookmark object for the current URL.
-                const callback = (values) => {
-                    checkbox.checked = values["hide-videos-checkbox-state"];
-                    const bookmarks = values["hide-videos-bookmarks"];
-                    delete bookmarks[page];
-                    Storage.set({"hide-videos-bookmarks": bookmarks});
-                };
-                Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                             "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
-            }
-        }
-        // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
-        Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                     "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, setup);
-        checkbox.addEventListener("change", publish_checkbox);
-        bookmark.addEventListener("change", publish_bookmark);
-    };
-    chrome.tabs.query({active: true, lastFocusedWindow: true}, callback);
+        checkbox.disabled = bookmark.checked;
+    }
+    // Initialize the state of the "Hide Videos" widget and attach an event listener for changes.
+    Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+                    "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, setup);
+    checkbox.addEventListener("change", publish_checkbox);
+    bookmark.addEventListener("change", publish_bookmark);
 }
 
 // Initializes the "View Threshold" widget.
@@ -116,6 +106,15 @@ function initViewThresholdWidget() {
 
 // Propagates browser storage change events to their corresponding UI widgets.
 function onStorageChangedListener(changes, _) {
+    if ("dark-mode-checkbox-state" in changes) {
+        const checkbox = document.getElementById("dark-mode-checkbox");
+        const value = changes["dark-mode-checkbox-state"]["newValue"];
+        if (checkbox.checked !== value) {
+            checkbox.checked = value;
+            const event = new Event("change");
+            checkbox.dispatchEvent(event);
+        }
+    }
     if ("hide-videos-checkbox-state" in changes) {
         const bookmark = document.getElementById("hide-videos-bookmark");
         const checkbox = document.getElementById("hide-videos-checkbox");
@@ -124,6 +123,16 @@ function onStorageChangedListener(changes, _) {
             checkbox.checked = value;
             const event = new Event("change");
             checkbox.dispatchEvent(event);
+        }
+    }
+    if ("hide-videos-bookmarks" in changes) {
+        const bookmark = document.getElementById("hide-videos-bookmark");
+        const checkbox = document.getElementById("hide-videos-checkbox");
+        const value = changes["hide-videos-bookmarks"]["newValue"][page];
+        if (bookmark.checked !== (value !== undefined)) {
+            bookmark.checked = value !== undefined;
+            const event = new Event("change");
+            bookmark.dispatchEvent(event);
         }
     }
     if ("view-threshold-checkbox-state" in changes) {
@@ -145,6 +154,15 @@ function onStorageChangedListener(changes, _) {
         }
     }
 }
+
+// -----------------------------------------------------------------------------
+
+// Cache the URL (i.e., path and query) of the current YouTube page.
+let page = "/";
+chrome.tabs.query({active: true, lastFocusedWindow: true}, (tabs) => {
+    const url = new URL(tabs[0].url);
+    page = url.pathname + url.search;
+});
 
 // -----------------------------------------------------------------------------
 
