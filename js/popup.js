@@ -157,12 +157,9 @@ function onStorageChangedListener(changes, _) {
 
 // -----------------------------------------------------------------------------
 
-// Cache the URL (i.e., path and query) of the current YouTube page.
+// Cache the path of the current YouTube page.
 let page = "/";
-chrome.tabs.query({active: true, lastFocusedWindow: true}, (tabs) => {
-    const url = new URL(tabs[0].url);
-    page = url.pathname + url.search;
-});
+chrome.tabs.query({active: true, lastFocusedWindow: true}, (tabs) => page = Path.parseURL(tabs[0].url));
 
 // -----------------------------------------------------------------------------
 

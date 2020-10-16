@@ -44,8 +44,7 @@ function hideVideosCheckboxListener(changes) {
 // Listens for events related to the "Hide Videos" bookmark.
 function hideVideosBookmarkListener(changes) {
     return listenerWrapper("hide-videos-bookmarks", changes, (bookmarks) => {
-        const url = new URL(window.location.toString());
-        const page = url.pathname + url.search;
+        const page = Path.parseURL(window.location.toString());
         manager.hide_videos_bookmark_state = bookmarks[page];
         manager.hidden = manager.hide_videos_bookmark_state !== undefined ? manager.hide_videos_bookmark_state : manager.hide_videos_checkbox_state;
         manager.refresh();

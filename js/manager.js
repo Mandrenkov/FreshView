@@ -17,8 +17,7 @@ class Manager {
     // Restores the Manager state to reflect the stored "Hide Videos" and "View Threshold" values.
     restore() {
         const callback = (values) => {
-            const url = new URL(window.location.toString());
-            const page = url.pathname + url.search;
+            const page = Path.parseURL(window.location.toString());
             this.hide_videos_checkbox_state = values["hide-videos-checkbox-state"];
             this.hide_videos_bookmark_state = values["hide-videos-bookmarks"][page];
             this.hidden = this.hide_videos_bookmark_state !== undefined ? this.hide_videos_bookmark_state : this.hide_videos_checkbox_state;
