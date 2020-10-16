@@ -36,6 +36,7 @@
     "background": {
         "scripts": [
             "js/background.js",
+            "js/manager.js",
             "js/storage.js"
         ],
         "persistent": false
@@ -47,6 +48,7 @@
                 "js/video.js",
                 "js/album.js",
                 "js/manager.js",
+                "js/path.js",
                 "js/storage.js",
                 "js/injection.js"
             ],
