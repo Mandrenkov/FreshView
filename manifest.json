@@ -24,6 +24,7 @@
         "default_popup": "html/popup.html",
         "default_title": "FreshView for YouTube™"
     },
+
     "commands": {
         "toggle-hide-videos-checkbox": {
             "description": "Toggle \"Hide Videos\""
@@ -35,21 +36,22 @@
 
     "background": {
         "scripts": [
-            "js/background.js",
             "js/manager.js",
-            "js/storage.js"
+            "js/storage.js",
+            "js/background.js"
         ],
         "persistent": false
     },
+
     "content_scripts": [{
             "matches": ["*://*.youtube.com/*"],
             "js": [
-                "js/logger.js",
-                "js/video.js",
                 "js/album.js",
+                "js/logger.js",
                 "js/manager.js",
                 "js/path.js",
                 "js/storage.js",
+                "js/video.js",
                 "js/injection.js"
             ],
             "run_at": "document_idle"
