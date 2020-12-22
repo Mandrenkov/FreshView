@@ -117,7 +117,8 @@ class Manager {
 
     // Fetches all the secondary Videos in the given HTML element.
     fetchSecondaryVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-compact-video-renderer.style-scope.ytd-watch-next-secondary-results-renderer"));
+        return Array.from(element.querySelectorAll(":scope ytd-compact-video-renderer.style-scope.ytd-watch-next-secondary-results-renderer")).concat(
+               Array.from(element.querySelectorAll(":scope ytd-compact-video-renderer.style-scope.ytd-item-section-renderer")));
     }
 
     // Fetches all the shelf Videos in the given HTML element.
