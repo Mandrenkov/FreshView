@@ -42,15 +42,15 @@ class Album {
     merge(that) {
         const dropped = this.getIDs().filter(id => !that.videos.has(id));
         dropped.forEach(id => {this.videos.get(id).show(); this.videos.delete(id);});
-        Logger.info("Album.merge(): dropped Videos", dropped, ".");
+        Logger.debug("Album.merge(): dropped Videos", dropped, ".");
 
         const updated = that.getIDs().filter(id => this.videos.has(id));
         updated.forEach(id => this.update(that.videos.get(id)));
-        Logger.info("Album.merge(): updated Videos", updated, ".");
+        Logger.debug("Album.merge(): updated Videos", updated, ".");
 
         const added = that.getIDs().filter(id => !this.videos.has(id));
         added.forEach(id => this.add(that.videos.get(id)));
-        Logger.info("Album.merge(): added Videos", added, ".");
+        Logger.debug("Album.merge(): added Videos", added, ".");
     }
 
     // Refreshes the visibility of all Videos in this Album.
