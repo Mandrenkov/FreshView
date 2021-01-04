@@ -1,19 +1,17 @@
 // This script monitors background events.  Specifically, it activates the
-// extension in the browser toolbar and processes keyboard shortcuts.
+// extension in the browser toolbar, processes keyboard shortcuts, and
+// notifies content scripts of changes to the active tab URL.
 // -----------------------------------------------------------------------------
 
 // Activates the extension icon in the browser toolbar.
-function onMessageListener(message, sender, _) {
+function onMessageListener(message, sender, _sendResponse) {
     if (message.type === "showPageAction") {
         chrome.pageAction.show(sender.tab.id);
     }
 }
 
-// Add a listener to activate the extension icon in the browser toolbar.
-chrome.runtime.onMessage.addListener(onMessageListener);
-
-// Add a listener for browser command events (i.e., keyboard shortcuts).
-chrome.commands.onCommand.addListener(command => {
+// Processes keyboard shortcuts using the browser storage API.
+function onCommandListener(command) {
     // Toggles the value associated with the given key in storage.
     const toggle = (key, fallback) => {
         Storage.get({[key]: fallback}, (values) => Storage.set({[key]: !values[key]}));
@@ -23,4 +21,17 @@ chrome.commands.onCommand.addListener(command => {
     } else if (command === "toggle-view-threshold-checkbox") {
         toggle("view-threshold-checkbox-state", Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE);
     }
-});
+};
+
+// Sends a message to a content script when the URL of its active tab changes.
+function onTabUpdatedListener(tabID, changes, _tab){
+    if (changes.url) {
+        chrome.tabs.sendMessage(tabID, {message: "restore"});
+    }
+};
+
+
+// Register the listeners with their corresponding triggers.
+chrome.runtime.onMessage.addListener(onMessageListener);
+chrome.commands.onCommand.addListener(onCommandListener);
+chrome.tabs.onUpdated.addListener(onTabUpdatedListener);

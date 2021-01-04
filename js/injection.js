@@ -6,9 +6,23 @@
 function main() {
     // Activate the extension icon in the browser toolbar.
     chrome.runtime.sendMessage({type: "showPageAction"});
-    // Add a listener for Chrome storage change events.
+    // Add a listener for Chrome messages and storage change events.
+    chrome.runtime.onMessage.addListener(onMessageListener);
     chrome.storage.onChanged.addListener(onStorageChangedListener);
 }
+
+// -----------------------------------------------------------------------------
+
+// Listens to browser storage change events.
+function onMessageListener(request, _sender, _sendResponse) {
+    // listen for "restore" messages sent from background.js
+    if (request.message === "restore") {
+        Logger.info("onMessageListener(): received \"restore\" message.");
+        manager.restore();
+    }
+};
+
+// -----------------------------------------------------------------------------
 
 // Listens to browser storage change events.
 function onStorageChangedListener(changes, namespace) {
