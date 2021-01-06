@@ -4,9 +4,6 @@
 // -----------------------------------------------------------------------------
 
 class DarkModeWidget {
-    // DOM element corresponding to the checkbox of the "Dark Mode" widget.
-    static checkbox = undefined;
-
     // Initializes the "Dark Mode" widget.
     static init() {
         this.checkbox = document.getElementById("dark-mode-checkbox");
@@ -37,16 +34,12 @@ class DarkModeWidget {
     }
 }
 
+// DOM element corresponding to the checkbox of the "Dark Mode" widget.
+DarkModeWidget.checkbox = undefined;
+
 // -----------------------------------------------------------------------------
 
 class HideVideosWidget {
-    // DOM element corresponding to the checkbox of the "Hide Videos" widget.
-    static checkbox = undefined;
-    // DOM element corresponding to the bookmark of the "Hide Videos" widget.
-    static bookmark = undefined;
-    // The current URL of the active tab.
-    static page = undefined;
-
     // Initializes the "Hide Videos" widget.
     static init() {
         this.checkbox = document.getElementById("hide-videos-checkbox");
@@ -106,16 +99,15 @@ class HideVideosWidget {
     }
 }
 
+// DOM elements corresponding to the checkbox and bookmark of the "Hide Videos" widget.
+HideVideosWidget.checkbox = undefined;
+HideVideosWidget.bookmark = undefined;
+// URL of the active tab.
+HideVideosWidget.page = undefined;
+
 // -----------------------------------------------------------------------------
 
 class ViewThresholdWidget {
-    // DOM element corresponding to the checkbox of the "View Threshold" widget.
-    static checkbox = undefined;
-    // DOM element corresponding to the slider of the "View Threshold" widget.
-    static slider = undefined;
-    // DOM element corresponding to the percent label of the "View Threshold" widget.
-    static percent = undefined;
-
     // Initializes the "View Threshold" widget.
     static init() {
         this.checkbox = document.getElementById("view-threshold-checkbox");
@@ -155,3 +147,8 @@ class ViewThresholdWidget {
         this.percent.textContent = this.checkbox.checked ? this.slider.value + "%" : "100%";
     }
 }
+
+// DOM elements corresponding to the checkbox, slider, and percent label of the "View Threshold" widget.
+ViewThresholdWidget.checkbox = undefined;
+ViewThresholdWidget.slider = undefined;
+ViewThresholdWidget.percent = undefined;
