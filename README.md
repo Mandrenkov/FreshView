@@ -27,10 +27,11 @@ The [js](js) directory contains the following scripts:
 | [injection.js](js/injection.js)   | Attaches listeners to browser storage events.          |
 | [logger.js](js/logger.js)         | Wraps `console` to control the visibility of messages. |
 | [manager.js](js/manager.js)       | Finds and manages Videos on a page.                    |
-| [path.js](js/path.js)             | Path parses the URL of a YouTube™ page.                |
+| [path.js](js/path.js)             | Parses the URL of a YouTube™ page.                     |
 | [popup.js](js/popup.js)           | Attaches event listeners and initializes animations.   |
 | [storage.js](js/storage.js)       | Adapts the browser local storage API.                  |
 | [video.js](js/video.js)           | Implements a model for YouTube™ videos.                |
+| [widget.js](js/widget.js)         | Implements the state and lifecycle of UI widgets.      |
 
 ### How it Works
 When the DOM is mutated, FreshView polls the DOM for HTML elements that match the expected structure of a YouTube™ video.  Each HTML element that matches the structure of a YouTube™ video is converted into a `Video` object.  All Videos with a view progress that meets or exceeds the current view threshold are added to a dynamic collection of Videos known as an `Album`.  When a Video is added to an Album, it is displayed or hidden depending on the state of the *Hide Videos* toggle.  Similarly, when a Video is removed from an Album, it is reverted to a visible state.
