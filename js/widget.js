@@ -152,3 +152,16 @@ class ViewThresholdWidget {
 ViewThresholdWidget.checkbox = undefined;
 ViewThresholdWidget.slider = undefined;
 ViewThresholdWidget.percent = undefined;
+
+// -----------------------------------------------------------------------------
+
+class OptionsWidget {
+    // Initializes the "Options" widget.
+    static init() {
+        this.span = document.getElementById("options-span");
+        this.span.addEventListener("click", () => chrome.runtime.openOptionsPage());
+    }
+}
+
+// DOM element corresponding to the "Options" widget.
+OptionsWidget.span = undefined;

@@ -65,8 +65,9 @@ function onTabUpdatedListener({}, changes, {}) {
 // -----------------------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Initialize the "Dark Mode", "Hide Videos", and "View Threshold" widget singletons.
-    [DarkModeWidget, HideVideosWidget, ViewThresholdWidget].forEach(widget => widget.init());
+    widgets = [DarkModeWidget, HideVideosWidget, OptionsWidget, ViewThresholdWidget];
+    widgets.forEach(widget => widget.init());
+
     // Update these widgets when:
     //   1. An external storage change event fires.
     //   2. The URL of the active tab changes.

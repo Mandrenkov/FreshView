@@ -17,17 +17,14 @@
             <img id="logo" src="../img/icon.png"/>
             <span id="title">FreshView</span>
             <div id="actions">
-                <div class="action tooltip">
+                <!-- TODO: Delete this div once the Dark Mode widget has been migrated. -->
+                <div class="action">
                     <input type="checkbox" id="dark-mode-checkbox">
-                    <label class="material-icons tooltip" for="dark-mode-checkbox">brightness_4</label>
-                    <span id="theme-tooltip" class="tooltip">Theme</span>
+                    <label class="material-icons" for="dark-mode-checkbox">brightness_4</label>
                 </div>
-                <div class="action tooltip">
-                    <!-- Chrome Link -->
-                    <a class="material-icons action tooltip" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">mode_comment</a>
-                    <!-- Firefox Link -->
-                    <!-- <a class="material-icons action tooltip" href="https://addons.mozilla.org/en-CA/firefox/addon/freshview-for-youtube" target="_blank">mode_comment</a> -->
-                    <span id="feedback-tooltip" class="tooltip">Feedback</span>
+                <div class="action">
+                    <span id="options-span" class="material-icons">tune</span>
+                    <span id="options-tooltip" class="tooltip">Options</span>
                 </div>
             </div>
         </div>
@@ -46,10 +43,10 @@
                             <div class="control-name">Hide Videos</div>
                             <div class="control-help">Toggles the visibility of watched videos.</div>
                         </div>
-                        <div class="control-bookmark tooltip">
+                        <div class="control-bookmark">
                             <input type="checkbox" id="hide-videos-bookmark">
-                            <label class="material-icons tooltip" for="hide-videos-bookmark">vpn_lock</label>
-                            <span id="hide-videos-tooltip" class="tooltip">Lock the &quot;Hide Videos&quot; toggle on this page</span>
+                            <label class="material-icons" for="hide-videos-bookmark">vpn_lock</label>
+                            <span id="hide-videos-tooltip" class="tooltip">Lock the &quot;Hide Videos&quot; toggle on this page.</span>
                         </div>
                     </div>
                 </div>
