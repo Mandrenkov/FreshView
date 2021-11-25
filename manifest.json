@@ -4,25 +4,15 @@
     "name": "FreshView for YouTube™",
     "short_name": "FreshView for YouTube™",
     "description": "Hide YouTube™ videos you've already watched to easily discover fresh content.",
-    "version": "2.0.3",
+    "version": "2.1.0",
 
-    "icons": {
-         "16": "img/icon16.png",
-         "32": "img/icon32.png",
-         "48": "img/icon48.png",
-        "128": "img/icon128.png"
-    },
-
-    "page_action": {
-        "default_icon": {
-            "16": "img/icon16.png",
-            "19": "img/icon19.png",
-            "24": "img/icon24.png",
-            "32": "img/icon32.png",
-            "38": "img/icon38.png"
-        },
-        "default_popup": "html/popup.html",
-        "default_title": "FreshView for YouTube™"
+    "background": {
+        "scripts": [
+            "js/manager.js",
+            "js/storage.js",
+            "js/background.js"
+        ],
+        "persistent": false
     },
 
     "commands": {
@@ -32,15 +22,6 @@
         "toggle-view-threshold-checkbox": {
             "description": "Toggle \"View Threshold\""
         }
-    },
-
-    "background": {
-        "scripts": [
-            "js/manager.js",
-            "js/storage.js",
-            "js/background.js"
-        ],
-        "persistent": false
     },
 
     "content_scripts": [{
@@ -56,6 +37,31 @@
             ],
             "run_at": "document_idle"
     }],
+
+    "icons": {
+        "16": "img/icon16.png",
+        "32": "img/icon32.png",
+        "48": "img/icon48.png",
+       "128": "img/icon128.png"
+    },
+
+    "options_ui": {
+       "browser_style": true,
+       "page": "html/options.html",
+       "open_in_tab": true
+    },
+
+    "page_action": {
+        "default_icon": {
+            "16": "img/icon16.png",
+            "19": "img/icon19.png",
+            "24": "img/icon24.png",
+            "32": "img/icon32.png",
+            "38": "img/icon38.png"
+        },
+        "default_popup": "html/popup.html",
+        "default_title": "FreshView for YouTube™"
+    },
 
     "permissions": [
         "storage",
