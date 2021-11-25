@@ -1,73 +1,6 @@
-/* Section 0: Testing Styles -------------------------------------------------*/
-.red {
-    background-color: #F00;
-}
-
-.green {
-    background-color: #0F0;
-}
-
-.blue {
-    background-color: #00F;
-}
+@import "shared.css";
 
 /* Section 1: Global Styles --------------------------------------------------*/
-:root {
-    font-size: 12px;
-    --accent-colour: #065FD4;
-    --accent-colour-hover: #0048B8;
-    --background-colour-header: #FFFFFF;
-    --background-colour-controls: #F9F9F9;
-    --background-colour-tooltips: #333333;
-    --disabled-colour: #909090;
-    --font-colour-title: #282828;
-    --font-colour-primary: #0D0D0D;
-    --font-colour-secondary: #757575;
-    --font-colour-icons: #909090;
-    --font-colour-icons-hover: #5E5E5E;
-    --font-colour-tooltips: #FFFFFF;
-    --font-weight-title: 500;
-    --font-weight-primary: 500;
-    --font-weight-secondary: 400;
-    --thumb-border-width: 2px;
-    --thumb-translation: 0px;
-    --thumb-size: 12px;
-    --track-colour-toggle: #E7E7E7;
-    --track-colour-slider: #CCCCCC;
-    --transition-delay-tooltip: 0.5s;
-    --transition-duration-colour: 0s;
-    --transition-duration-slider: 0s;
-    --transition-duration-toggle: 0s;
-}
-
-:root[data-theme='dark'] {
-    font-size: 12px;
-    --accent-colour: #3EA6FF;
-    --accent-colour-hover: #73CFFF;
-    --background-colour-header: #202020;
-    --background-colour-controls: #181818;
-    --background-colour-tooltips: #333333;
-    --disabled-colour: #909090;
-    --font-colour-title: #FFFFFF;
-    --font-colour-primary: #FFFFFF;
-    --font-colour-secondary: #AAAAAA;
-    --font-colour-icons: #909090;
-    --font-colour-icons-hover: #D4D4D4;
-    --font-colour-tooltips: #FFFFFF;
-    --font-weight-title: 500;
-    --font-weight-primary: 500;
-    --font-weight-secondary: 400;
-    --thumb-border-width: 2px;
-    --thumb-translation: 0px;
-    --thumb-size: 12px;
-    --track-colour-toggle: #3C3C3C;
-    --track-colour-slider: #2F2F2F;
-    --transition-delay-tooltip: 0.5s;
-    --transition-duration-colour: 0s;
-    --transition-duration-slider: 0s;
-    --transition-duration-toggle: 0s;
-}
-
 body {
     margin: 0;
     min-width: 360px;
@@ -82,7 +15,7 @@ body * {
 
 /* Section 2: Header Styles --------------------------------------------------*/
 #header {
-    background-color: var(--background-colour-header);
+    background-color: var(--background-colour-secondary);
     height: 60px;
     width: 100%;
 }
@@ -92,6 +25,7 @@ body * {
     height: 24px;
     padding: 18px;
     width: auto;
+    user-select: none;
 }
 
 #title {
@@ -101,26 +35,28 @@ body * {
     font-size: 1.70rem;
     font-weight: var(--font-weight-title);
     transition-duration: 0s;
+    user-select: none;
     vertical-align: middle;
 }
 
 /* Section 2.1: Action Styles ------------------------------------------------*/
 #actions {
-    align-content: center;
+    align-content: left;
     display: flex;
     flex-direction: row;
     float: right;
-    justify-content: center;
+    justify-content: left;
     height: 60px;
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 div.action {
-    align-content: center;
+    align-content: left;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    padding: 20px 0 20px 10px;
+    justify-content: left;
+    padding: 20px 5px 20px 5px;
+    position: relative;
     user-select: none;
 }
 
@@ -128,29 +64,26 @@ div.action input {
     display: none;
 }
 
+/* TODO: Delete this style once the Dark Mode widget has been migrated. */
 div.action label {
+    display: none;
+}
+
+div.action .material-icons {
     color: var(--font-colour-icons);
-    font-size: 1.60rem;
+    font-size: 1.80rem;
     line-height: 20px;
     text-decoration: none;
 }
 
-div.action a {
-    color: var(--font-colour-icons);
-    display: inline-block;
-    font-size: 1.60rem;
-    line-height: 20px;
-    text-decoration: none;
-}
-
-.material-icons:hover {
+div.action .material-icons:hover, .control-bookmark .material-icons:hover {
     color: var(--font-colour-icons-hover);
     cursor: pointer;
 }
 
 /* Section 3: Control Styles -------------------------------------------------*/
 #controls {
-    background-color: var(--background-colour-controls);
+    background-color: var(--background-colour-primary);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -302,7 +235,7 @@ input.control-slider::-moz-range-thumb {
     -moz-appearance: none;
     background: var(--accent-colour);
     border-radius: 50%;
-    border: var(--thumb-border-width) solid var(--background-colour-controls);
+    border: var(--thumb-border-width) solid var(--background-colour-primary);
     height: var(--thumb-size);
     transition-duration: var(--transition-duration-slider);
     width: var(--thumb-size);
@@ -312,7 +245,7 @@ input.control-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: var(--accent-colour);
     border-radius: 50%;
-    border: var(--thumb-border-width) solid var(--background-colour-controls);
+    border: var(--thumb-border-width) solid var(--background-colour-primary);
     height: calc(var(--thumb-size) + 2 * var(--thumb-border-width));
     transition-duration: var(--transition-duration-colour), var(--transition-duration-slider);
     transition-property: all, transform;
@@ -357,7 +290,7 @@ div.control-bookmark {
     align-content: center;
     display: flex;
     justify-content: center;
-    padding: 20px 20px 20px 0;
+    padding: 20px 15px 20px 0;
     user-select: none;
 }
 
@@ -381,19 +314,14 @@ div.control-bookmark input:checked + label:hover {
 }
 
 /* Section 7: Tooltip Styles -------------------------------------------------*/
-div.tooltip {
-    position: relative;
-    display: inline-block;
-}
-
 span.tooltip {
     background-color: var(--background-colour-tooltips);
+    border: thin solid var(--border-colour-tooltips);
     color: var(--font-colour-tooltips);
     display: inline-block;
-    border-radius: 4px;
-    font-size: 1.10rem;
-    height: 22px;
-    line-height: 22px;
+    font-size: 1rem;
+    height: 30px;
+    line-height: 30px;
     position: absolute;
     opacity: 0;
     text-align: center;
@@ -402,37 +330,39 @@ span.tooltip {
     z-index: 1;
 }
 
+/* #hide-videos-tooltip {
+    right: 45px;
+    top: 15px;
+    width: 255px;
+} */
+
+/* #hide-videos-tooltip {
+    right: 45px;
+    top: 33px;
+    width: 255px;
+} */
+
 #hide-videos-tooltip {
-    right: 20px;
-    top: 50px;
-    width: 280px;
+    right: 15px;
+    top: 55px;
+    width: 285px;
 }
 
-#theme-tooltip {
-    right: 0px;
-    top: 48px;
-    width: 70px;
+/* #hide-videos-tooltip {
+    right: 15px;
+    top: 75px;
+    width: 285px;
+} */
+
+#options-tooltip {
+    right: 35px;
+    top: 15px;
+    width: 80px;
 }
 
-#feedback-tooltip {
-    right: 0px;
-    top: 48px;
-    width: 90px;
-}
-
-label.tooltip:hover ~ span.tooltip, a.tooltip:hover ~ span.tooltip {
+:hover ~ span.tooltip {
     opacity: 1;
     transition-delay: var(--transition-delay-tooltip);
+    transition-duration: var(--transition-duration-tooltip);
     visibility: visible;
-}
-
-span.tooltip::after {
-    content: " ";
-    position: absolute;
-    bottom: 100%;
-    right: 5px;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent var(--background-colour-tooltips) transparent;
 }
