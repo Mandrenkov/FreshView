@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- Style Sheets -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
+        <link rel="stylesheet" type="text/css" href="../css/options.css">
+        <!-- JavaScript Files -->
+        <script src="../js/logger.js"></script>
+        <script src="../js/manager.js"></script>
+        <script src="../js/options.js"></script>
+        <script src="../js/storage.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-title">FreshView for YouTube™</div>
+            <img class="header-logo" src="../img/icon.png"/>
+            <div class="header-subtitle">Preferences</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Appearance</div>
+            <div class="section-description">Customize the appearance of the extension.</div>
+            <div class="section-group">
+                <div class="section-group-left">Theme</div>
+                <div class="section-group-right">
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="dark-mode-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="dark-mode-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Dark Mode</div>
+                            <div class="section-option-description">Use the dark theme.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <div class="section-title">Filters</div>
+            <div class="section-description">Choose which videos should be hidden by the extension.</div>
+
+            <div class="section-group">
+                <div class="section-group-left">Types</div>
+                <div class="section-group-right">
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="types-recommendations-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="types-recommendations-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Recommendations</div>
+                            <div class="section-option-description">Hide watched videos in the recommendations sidebar.</div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="types-playlists-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="types-playlists-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Playlists</div>
+                            <div class="section-option-description">Hide watched videos in playlists.</div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="types-searches-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="types-searches-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Searches</div>
+                            <div class="section-option-description">Hide watched videos in search results.</div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="types-channels-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="types-channels-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Channels</div>
+                            <div class="section-option-description">Hide watched videos on channel pages.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-group">
+                <div class="section-group-left">Pages</div>
+                <div class="section-group-right">
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="pages-home-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="pages-home-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Home</div>
+                            <div class="section-option-description">
+                                Hide watched videos in the <a href="https://www.youtube.com">Home</a> tab.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="pages-explore-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="pages-explore-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Explore</div>
+                            <div class="section-option-description">
+                                Hide watched videos in the <a href="https://www.youtube.com/feed/explore">Explore</a> tab.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="pages-subscriptions-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="pages-subscriptions-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Subscriptions</div>
+                            <div class="section-option-description">
+                                Hide watched videos in the <a href="https://www.youtube.com/feed/subscriptions">Subscriptions</a> tab.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="pages-library-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="pages-library-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">Library</div>
+                            <div class="section-option-description">
+                                Hide watched videos in the <a href="https://www.youtube.com/feed/library">Library</a> tab.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-option">
+                        <div class="section-option-left section-option-toggle">
+                            <input id="pages-history-checkbox" type="checkbox"/>
+                            <label class="section-option-toggle" for="pages-history-checkbox"></label>
+                        </div>
+                        <div class="section-option-right">
+                            <div class="section-option-title">History</div>
+                            <div class="section-option-description">
+                                Hide watched videos in the <a href="https://www.youtube.com/feed/history">History</a> tab.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
