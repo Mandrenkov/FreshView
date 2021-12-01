@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: CWS.zip
+          name: CWS
           path: |
             assets/
             css/
@@ -46,7 +46,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: AMO.zip
+          name: AMO
           path: |
             assets/
             css/
