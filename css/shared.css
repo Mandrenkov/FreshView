@@ -12,7 +12,9 @@
 }
 
 /* Section 1: Global Styles --------------------------------------------------*/
-:root {
+
+/* TODO: Switch back to ``:root``. */
+:root[data-theme='dark'] {
     font-size: 12px;
     --accent-colour: #065FD4;
     --accent-colour-hover: #0048B8;
@@ -20,6 +22,8 @@
     --background-colour-secondary: #FFFFFF;
     --background-colour-tooltips: #333333;
     --disabled-colour: #909090;
+    /* TODO: Fix divider colour. */
+    --divider-colour: #FF0000;
     --font-colour-title: #282828;
     --font-colour-primary: #0D0D0D;
     --font-colour-secondary: #757575;
@@ -29,6 +33,8 @@
     --font-weight-title: 500;
     --font-weight-primary: 500;
     --font-weight-secondary: 400;
+    /* TODO: Fix link colour. */
+    --link-colour: #FF0000;
     --thumb-border-width: 2px;
     --thumb-translation: 0px;
     --thumb-size: 12px;
@@ -40,7 +46,8 @@
     --transition-duration-toggle: 0s;
 }
 
-:root[data-theme='dark'] {
+/* TODO: Switch back to ``:root[data-theme='dark']``. */
+:root {
     font-size: 12px;
     --accent-colour: #3EA6FF;
     --accent-colour-hover: #73CFFF;
@@ -48,6 +55,7 @@
     --background-colour-secondary: #202020;
     --background-colour-tooltips: #333333;
     --disabled-colour: #909090;
+    --divider-colour: #303030;
     --font-colour-title: #FFFFFF;
     --font-colour-primary: #FFFFFF;
     --font-colour-secondary: #AAAAAA;
@@ -57,6 +65,7 @@
     --font-weight-title: 500;
     --font-weight-primary: 500;
     --font-weight-secondary: 400;
+    --link-colour: #3EA6FF;
     --thumb-border-width: 2px;
     --thumb-translation: 0px;
     --thumb-size: 12px;
