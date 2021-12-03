@@ -22,8 +22,7 @@
     --background-colour-secondary: #FFFFFF;
     --background-colour-tooltips: #333333;
     --disabled-colour: #909090;
-    /* TODO: Fix divider colour. */
-    --divider-colour: #FF0000;
+    --divider-colour: #E0E0E0;
     --font-colour-title: #282828;
     --font-colour-primary: #0D0D0D;
     --font-colour-secondary: #757575;
@@ -33,8 +32,7 @@
     --font-weight-title: 500;
     --font-weight-primary: 500;
     --font-weight-secondary: 400;
-    /* TODO: Fix link colour. */
-    --link-colour: #FF0000;
+    --link-colour: #064FD4;
     --thumb-border-width: 2px;
     --thumb-translation: 0px;
     --thumb-size: 12px;
