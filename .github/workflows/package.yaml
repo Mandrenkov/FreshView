@@ -1,4 +1,4 @@
-name: Release
+name: Package
 on:
   pull_request:
   push:
@@ -8,21 +8,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  cws:
+  Chromium:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Fix links
-        run: |
-          sed -i -E '/<!-- DEV /d' html/popup.html
-          sed -i -E '/<!-- AMO /d' html/popup.html
-          sed -i -E 's/<!-- CWS (.*) -->/\1/' html/popup.html
-
       - uses: actions/upload-artifact@v2
         with:
-          name: CWS
+          name: Chromium
           path: |
             assets/
             css/
@@ -32,21 +26,15 @@ jobs:
             LICENSE
             manifest.json
 
-  amo:
+  Firefox:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Fix links
-        run: |
-          sed -i -E '/<!-- DEV /d' html/popup.html
-          sed -i -E '/<!-- CWS /d' html/popup.html
-          sed -i -E 's/<!-- AMO (.*) -->/\1/' html/popup.html
-
       - uses: actions/upload-artifact@v2
         with:
-          name: AMO
+          name: Firefox
           path: |
             assets/
             css/
