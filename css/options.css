@@ -34,6 +34,7 @@ a:active {
     display: flex;
     height: 60px;
     justify-content: center;
+    position: fixed;
     width: 100%;
 }
 
@@ -60,6 +61,10 @@ a:active {
     padding: 18px;
     width: auto;
     user-select: none;
+}
+
+.header-section-break {
+    height: 60px;
 }
 
 /* Section 3: Divider Styles -------------------------------------------------*/
