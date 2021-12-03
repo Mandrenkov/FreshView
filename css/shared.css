@@ -76,3 +76,57 @@
     --transition-duration-slider: 0s;
     --transition-duration-toggle: 0s;
 }
+
+/* Section 2: Toggle Styles --------------------------------------------------*/
+
+div.toggle {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+/* Toggle Checkbox Styles */
+div.toggle input {
+    -moz-appearance: none;
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+/* Toggle Thumb Styles */
+label.toggle::before {
+    background-color: var(--disabled-colour);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    content: "";
+    height: 18px;
+    position: absolute;
+    top: 1px;
+    transition-duration: var(--transition-duration-toggle);
+    width: 18px;
+}
+
+input:checked + label.toggle::before {
+    background-color: var(--accent-colour);
+    transform: translateX(16px);
+    transition-duration: var(--transition-duration-toggle);
+}
+
+/* Toggle Track Styles */
+label.toggle {
+    background-color: var(--track-colour-toggle);
+    border-radius: 32px;
+    cursor: pointer;
+    display: inline-block;
+    height: 12px;
+    width: 32px;
+}
+
+input:disabled + label.toggle {
+    cursor: default;
+    opacity: 0.38;
+}

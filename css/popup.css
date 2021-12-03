@@ -143,60 +143,8 @@ div.control-help {
     transition-duration: 0s;
 }
 
-/* Section 4: Toggle Styles --------------------------------------------------*/
-div.control-toggle {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: 20px;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-}
+/* Section 4: Slider Styles --------------------------------------------------*/
 
-/* Section 4.1: Toggle Checkbox Styles ---------------------------------------*/
-div.control-toggle input {
-    -moz-appearance: none;
-    display: none;
-    height: 0;
-    width: 0;
-}
-
-/* Section 4.2: Toggle Thumb Styles ------------------------------------------*/
-label.control-toggle::before {
-    background-color: var(--disabled-colour);
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    content: "";
-    height: 18px;
-    position: absolute;
-    top: 1px;
-    transition-duration: var(--transition-duration-toggle);
-    width: 18px;
-}
-
-input:checked + label.control-toggle::before {
-    background-color: var(--accent-colour);
-    transform: translateX(16px);
-    transition-duration: var(--transition-duration-toggle);
-}
-
-/* Section 4.3: Toggle Track Styles ------------------------------------------*/
-label.control-toggle {
-    background-color: var(--track-colour-toggle);
-    border-radius: 32px;
-    cursor: pointer;
-    display: inline-block;
-    height: 12px;
-    width: 32px;
-}
-
-input:disabled + label.control-toggle {
-    cursor: default;
-    opacity: 0.38;
-}
-
-/* Section 5: Slider Styles --------------------------------------------------*/
 div.control-slider {
     align-items: flex-start;
     display: flex;
@@ -206,7 +154,8 @@ div.control-slider {
     width: 100%;
 }
 
-/* Section 5.1: Slider Track Styles ------------------------------------------*/
+/* Slider Track Styles */
+
 input.control-slider {
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -230,7 +179,7 @@ input.control-slider::-moz-focus-outer {
     border: none;
 }
 
-/* Section 5.2: Enabled Slider Thumb Styles ----------------------------------*/
+/* Enabled Slider Thumb Styles */
 input.control-slider::-moz-range-thumb {
     -moz-appearance: none;
     background: var(--accent-colour);
@@ -252,7 +201,8 @@ input.control-slider::-webkit-slider-thumb {
     width: calc(var(--thumb-size) + 2 * var(--thumb-border-width));
 }
 
-/* Section 5.3: Disabled Slider Thumb Styles ---------------------------------*/
+/* Disabled Slider Thumb Styles */
+
 input.control-slider:disabled::-webkit-slider-thumb {
     background: var(--track-colour-slider);
     transform: translateX(var(--thumb-translation));
@@ -266,7 +216,8 @@ input.control-slider:disabled::-moz-range-thumb {
     transition-duration: var(--transition-duration-slider);
 }
 
-/* Section 5.4: Slider Label Styles ------------------------------------------*/
+/* Slider Label Styles */
+
 label.control-slider {
     color: var(--font-colour-primary);
     display: inline-block;
@@ -285,7 +236,8 @@ input.control-slider:disabled + label.control-slider {
     color: var(--disabled-colour);
 }
 
-/* Section 6: Bookmark Styles ------------------------------------------------*/
+/* Section 5: Bookmark Styles ------------------------------------------------*/
+
 div.control-bookmark {
     align-content: center;
     display: flex;
@@ -313,7 +265,8 @@ div.control-bookmark input:checked + label:hover {
     color: var(--accent-colour-hover);
 }
 
-/* Section 7: Tooltip Styles -------------------------------------------------*/
+/* Section 6: Tooltip Styles -------------------------------------------------*/
+
 span.tooltip {
     background-color: var(--background-colour-tooltips);
     border: thin solid var(--border-colour-tooltips);
@@ -330,29 +283,11 @@ span.tooltip {
     z-index: 1;
 }
 
-/* #hide-videos-tooltip {
-    right: 45px;
-    top: 15px;
-    width: 255px;
-} */
-
-/* #hide-videos-tooltip {
-    right: 45px;
-    top: 33px;
-    width: 255px;
-} */
-
 #hide-videos-tooltip {
     right: 15px;
     top: 55px;
     width: 285px;
 }
-
-/* #hide-videos-tooltip {
-    right: 15px;
-    top: 75px;
-    width: 285px;
-} */
 
 #options-tooltip {
     right: 35px;

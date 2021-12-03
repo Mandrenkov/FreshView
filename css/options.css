@@ -112,9 +112,13 @@ a:active {
     margin-bottom: 24px;
 }
 
-.section-option-left {
+div.section-option-left {
     margin-top: 2px;
     width: 60px;
+}
+
+.section-option-right {
+    padding-left: 15px;
 }
 
 .section-option-title {
@@ -130,56 +134,3 @@ a:active {
     font-size: 1.20rem;
 }
 
-/* Section X: Toggle Styles --------------------------------------------------*/
-
-div.section-option-toggle {
-    align-items: left;
-    display: flex;
-    flex-direction: column;
-    height: 20px;
-    justify-content: center;
-    position: relative;
-    /* width: 100%; */
-}
-
-/* Section 4.1: Toggle Checkbox Styles ---------------------------------------*/
-div.section-option-toggle input {
-    -moz-appearance: none;
-    display: none;
-    height: 0;
-    width: 0;
-}
-
-/* Section 4.2: Toggle Thumb Styles ------------------------------------------*/
-label.section-option-toggle::before {
-    background-color: var(--disabled-colour);
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    content: "";
-    height: 18px;
-    position: absolute;
-    top: 1px;
-    transition-duration: var(--transition-duration-toggle);
-    width: 18px;
-}
-
-input:checked + label.section-option-toggle::before {
-    background-color: var(--accent-colour);
-    transform: translateX(16px);
-    transition-duration: var(--transition-duration-toggle);
-}
-
-/* Section 4.3: Toggle Track Styles ------------------------------------------*/
-label.section-option-toggle {
-    background-color: var(--track-colour-toggle);
-    border-radius: 32px;
-    cursor: pointer;
-    display: inline-block;
-    height: 12px;
-    width: 32px;
-}
-
-input:disabled + label.section-option-toggle {
-    cursor: default;
-    opacity: 0.38;
-}
