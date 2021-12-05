@@ -35,6 +35,7 @@ a:active {
     height: 60px;
     justify-content: center;
     position: fixed;
+    transition-duration: var(--transition-duration-colour);
     width: 100%;
 }
 
@@ -44,7 +45,6 @@ a:active {
     font-size: 1.70rem;
     font-weight: var(--font-weight-title);
     height: 60px;
-    transition-duration: 0s;
 }
 
 .header-subtitle {
@@ -52,7 +52,6 @@ a:active {
     line-height: 60px;
     font-size: 1.70rem;
     height: 60px;
-    transition-duration: 0s;
 }
 
 .header-logo {
@@ -72,6 +71,7 @@ a:active {
 .divider {
     background-color: var(--divider-colour);
     height: 1px;
+    transition-duration: var(--transition-duration-colour);
 }
 
 /* Section 4: Section Styles -------------------------------------------------*/
