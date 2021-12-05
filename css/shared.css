@@ -13,8 +13,7 @@
 
 /* Section 1: Global Styles --------------------------------------------------*/
 
-/* TODO: Switch back to ``:root``. */
-:root[data-theme='dark'] {
+:root {
     font-size: 12px;
     --accent-colour: #065FD4;
     --accent-colour-hover: #0048B8;
@@ -44,8 +43,7 @@
     --transition-duration-toggle: 0s;
 }
 
-/* TODO: Switch back to ``:root[data-theme='dark']``. */
-:root {
+:root[data-theme='dark'] {
     font-size: 12px;
     --accent-colour: #3EA6FF;
     --accent-colour-hover: #73CFFF;
