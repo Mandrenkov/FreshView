@@ -165,3 +165,224 @@ class OptionsWidget {
 
 // DOM element corresponding to the "Options" widget.
 OptionsWidget.span = undefined;
+
+// -----------------------------------------------------------------------------
+// TODO: Refactor the widgets above to remove dependencies on global state.
+
+/**
+ * Represents an stateful UI widget.
+ */
+class Widget {
+    /**
+     * Constructs a new widget.
+     *
+     * @param {string} element_id - The ID of the HTML element associated with
+     *     the widget.
+     */
+    constructor(element_id) {
+        this.element_id = element_id;
+        this.element = undefined;
+    }
+
+    /**
+     * Initializes a widget by obtaining a reference to its HTML element and
+     * registering an event listener that calls Widget.save() on the "change"
+     * event.
+     *
+     * Note: This function may only be called after the DOM is loaded.
+     */
+    init() {
+        this.element = document.getElementById(this.element_id);
+        this.load();
+        this.element.addEventListener("change", () => this.save());
+    }
+
+    /**
+     * Loads the state of a widget from browser storage.
+     */
+    load() {
+        throw new Error("Method Widget.load() must be overriden.");
+    }
+
+    /**
+     * Saves the state of a widget to browser storage.
+     */
+    save() {
+        throw new Error("Method Widget.save() must be overriden.");
+    }
+}
+
+/**
+ * Represents a ``Widget`` based on an HTML checkbox.
+ */
+class Checkbox extends Widget {
+
+    /**
+     * Constructs a new checkbox widget.
+     *
+     * @param {string} element_id - ID of the HTML element associated with the
+     *     checkbox.
+     * @param {string} storage_key - Key in browser storage associated with the
+     *     state of the checkbox.
+     * @param {*} default_state - Default state of the checkbox (used when
+     *     browser storage is missing an entry for the storage key).
+     */
+    constructor(element_id, storage_key, default_state) {
+        super(element_id);
+        this.storage_key = storage_key;
+        this.default_state = default_state;
+    }
+
+    load() {
+        Storage.get({[this.storage_key]: this.default_state}, (values) => this.update(values));
+    }
+
+    save() {
+        Storage.set({[this.storage_key]: this.element.checked});
+    }
+
+    /**
+     * Updates the UI using the given checkbox state from browser storage.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    update(values) {
+        this.element.checked = values[this.storage_key];
+    }
+}
+
+/**
+ * Represents the "Dark Mode" widget.
+ */
+class DarkModeWidget2 extends Checkbox {
+    constructor() {
+        super(
+            "dark-mode-checkbox",
+            "dark-mode-checkbox-state",
+            Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE
+        );
+    }
+
+    update(values) {
+        super.update(values);
+        const theme = this.element.checked ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+    }
+}
+
+/**
+ * Represents the "Hide Recommendations" widget.
+ */
+class HideRecommendationsWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-recommendations-checkbox",
+            "hide-recommendations-checkbox-state",
+            true,
+        );
+    }
+}
+
+/**
+ * Represents the "Hide Playlists" widget.
+ */
+class HidePlaylistsWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-playlists-checkbox",
+            "hide-playlists-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Searches" widget.
+ */
+class HideSearchesWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-searches-checkbox",
+            "hide-searches-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Channels" widget.
+ */
+class HideChannelsWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-channels-checkbox",
+            "hide-channels-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Home" widget.
+ */
+class HideHomeWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-home-checkbox",
+            "hide-home-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Explore" widget.
+ */
+class HideExploreWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-explore-checkbox",
+            "hide-explore-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Subscriptions" widget.
+ */
+class HideSubscriptionsWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-subscriptions-checkbox",
+            "hide-subscriptions-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide Library" widget.
+ */
+class HideLibraryWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-library-checkbox",
+            "hide-library-checkbox-state",
+            true,
+        )
+    }
+}
+
+/**
+ * Represents the "Hide History" widget.
+ */
+class HideHistoryWidget extends Checkbox {
+    constructor() {
+        super(
+            "hide-history-checkbox",
+            "hide-history-checkbox-state",
+            false,
+        )
+    }
+}
