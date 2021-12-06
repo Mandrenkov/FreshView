@@ -1,42 +1,5 @@
-// This script implements the logical states of the "Dark Mode", "Hide Videos",
-// and "View Threshold" UI widgets.  Since all of these widgets are singeletons,
-// their classes consist exclusively of static members.
-// -----------------------------------------------------------------------------
-
-class DarkModeWidget {
-    // Initializes the "Dark Mode" widget.
-    static init() {
-        this.checkbox = document.getElementById("dark-mode-checkbox");
-        this.checkbox.addEventListener("change", () => this.publish());
-        this.restore();
-    }
-
-    // Restores the state of the "Dark Mode" widget to reflect the stored "Dark Mode" values.
-    static restore() {
-        Storage.get({"dark-mode-checkbox-state": Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE}, (values) => this.update(values));
-    }
-
-    // Updates the state of the "Dark Mode" widget.
-    static update(values) {
-        this.checkbox.checked = values["dark-mode-checkbox-state"];
-        this.render();
-    }
-
-    // Publishes the state of the "Dark Mode" widget.
-    static publish() {
-        Storage.set({"dark-mode-checkbox-state": this.checkbox.checked}, () => this.render());
-    }
-
-    // Renders the state of the "Dark Mode" widget.
-    static render() {
-        const theme = this.checkbox.checked ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", theme);
-    }
-}
-
-// DOM element corresponding to the checkbox of the "Dark Mode" widget.
-DarkModeWidget.checkbox = undefined;
-
+// This script implements the logical states of the "Hide Videos" and
+// "View Threshold" UI widgets, along with the widgets in the options UI.
 // -----------------------------------------------------------------------------
 
 class HideVideosWidget {
@@ -154,28 +117,14 @@ ViewThresholdWidget.slider = undefined;
 ViewThresholdWidget.percent = undefined;
 
 // -----------------------------------------------------------------------------
-
-class OptionsWidget {
-    // Initializes the "Options" widget.
-    static init() {
-        this.span = document.getElementById("options-span");
-        this.span.addEventListener("click", () => chrome.runtime.openOptionsPage());
-    }
-}
-
-// DOM element corresponding to the "Options" widget.
-OptionsWidget.span = undefined;
-
-// -----------------------------------------------------------------------------
 // TODO: Refactor the widgets above to remove dependencies on global state.
 
 /**
- * Represents an stateful UI widget.
+ * Stateful UI widget.
  */
 class Widget {
     /**
-     * Constructs a new widget by obtaining a reference to the HTML element
-     * associated with the widget.
+     * Constructs a new widget by obtaining a reference to an HTML element.
      *
      * @param {string} element_id - The ID of the HTML element associated with
      *     the widget.
@@ -200,7 +149,7 @@ class Widget {
 }
 
 /**
- * Represents a ``Widget`` based on an HTML checkbox.
+ * Widget based on an HTML checkbox.
  */
 class Checkbox extends Widget {
 
@@ -246,14 +195,14 @@ class Checkbox extends Widget {
 }
 
 /**
- * Represents a "Dark Mode" widget.
+ * Widget for the "Dark Mode" toggle.
  */
-class DarkModeWidget2 extends Checkbox {
+class DarkModeWidget extends Checkbox {
     constructor() {
         super(
             "dark-mode-checkbox",
             "dark-mode-checkbox-state",
-            Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE
+            false
         );
     }
 

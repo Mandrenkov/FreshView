@@ -16,7 +16,7 @@ let widgets = [];
 document.addEventListener("DOMContentLoaded", () => {
     widgets = [
         // Appearance
-        new DarkModeWidget2(),
+        new DarkModeWidget(),
 
         // Filters (Types)
         new Checkbox(
