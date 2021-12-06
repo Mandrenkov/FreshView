@@ -7,26 +7,67 @@ function onStorageChangedListener(changes, _) {
     changed.forEach(widget => widget.load());
 }
 
-const widgets = [
-    // Appearance
-    new DarkModeWidget2(),
-    // Filters (Types)
-    new HideRecommendationsWidget(),
-    new HidePlaylistsWidget(),
-    new HideSearchesWidget(),
-    new HideChannelsWidget(),
-    // Filters (Pages)
-    new HideHomeWidget(),
-    new HideExploreWidget(),
-    new HideSubscriptionsWidget(),
-    new HideLibraryWidget(),
-    new HideHistoryWidget()
-];
+// Array of widgets appearing in the options UI. Since widgets can only be
+// instantiated after the DOM is loaded, the array is initially empty.
+let widgets = [];
 
 // Initialize the UI widgets and register an event listener to update them when
 // a relevant change in the browser storage is detected.
 document.addEventListener("DOMContentLoaded", () => {
-    widgets.forEach(widget => widget.init());
+    widgets = [
+        // Appearance
+        new DarkModeWidget2(),
+
+        // Filters (Types)
+        new Checkbox(
+            "hide-recommendations-checkbox",
+            "hide-recommendations-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-playlists-checkbox",
+            "hide-playlists-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-searches-checkbox",
+            "hide-searches-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-channels-checkbox",
+            "hide-channels-checkbox-state",
+            true,
+        ),
+
+        // Filters (Pages)
+        new Checkbox(
+            "hide-home-checkbox",
+            "hide-home-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-explore-checkbox",
+            "hide-explore-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-subscriptions-checkbox",
+            "hide-subscriptions-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-library-checkbox",
+            "hide-library-checkbox-state",
+            true,
+        ),
+        new Checkbox(
+            "hide-history-checkbox",
+            "hide-history-checkbox-state",
+            false,
+        ),
+    ];
+
     chrome.storage.onChanged.addListener(onStorageChangedListener);
 });
 

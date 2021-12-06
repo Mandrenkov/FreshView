@@ -102,7 +102,7 @@ label.toggle::before {
     height: 18px;
     position: absolute;
     top: 1px;
-    transition-duration: var(--transition-duration-toggle);
+    transition-duration: var(--transition-duration-colour);
     width: 18px;
 }
 
@@ -119,6 +119,7 @@ label.toggle {
     cursor: pointer;
     display: inline-block;
     height: 12px;
+    transition-duration: var(--transition-duration-colour);
     width: 32px;
 }
 

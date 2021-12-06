@@ -174,27 +174,14 @@ OptionsWidget.span = undefined;
  */
 class Widget {
     /**
-     * Constructs a new widget.
+     * Constructs a new widget by obtaining a reference to the HTML element
+     * associated with the widget.
      *
      * @param {string} element_id - The ID of the HTML element associated with
      *     the widget.
      */
     constructor(element_id) {
-        this.element_id = element_id;
-        this.element = undefined;
-    }
-
-    /**
-     * Initializes a widget by obtaining a reference to its HTML element and
-     * registering an event listener that calls Widget.save() on the "change"
-     * event.
-     *
-     * Note: This function may only be called after the DOM is loaded.
-     */
-    init() {
-        this.element = document.getElementById(this.element_id);
-        this.load();
-        this.element.addEventListener("change", () => this.save());
+        this.element = document.getElementById(element_id);
     }
 
     /**
@@ -218,7 +205,9 @@ class Widget {
 class Checkbox extends Widget {
 
     /**
-     * Constructs a new checkbox widget.
+     * Constructs a new checkbox widget by calling the Widget constructor and
+     * registering an event listener that calls Checkbox.save() on the "change"
+     * event.
      *
      * @param {string} element_id - ID of the HTML element associated with the
      *     checkbox.
@@ -231,14 +220,19 @@ class Checkbox extends Widget {
         super(element_id);
         this.storage_key = storage_key;
         this.default_state = default_state;
+
+        this.load();
+        this.element.addEventListener("change", () => this.save());
     }
 
     load() {
-        Storage.get({[this.storage_key]: this.default_state}, (values) => this.update(values));
+        const items = {[this.storage_key]: this.default_state};
+        Storage.get(items, values => this.update(values));
     }
 
     save() {
-        Storage.set({[this.storage_key]: this.element.checked});
+        const items = {[this.storage_key]: this.element.checked};
+        Storage.set(items);
     }
 
     /**
@@ -252,7 +246,7 @@ class Checkbox extends Widget {
 }
 
 /**
- * Represents the "Dark Mode" widget.
+ * Represents a "Dark Mode" widget.
  */
 class DarkModeWidget2 extends Checkbox {
     constructor() {
@@ -267,122 +261,5 @@ class DarkModeWidget2 extends Checkbox {
         super.update(values);
         const theme = this.element.checked ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", theme);
-    }
-}
-
-/**
- * Represents the "Hide Recommendations" widget.
- */
-class HideRecommendationsWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-recommendations-checkbox",
-            "hide-recommendations-checkbox-state",
-            true,
-        );
-    }
-}
-
-/**
- * Represents the "Hide Playlists" widget.
- */
-class HidePlaylistsWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-playlists-checkbox",
-            "hide-playlists-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Searches" widget.
- */
-class HideSearchesWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-searches-checkbox",
-            "hide-searches-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Channels" widget.
- */
-class HideChannelsWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-channels-checkbox",
-            "hide-channels-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Home" widget.
- */
-class HideHomeWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-home-checkbox",
-            "hide-home-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Explore" widget.
- */
-class HideExploreWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-explore-checkbox",
-            "hide-explore-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Subscriptions" widget.
- */
-class HideSubscriptionsWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-subscriptions-checkbox",
-            "hide-subscriptions-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide Library" widget.
- */
-class HideLibraryWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-library-checkbox",
-            "hide-library-checkbox-state",
-            true,
-        )
-    }
-}
-
-/**
- * Represents the "Hide History" widget.
- */
-class HideHistoryWidget extends Checkbox {
-    constructor() {
-        super(
-            "hide-history-checkbox",
-            "hide-history-checkbox-state",
-            false,
-        )
     }
 }
