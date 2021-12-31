@@ -28,6 +28,7 @@
             "matches": ["*://*.youtube.com/*"],
             "js": [
                 "js/album.js",
+                "js/constants.js",
                 "js/logger.js",
                 "js/manager.js",
                 "js/path.js",
