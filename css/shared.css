@@ -37,7 +37,7 @@
     --thumb-size: 12px;
     --track-colour-toggle: #E7E7E7;
     --track-colour-slider: #CCCCCC;
-    --transition-delay-tooltip: 0.5s;
+    --transition-delay-tooltip: 1s;
     --transition-duration-colour: 0s;
     --transition-duration-slider: 0s;
     --transition-duration-toggle: 0s;
@@ -67,7 +67,7 @@
     --thumb-size: 12px;
     --track-colour-toggle: #3C3C3C;
     --track-colour-slider: #2F2F2F;
-    --transition-delay-tooltip: 0.5s;
+    --transition-delay-tooltip: 1s;
     --transition-duration-colour: 0s;
     --transition-duration-slider: 0s;
     --transition-duration-toggle: 0s;
@@ -102,7 +102,7 @@ label.toggle::before {
     height: 18px;
     position: absolute;
     top: 1px;
-    transition-duration: var(--transition-duration-colour);
+    transition-duration: var(--transition-duration-toggle);
     width: 18px;
 }
 
