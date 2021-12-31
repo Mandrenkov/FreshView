@@ -7,7 +7,9 @@ class Manager {
     constructor() {
         this.album = new Album();
 
-        // Determines whether this Manager is ready to poll the DOM.
+        // Determines whether this Manager is ready to poll the DOM; this flag
+        // is used to combine several Manager update requests that happen in
+        // rapid temporal succession.
         this.ready = true;
 
         this.restore();
@@ -17,7 +19,7 @@ class Manager {
     // Restores the Manager state to reflect the stored "Hide Videos" and "View Threshold" values.
     restore() {
         const callback = (values) => {
-            const page = Path.parseURL(window.location.toString());
+            const page = Path.parse(window.location.toString());
             this.hide_videos_checkbox_state = values["hide-videos-checkbox-state"];
             this.hide_videos_bookmark_state = values["hide-videos-bookmarks"][page];
             this.hidden = this.hide_videos_bookmark_state !== undefined ? this.hide_videos_bookmark_state : this.hide_videos_checkbox_state;
@@ -52,7 +54,7 @@ class Manager {
     request() {
         if (this.ready) {
             this.ready = false;
-            setTimeout(() => this.poll(), Manager.BATCH_TIME);
+            setTimeout(() => this.poll(), POLL_BATCH_TIME_MILLISECONDS);
         }
     }
 
@@ -150,17 +152,5 @@ class Manager {
 
 // -----------------------------------------------------------------------------
 
-// Default "Hide Videos", "View Threshold", and "Dark Mode" state values.
-Manager.DEFAULT_DARK_MODE_CHECKBOX_STATE = false;
-Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE = true;
-Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE = 90;
-Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE = false;
-Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS = {"/feed/history": false};
-
-// Default CSS transition duration.
-Manager.DEFAULT_COLOUR_TRANSITION_DURATION = "0.2s";
-Manager.DEFAULT_SLIDER_TRANSITION_DURATION = "0.4s";
-Manager.DEFAULT_TOGGLE_TRANSITION_DURATION = "0.4s";
-
 // Time interval to batch poll requests.
-Manager.BATCH_TIME = 200;
+// Manager.BATCH_TIME = 200;
