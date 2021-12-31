@@ -1,150 +1,50 @@
-// This script implements the logical states of the "Hide Videos" and
-// "View Threshold" UI widgets, along with the widgets in the options UI.
+// This file contains the control logic for stateful UI widgets.
 // -----------------------------------------------------------------------------
-
-class HideVideosWidget {
-    // Initializes the "Hide Videos" widget.
-    static init() {
-        this.checkbox = document.getElementById("hide-videos-checkbox");
-        this.bookmark = document.getElementById("hide-videos-bookmark");
-        this.checkbox.addEventListener("change", () => this.publish_checkbox());
-        this.bookmark.addEventListener("change", () => this.publish_bookmark());
-        this.restore();
-    }
-
-    // Restores the state of the "Hide Videos" widget to reflect the stored "Hide Videos" values.
-    static restore() {
-        const callback = (tabs) => {
-            this.page = Path.parseURL(tabs[0].url)
-            Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                         "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, (values) => this.update(values));
-        }
-        chrome.tabs.query({active: true, lastFocusedWindow: true}, callback);
-    }
-
-    // Updates the state of the "Hide Videos" widget.
-    static update(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
-        this.bookmark.checked = bookmarks[this.page] !== undefined;
-        this.checkbox.checked = this.bookmark.checked ? bookmarks[this.page] : values["hide-videos-checkbox-state"];
-        this.checkbox.disabled = this.bookmark.checked;
-    }
-
-    // Publishes the state of the "Hide Videos" widget on a "Hide Videos" checkbox change.
-    static publish_checkbox() {
-        if (!this.bookmark.checked) {
-            Storage.set({"hide-videos-checkbox-state": this.checkbox.checked});
-        }
-    }
-
-    // Publishes the state of the "Hide Videos" widget on a "Hide Videos" bookmark change.
-    static publish_bookmark() {
-        if (this.bookmark.checked) {
-            // Create a new entry in the bookmark object for the current URL.
-            const callback = (values) => {
-                const bookmarks = values["hide-videos-bookmarks"];
-                bookmarks[this.page] = this.checkbox.checked;
-                Storage.set({"hide-videos-bookmarks": bookmarks});
-            };
-            Storage.get({"hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
-        } else {
-            // Delete the entry in the bookmark object for the current URL.
-            const callback = (values) => {
-                this.checkbox.checked = values["hide-videos-checkbox-state"];
-                const bookmarks = values["hide-videos-bookmarks"];
-                delete bookmarks[this.page];
-                Storage.set({"hide-videos-bookmarks": bookmarks});
-            };
-            Storage.get({"hide-videos-checkbox-state": Manager.DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-                          "hide-videos-bookmarks": Manager.DEFAULT_HIDE_VIDEOS_BOOKMARKS}, callback);
-        }
-        this.checkbox.disabled = this.bookmark.checked;
-    }
-}
-
-// DOM elements corresponding to the checkbox and bookmark of the "Hide Videos" widget.
-HideVideosWidget.checkbox = undefined;
-HideVideosWidget.bookmark = undefined;
-// URL of the active tab.
-HideVideosWidget.page = undefined;
-
-// -----------------------------------------------------------------------------
-
-class ViewThresholdWidget {
-    // Initializes the "View Threshold" widget.
-    static init() {
-        this.checkbox = document.getElementById("view-threshold-checkbox");
-        this.slider = document.getElementById("view-threshold-slider");
-        this.percent = document.getElementById("view-threshold-percent");
-        this.slider.addEventListener("input", () => this.publish());
-        this.checkbox.addEventListener("change", () => this.publish());
-        this.restore();
-    }
-
-    // Restores the state of the "View Threshold" widget to reflect the stored "View Threshold" values.
-    static restore() {
-        Storage.get({"view-threshold-checkbox-state": Manager.DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
-                     "view-threshold-slider-value": Manager.DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}, (values) => this.update(values));
-    }
-
-    // Updates the state of the "View Threshold" widget.
-    static update(values) {
-        this.checkbox.checked = values["view-threshold-checkbox-state"];
-        this.slider.value = values["view-threshold-slider-value"];
-        this.render();
-    }
-
-    // Publishes the state of the "View Threshold" widget.
-    static publish() {
-        Storage.set({"view-threshold-checkbox-state": this.checkbox.checked,
-                     "view-threshold-slider-value": this.slider.value}, () => this.render());
-    }
-
-    // Renders the state of the "View Threshold" widget.
-    static render() {
-        const track_width = this.slider.clientWidth;
-        const thumb_width = parseInt(window.getComputedStyle(document.documentElement).getPropertyValue("--thumb-size"));
-        const distance = Math.ceil((1 - (this.slider.value - 1) / 99) * (track_width - thumb_width));
-        document.documentElement.style.setProperty("--thumb-translation", `${distance}px`);
-        this.slider.disabled = !this.checkbox.checked;
-        this.percent.textContent = this.checkbox.checked ? this.slider.value + "%" : "100%";
-    }
-}
-
-// DOM elements corresponding to the checkbox, slider, and percent label of the "View Threshold" widget.
-ViewThresholdWidget.checkbox = undefined;
-ViewThresholdWidget.slider = undefined;
-ViewThresholdWidget.percent = undefined;
-
-// -----------------------------------------------------------------------------
-// TODO: Refactor the widgets above to remove dependencies on global state.
 
 /**
- * Stateful UI widget.
+ * A generic, stateful UI widget.
+ *
+ * Note: This class is not meant to be instantiated directly; subclasses must
+ *       override the load() and save() functions.
  */
 class Widget {
     /**
-     * Constructs a new widget by obtaining a reference to an HTML element.
+     * Constructs a new widget by obtaining a reference to an HTML element and
+     * registering an event listener that calls Widget.load() whenever a change
+     * to one or more keys is made in browser storage.
      *
-     * @param {string} element_id - The ID of the HTML element associated with
-     *     the widget.
+     * @param {string} element_id - ID of the HTML element associated with the
+     *     widget.
+     * @param {string[]} storage_keys - Keys in browser storage associated with
+     *     the state of the widget.
+     * @param {*} default_state - Default state of the widget (typically used
+     *     when browser storage is missing an entry for the storage keys).
      */
-    constructor(element_id) {
+    constructor(element_id, storage_keys, default_state) {
         this.element = document.getElementById(element_id);
+        this.storage_keys = storage_keys;
+        this.default_state = default_state;
+
+        const listener = (changes, _) => {
+            if (this.storage_keys.some(key => changes.hasOwnProperty(key))) {
+                this.load();
+            }
+        }
+        chrome.storage.onChanged.addListener(listener);
     }
 
     /**
      * Loads the state of a widget from browser storage.
      */
     load() {
-        throw new Error("Method Widget.load() must be overriden.");
+        throw new Error("Method Widget.load() must be overridden.");
     }
 
     /**
      * Saves the state of a widget to browser storage.
      */
     save() {
-        throw new Error("Method Widget.save() must be overriden.");
+        throw new Error("Method Widget.save() must be overridden.");
     }
 }
 
@@ -152,63 +52,394 @@ class Widget {
  * Widget based on an HTML checkbox.
  */
 class Checkbox extends Widget {
-
     /**
      * Constructs a new checkbox widget by calling the Widget constructor and
      * registering an event listener that calls Checkbox.save() on the "change"
      * event.
      *
-     * @param {string} element_id - ID of the HTML element associated with the
-     *     checkbox.
-     * @param {string} storage_key - Key in browser storage associated with the
-     *     state of the checkbox.
-     * @param {*} default_state - Default state of the checkbox (used when
-     *     browser storage is missing an entry for the storage key).
+     * @param {string} element_id - See Widget.constructor().
+     * @param {string} storage_key - See Widget.constructor().
+     * @param {*} default_state - See Widget.constructor().
      */
     constructor(element_id, storage_key, default_state) {
-        super(element_id);
+        super(element_id, [storage_key], default_state);
         this.storage_key = storage_key;
-        this.default_state = default_state;
 
         this.load();
         this.element.addEventListener("change", () => this.save());
     }
 
+    /**
+     * See Widget.load().
+     */
     load() {
         const items = {[this.storage_key]: this.default_state};
-        Storage.get(items, values => this.update(values));
+        Storage.get(items, values => this.on_load(values));
     }
 
+    /**
+     * Called from Checkbox.load() to update the checkbox UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        this.element.checked = values[this.storage_key];
+    }
+
+    /**
+     * See Widget.save().
+     */
     save() {
         const items = {[this.storage_key]: this.element.checked};
         Storage.set(items);
     }
-
-    /**
-     * Updates the UI using the given checkbox state from browser storage.
-     *
-     * @param {Object} values - Values from browser storage.
-     */
-    update(values) {
-        this.element.checked = values[this.storage_key];
-    }
 }
 
 /**
- * Widget for the "Dark Mode" toggle.
+ * Widget for the Dark Mode checkbox.
  */
-class DarkModeWidget extends Checkbox {
+class DarkModeCheckbox extends Checkbox {
+    /**
+     * Constructs a new Dark Mode checkbox by calling the Checkbox constructor.
+     */
     constructor() {
         super(
             "dark-mode-checkbox",
             "dark-mode-checkbox-state",
-            false
+            DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE
         );
     }
 
-    update(values) {
-        super.update(values);
+    /**
+     * See Checkbox.on_load().
+     */
+    on_load(values) {
+        super.on_load(values);
         const theme = this.element.checked ? "dark" : "light";
         document.documentElement.setAttribute("data-theme", theme);
+    }
+}
+
+// Hide Videos
+// -----------------------------------------------------------------------------
+
+/**
+ * Widget for the Hide Videos checkbox.
+ */
+class HideVideosCheckbox extends Widget {
+    /**
+     * Constructs a new Hide Videos checkbox by calling the Widget constructor
+     * and registering an event listener that calls HideVideosCheckbox.save() on
+     * the "change" event.
+     */
+    constructor() {
+        super(
+            "hide-videos-checkbox",
+            ["hide-videos-checkbox-state", "hide-videos-bookmarks"],
+            DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE
+        );
+
+        this.load();
+        this.element.addEventListener("change", () => this.save());
+    }
+
+    /**
+     * See Widget.load().
+     */
+    load() {
+        const items = {
+            "hide-videos-checkbox-state": DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+            "hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS,
+        };
+        Storage.get(items, values => this.on_load(values));
+    }
+
+    /**
+     * Called from HideVideosCheckbox.load() to update the Hide Videos checkbox UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        const bookmarks = values["hide-videos-bookmarks"];
+        const universal = values["hide-videos-checkbox-state"];
+
+        const callback = (page) => {
+            if (bookmarks.hasOwnProperty(page)) {
+                this.element.checked = bookmarks[page];
+                this.element.disabled = true;
+            } else {
+                this.element.checked = universal;
+                this.element.disabled = false;
+            }
+        }
+
+        Path.get(callback);
+    }
+
+    /**
+     * See Widget.save().
+     */
+    save() {
+        const items = {"hide-videos-checkbox-state": this.element.checked};
+        Storage.set(items);
+    }
+}
+
+/**
+ * Widget for the Bookmark checkbox.
+ */
+class HideVideosBookmark extends Widget {
+    /**
+     * Constructs a new Hide Videos bookmark widget by calling the Widget
+     * constructor and registering an event listener that calls
+     * HideVideosBookmark.save() on the "change" event.
+     */
+    constructor() {
+        super(
+            "hide-videos-bookmark",
+            ["hide-videos-checkbox-state", "hide-videos-bookmarks"],
+            DEFAULT_HIDE_VIDEOS_BOOKMARK_STATE
+        );
+
+        this.load();
+        this.element.addEventListener("change", () => this.save());
+    }
+
+    /**
+     * See Widget.load().
+     */
+    load() {
+        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        Storage.get(items, values => this.on_load(values));
+    }
+
+    /**
+     * Called from Bookmark.load() to update the Bookmark checkbox UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        const bookmarks = values["hide-videos-bookmarks"];
+
+        const callback = (page) => {
+            this.element.checked = bookmarks.hasOwnProperty(page);
+        }
+
+        Path.get(callback);
+    }
+
+    /**
+     * See Widget.save().
+     */
+    save() {
+        const items = {
+            "hide-videos-checkbox-state": DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
+            "hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS,
+        };
+        Storage.get(items, values => this.on_save(values));
+    }
+
+    /**
+     * Called from BookmarkCheckbox.save() to update browser storage.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_save(values) {
+        const bookmarks = values["hide-videos-bookmarks"];
+        const universal = values["hide-videos-checkbox-state"];
+
+        const callback = (page) => {
+            if (this.element.checked) {
+                bookmarks[page] = universal;
+            } else {
+                delete bookmarks[page];
+            }
+
+            Storage.set({"hide-videos-bookmarks": bookmarks});
+        }
+
+        Path.get(callback);
+    }
+}
+
+// View Threshold
+// -----------------------------------------------------------------------------
+
+/**
+ * Widget for the View Threshold checkbox.
+ */
+ class ViewThresholdCheckbox extends Checkbox {
+    /**
+     * Constructs a new View Threshold checkbox by calling the Checkbox constructor.
+     */
+    constructor() {
+        super(
+            "view-threshold-checkbox",
+            "view-threshold-checkbox-state",
+            DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+        );
+    }
+}
+
+/**
+ * Widget for the View Threshold slider.
+ */
+class ViewThresholdSlider extends Widget {
+    /**
+     * Constructs a new View Threshold slider by calling the Widget constructor
+     * and registering an event listener that calls ViewThresholdSlider.save()
+     * on the "input" event.
+     */
+    constructor() {
+        super(
+            "view-threshold-slider",
+            ["view-threshold-checkbox-state", "view-threshold-slider-value"],
+            DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE
+        );
+
+        this.load();
+        this.element.addEventListener("input", () => this.save());
+    }
+
+    /**
+     * See Widget.load().
+     */
+    load() {
+        const items = {
+            "view-threshold-checkbox-state": DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+            "view-threshold-slider-value": DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE,
+        };
+        Storage.get(items, values => this.on_load(values));
+    }
+
+    /**
+     * Called from ViewThresholdSlider.load() to update the View Threshold slider UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        this.element.value = values["view-threshold-slider-value"];
+
+        const track_width = this.element.clientWidth;
+        const thumb_width = parseInt(window.getComputedStyle(document.documentElement).getPropertyValue("--thumb-size"));
+        const distance = Math.ceil((1 - (this.element.value - 1) / 99) * (track_width - thumb_width));
+        document.documentElement.style.setProperty("--thumb-translation", `${distance}px`);
+
+        this.element.disabled = values["view-threshold-checkbox-state"] === false;
+    }
+
+    /**
+     * See Widget.save().
+     */
+    save() {
+        const items = {"view-threshold-slider-value": this.element.value};
+        Storage.set(items);
+    }
+}
+
+/**
+ * Widget for the View Threshold label.
+ */
+ class ViewThresholdLabel extends Widget {
+    /**
+     * Constructs a new View Threshold label by calling the Widget constructor.
+     */
+    constructor() {
+        super(
+            "view-threshold-percent",
+            ["view-threshold-checkbox-state", "view-threshold-slider-value"],
+            `${DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}%`
+        );
+
+        this.load();
+    }
+
+    /**
+     * See Widget.load().
+     */
+    load() {
+        const items = {
+            "view-threshold-checkbox-state": DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+            "view-threshold-slider-value": DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE,
+        };
+        Storage.get(items, values => this.on_load(values));
+    }
+
+    /**
+     * Called from ViewThresholdLabel.load() to update the View Threshold slider UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        const enabled = values["view-threshold-checkbox-state"] === true;
+        const percent = values["view-threshold-slider-value"];
+
+        if (enabled) {
+            this.element.textContent = `${percent}%`;
+        } else {
+            this.element.textContent = "100%";
+        }
+    }
+}
+
+// Filters
+// -----------------------------------------------------------------------------
+
+/**
+ * Widget for checkboxs that hide videos on a specific YouTube page.
+ */
+class HidePageCheckbox extends Checkbox {
+    /**
+     * Constructs a new Hide Page checkbox by calling the Checkbox constructor.
+     *
+     * @param {string} element_id - See Checkbox.constructor().
+     * @param {string} youtube_page - Path to the YouTube page associated with
+     *      the checkbox.
+     * @param {*} default_state - See Checkbox.constructor().
+     */
+    constructor(element_id, youtube_page, default_state) {
+        super(element_id, ["hide-videos-bookmarks"], default_state);
+        this.youtube_page = youtube_page;
+    }
+
+    /**
+     * See Checkbox.load().
+     */
+    load() {
+        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        Storage.get(items, values => this.on_load(values));
+    }
+
+    /**
+     * Called from HidePageCheckbox.load() to update the checkbox UI.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_load(values) {
+        const bookmarks = values["hide-videos-bookmarks"];
+        if (bookmarks.hasOwnProperty(this.youtube_page)) {
+            this.element.checked = bookmarks[this.youtube_page];
+        } else {
+            this.element.checked = this.default_state;
+        }
+    }
+
+    /**
+     * See Checkbox.save().
+     */
+    save() {
+        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        Storage.get(items, values => this.on_save(values));
+    }
+
+    /**
+     * Called from HidePageCheckbox.save() to update browser storage.
+     *
+     * @param {Object} values - Values from browser storage.
+     */
+    on_save(values) {
+        const bookmarks = values["hide-videos-bookmarks"];
+        bookmarks[this.youtube_page] = this.element.checked;
+        Storage.set({"hide-videos-bookmarks": bookmarks});
     }
 }
