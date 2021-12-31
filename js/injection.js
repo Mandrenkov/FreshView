@@ -15,7 +15,7 @@ function main() {
 
 // Listens to browser storage change events.
 function onMessageListener(request, _sender, _sendResponse) {
-    // listen for "restore" messages sent from background.js
+    // Listen for "restore" messages sent from background.js.
     if (request.message === "restore") {
         Logger.info("onMessageListener(): received \"restore\" message.");
         manager.restore();
@@ -27,8 +27,8 @@ function onMessageListener(request, _sender, _sendResponse) {
 // Listens to browser storage change events.
 function onStorageChangedListener(changes, namespace) {
     Logger.info("onStorageChangedListener(): processing event in namespace \"" + namespace + "\":", changes, ".");
-    if (!(namespace == "sync" || namespace == "local")) {
-        Logger.warning("onStorageChangedListener(): unexpected namespace \"%s\".", namespace);
+    if (namespace != "sync" && namespace != "local") {
+        Logger.warning(`onStorageChangedListener(): unexpected namespace "${namespace}".`);
     } else {
         const handled = darkModeCheckboxListener(changes) |
                         hideVideosCheckboxListener(changes) | hideVideosBookmarkListener(changes) |
@@ -58,7 +58,7 @@ function hideVideosCheckboxListener(changes) {
 // Listens for events related to the "Hide Videos" bookmark.
 function hideVideosBookmarkListener(changes) {
     return listenerWrapper("hide-videos-bookmarks", changes, (bookmarks) => {
-        const page = Path.parseURL(window.location.toString());
+        const page = Path.parse(window.location.toString());
         manager.hide_videos_bookmark_state = bookmarks[page];
         manager.hidden = manager.hide_videos_bookmark_state !== undefined ? manager.hide_videos_bookmark_state : manager.hide_videos_checkbox_state;
         manager.refresh();

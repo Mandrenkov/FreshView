@@ -16,7 +16,7 @@ let widgets = [];
 document.addEventListener("DOMContentLoaded", () => {
     widgets = [
         // Appearance
-        new DarkModeWidget(),
+        new DarkModeCheckbox(),
 
         // Filters (Types)
         new Checkbox(
@@ -41,30 +41,30 @@ document.addEventListener("DOMContentLoaded", () => {
         ),
 
         // Filters (Pages)
-        new Checkbox(
+        new HidePageCheckbox(
             "hide-home-checkbox",
-            "hide-home-checkbox-state",
-            true,
+            "/",
+            DEFAULT_HIDE_HOME_CHECKBOX_STATE
         ),
-        new Checkbox(
+        new HidePageCheckbox(
             "hide-explore-checkbox",
-            "hide-explore-checkbox-state",
-            true,
+            "/feed/explore",
+            DEFAULT_HIDE_EXPLORE_CHECKBOX_STATE
         ),
-        new Checkbox(
+        new HidePageCheckbox(
             "hide-subscriptions-checkbox",
-            "hide-subscriptions-checkbox-state",
-            true,
+            "/feed/subscriptions",
+            DEFAULT_HIDE_SUBSCRIPTIONS_CHECKBOX_STATE
         ),
-        new Checkbox(
+        new HidePageCheckbox(
             "hide-library-checkbox",
-            "hide-library-checkbox-state",
-            true,
+            "/feed/library",
+            DEFAULT_HIDE_LIBRARY_CHECKBOX_STATE
         ),
-        new Checkbox(
+        new HidePageCheckbox(
             "hide-history-checkbox",
-            "hide-history-checkbox-state",
-            false,
+            "/feed/history",
+            DEFAULT_HIDE_HISTORY_CHECKBOX_STATE
         ),
     ];
 
