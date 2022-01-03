@@ -8,7 +8,7 @@
 
     "background": {
         "scripts": [
-            "js/manager.js",
+            "js/constants.js",
             "js/storage.js",
             "js/background.js"
         ],
