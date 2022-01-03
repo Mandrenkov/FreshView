@@ -17,13 +17,13 @@ class Widget {
      *     widget.
      * @param {string[]} storage_keys - Keys in browser storage associated with
      *     the state of the widget.
-     * @param {*} default_state - Default state of the widget (typically used
-     *     when browser storage is missing an entry for the storage keys).
+     * @param {*} fallback - Default state of the widget (typically used when
+     *     browser storage is missing an entry for the storage keys).
      */
-    constructor(element_id, storage_keys, default_state) {
+    constructor(element_id, storage_keys, fallback) {
         this.element = document.getElementById(element_id);
         this.storage_keys = storage_keys;
-        this.default_state = default_state;
+        this.fallback = fallback;
 
         const listener = (changes, _) => {
             if (this.storage_keys.some(key => changes.hasOwnProperty(key))) {
@@ -59,10 +59,10 @@ class Checkbox extends Widget {
      *
      * @param {string} element_id - See Widget.constructor().
      * @param {string} storage_key - See Widget.constructor().
-     * @param {*} default_state - See Widget.constructor().
+     * @param {*} fallback - See Widget.constructor().
      */
-    constructor(element_id, storage_key, default_state) {
-        super(element_id, [storage_key], default_state);
+    constructor(element_id, storage_key, fallback) {
+        super(element_id, [storage_key], fallback);
         this.storage_key = storage_key;
 
         this.load();
@@ -73,7 +73,7 @@ class Checkbox extends Widget {
      * See Widget.load().
      */
     load() {
-        const items = {[this.storage_key]: this.default_state};
+        const items = {[this.storage_key]: this.fallback};
         Storage.get(items, values => this.onLoad(values));
     }
 
@@ -407,10 +407,10 @@ class HidePageCheckbox extends Checkbox {
      * @param {string} element_id - See Checkbox.constructor().
      * @param {string} youtube_page - Path to the YouTube page associated with
      *      the checkbox.
-     * @param {*} default_state - See Checkbox.constructor().
+     * @param {*} fallback - See Checkbox.constructor().
      */
-    constructor(element_id, youtube_page, default_state) {
-        super(element_id, ["hide-videos-bookmarks"], default_state);
+    constructor(element_id, youtube_page, fallback) {
+        super(element_id, ["hide-videos-bookmarks"], fallback);
         this.youtube_page = youtube_page;
     }
 
@@ -432,7 +432,7 @@ class HidePageCheckbox extends Checkbox {
         if (bookmarks.hasOwnProperty(this.youtube_page)) {
             this.element.checked = bookmarks[this.youtube_page];
         } else {
-            this.element.checked = this.default_state;
+            this.element.checked = this.fallback;
         }
     }
 
