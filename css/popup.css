@@ -1,6 +1,7 @@
 @import "shared.css";
 
 /* Section 1: Global Styles --------------------------------------------------*/
+
 body {
     margin: 0;
     min-width: 360px;
@@ -14,6 +15,7 @@ body * {
 }
 
 /* Section 2: Header Styles --------------------------------------------------*/
+
 #header {
     background-color: var(--background-colour-secondary);
     height: 60px;
@@ -40,6 +42,7 @@ body * {
 }
 
 /* Section 2.1: Action Styles ------------------------------------------------*/
+
 #actions {
     align-content: left;
     display: flex;
@@ -82,6 +85,7 @@ div.action .material-icons:hover, .control-bookmark .material-icons:hover {
 }
 
 /* Section 3: Control Styles -------------------------------------------------*/
+
 #controls {
     background-color: var(--background-colour-primary);
     display: flex;
