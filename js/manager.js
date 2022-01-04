@@ -73,7 +73,7 @@ class Manager {
     // Polls the DOM for new Videos and updates the Video collection if necessary.
     poll() {
         // Construct an Album from each of the viewed Videos in the DOM.
-        const videos = this.extractor.extract(document, this);
+        const videos = this.extractor.extract(document, this.threshold);
         const album = new Album();
         videos.forEach(video => album.add(video));
 

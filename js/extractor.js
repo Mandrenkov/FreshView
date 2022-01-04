@@ -16,18 +16,16 @@ class Extractor {
     /**
      * Extracts the viewed videos embedded inside an HTML element.
      *
-     * @todo Replace the manager argument with just a threshold.
-     *
      * @param {Element} element - HTML element to extract viewed videos from.
-     * @param {*} manager
+     * @param {number} threshold - Minimum view progress of a watched video.
      * @returns {Video[]} - List of viewed videos.
      */
-    extract(element, manager) {
+    extract(element, threshold) {
         const subextractors = Array.from(this.subextractors.values());
         const elements = [].concat(...subextractors.map(subextractor => subextractor(element)));
 
-        const videos = elements.map(element => new Video(element, manager));
-        const viewed = videos.filter(video => video.getViewed());
+        const videos = elements.map(element => new Video(element));
+        const viewed = videos.filter(video => video.getViewed(threshold));
 
         Logger.info("Extractor.extract(): %d/%d Videos on the page were viewed.", viewed.length, videos.length);
         return viewed;

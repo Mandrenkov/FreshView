@@ -3,10 +3,9 @@
 
 // Video represents a YouTube video.
 class Video {
-    // Constructs a new Video from the given HTML element and Manager.
-    constructor(element, manager) {
+    // Constructs a new Video from the given HTML element.
+    constructor(element) {
         this.element = element;
-        this.manager = manager;
         this.display = element.style.display;
         this.id = undefined;
         this.title = undefined;
@@ -19,12 +18,12 @@ class Video {
     deriveURL() {
         // List of selectors that could match hyperlink tags associated with this Video.
         const selectors = [
-            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer",           // Grid
-            ":scope a#video-title-link.yt-simple-endpoint.style-scope.ytd-rich-grid-media",          // Home
-            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer",                   // Playlist page
-            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-panel-video-renderer",             // Playlist panel
-            ":scope a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer",                    // Recommendations
-            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer",                // Search
+            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer",  // Grid
+            ":scope a#video-title-link.yt-simple-endpoint.style-scope.ytd-rich-grid-media", // Home
+            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer",          // Playlist page
+            ":scope a.yt-simple-endpoint.style-scope.ytd-playlist-panel-video-renderer",    // Playlist panel
+            ":scope a.yt-simple-endpoint.style-scope.ytd-compact-video-renderer",           // Recommendations
+            ":scope a#video-title.yt-simple-endpoint.style-scope.ytd-video-renderer",       // Search
         ].join(", ");
 
         // Find a hyperlink tag associated with this Video.
@@ -71,6 +70,11 @@ class Video {
         return this.id;
     }
 
+    // Returns the ID of this Video.
+    getID() {
+        return this.id || this.fetchID();
+    }
+
     // Fetches the title of this Video.
     fetchTitle() {
         // Find the title tag associated with this Video.
@@ -84,8 +88,13 @@ class Video {
         return this.title;
     }
 
-    // Fetches the view state of this Video.
-    fetchViewed() {
+    // Returns the title of this Video.
+    getTitle() {
+        return this.title || this.fetchTitle();
+    }
+
+    // Returns the view state of this Video.
+    getViewed(threshold) {
         // Find the progress bar tag associated with this Video.
         const bar = this.element.querySelector("div#progress.style-scope.ytd-thumbnail-overlay-resume-playback-renderer");
         if (bar === null) {
@@ -96,23 +105,8 @@ class Video {
         // Determine whether the Video's progress surpasses the progress threshold.
         const width = bar.style.width.slice(0, -1);
         const progress = parseInt(width, 10);
-        this.viewed = progress >= this.manager.threshold;
+        this.viewed = progress >= threshold;
         return this.viewed;
-    }
-
-    // Returns the ID of this Video.
-    getID() {
-        return this.id || this.fetchID();
-    }
-
-    // Returns the title of this Video.
-    getTitle() {
-        return this.title || this.fetchTitle();
-    }
-
-    // Returns the view state of this Video.
-    getViewed() {
-        return this.viewed || this.fetchViewed();
     }
 
     // -------------------------------------------------------------------------
