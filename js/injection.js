@@ -16,8 +16,8 @@ function main() {
 // Listens to browser storage change events.
 function onMessageListener(request, _sender, _sendResponse) {
     // Listen for "restore" messages sent from background.js.
-    if (request.message === "restore") {
-        Logger.info("onMessageListener(): received \"restore\" message.");
+    if (request.message === "url-change") {
+        Logger.info("onMessageListener(): received \"url-change\" message.");
         manager.restore();
     }
 };
