@@ -9,6 +9,7 @@ class Manager {
 
         const subextractors = [
             extractGridVideos,
+            extractHistoryVideos,
             extractHomeVideos,
             extractPlaylistVideos,
             extractRecommendedVideos,

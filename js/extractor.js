@@ -72,35 +72,32 @@ function extractGridVideos(element) {
 }
 
 /**
- * Returns all the search videos in the given HTML element.
+ * Returns all the history videos in the given HTML element.
  *
  * @param {Element} element - HTML element to extract videos from.
  *
- * @return {Element[]} - List of HTML search video elements.
+ * @return {Element[]} - List of HTML history video elements.
  */
-function extractSearchVideos(element) {
+function extractHistoryVideos(element) {
     return extract(
         element,
-        // Videos in a search result that are under a heading
-        "ytd-video-renderer.style-scope.ytd-vertical-list-renderer",
-        // Videos in a search result that are NOT under a heading
         // Videos on the History page
-        "ytd-video-renderer.style-scope.ytd-item-section-renderer"
+        "ytd-video-renderer.style-scope.ytd-item-section-renderer[is-history]"
     );
 }
 
 /**
- * Extracts all the recommended videos in the given HTML element.
+ * Extracts all the home videos in the given HTML element.
  * 
- * @param {Element} element - HTML element to extract recommended videos from.
+ * @param {Element} element - HTML element to extract home videos from.
  * 
- * @return {Element[]} - List of HTML recommended video elements.
+ * @return {Element[]} - List of HTML home video elements.
  */
-function extractRecommendedVideos(element) {
+function extractHomeVideos(element) {
     return extract(
         element,
-        // Videos in the recommendation sidebar
-        "ytd-compact-video-renderer.style-scope.ytd-item-section-renderer"
+        // Videos on the Home page
+        "ytd-rich-item-renderer.style-scope.ytd-rich-grid-row"
     );
 }
 
@@ -121,18 +118,36 @@ function extractPlaylistVideos(element) {
     );
 }
 
+
 /**
- * Extracts all the home videos in the given HTML element.
+ * Extracts all the recommended videos in the given HTML element.
  * 
- * @param {Element} element - HTML element to extract home videos from.
+ * @param {Element} element - HTML element to extract recommended videos from.
  * 
- * @return {Element[]} - List of HTML home video elements.
+ * @return {Element[]} - List of HTML recommended video elements.
  */
-function extractHomeVideos(element) {
+function extractRecommendedVideos(element) {
     return extract(
         element,
-        // Videos on the Home page
-        "ytd-rich-item-renderer.style-scope.ytd-rich-grid-row"
+        // Videos in the recommendation sidebar
+        "ytd-compact-video-renderer.style-scope.ytd-item-section-renderer"
+    );
+}
+
+/**
+ * Returns all the search videos in the given HTML element.
+ *
+ * @param {Element} element - HTML element to extract videos from.
+ *
+ * @return {Element[]} - List of HTML search video elements.
+ */
+function extractSearchVideos(element) {
+    return extract(
+        element,
+        // Videos in a search result that are under a heading
+        "ytd-video-renderer.style-scope.ytd-vertical-list-renderer",
+        // Videos in a search result that are NOT under a heading
+        "ytd-video-renderer.style-scope.ytd-item-section-renderer:not([is-history])"
     );
 }
 
