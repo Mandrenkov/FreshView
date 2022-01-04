@@ -54,8 +54,8 @@ class Album {
     }
 
     // Refreshes the visibility of all Videos in this Album.
-    refresh(visible) {
-        this.getVideos().forEach(video => visible ? video.show() : video.hide());
+    refresh(hidden) {
+        this.getVideos().forEach(video => hidden ? video.hide() : video.show());
     }
 
     // Returns the IDs of the Videos in this Album.
