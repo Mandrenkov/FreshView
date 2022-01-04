@@ -7,6 +7,17 @@ class Manager {
     constructor() {
         this.album = new Album();
 
+        const subextractors = [
+            extractGridVideos,
+            extractHomeVideos,
+            extractPlaylistVideos,
+            extractRecommendedVideos,
+            extractSearchVideos
+        ]
+
+        this.extractor = new Extractor();
+        subextractors.forEach(subextractor => this.extractor.insert(subextractor));
+
         // Determines whether this Manager is ready to poll the DOM; this flag
         // is used to combine several Manager update requests that happen in
         // rapid temporal succession.
@@ -61,8 +72,8 @@ class Manager {
     // Polls the DOM for new Videos and updates the Video collection if necessary.
     poll() {
         // Construct an Album from each of the viewed Videos in the DOM.
-        const videos = this.fetchVideos();
-        const album = new Album(videos);
+        const videos = this.extractor.extract(document, this);
+        const album = new Album();
         videos.forEach(video => album.add(video));
 
         // Incorporate the new Album and refresh the visibilities of the Videos.
@@ -73,84 +84,11 @@ class Manager {
         this.ready = true;
     }
 
-    // -------------------------------------------------------------------------
-
-    // Fetches all the viewed Videos in the current DOM.
-    fetchVideos() {
-        const elements = [].concat(
-            this.fetchSectionVideos(document),
-            this.fetchGridVideos(document),
-            this.fetchSearchVideos(document),
-            this.fetchSecondaryVideos(document),
-            this.fetchShelfVideos(document),
-            this.fetchPlaylistVideos(document),
-            this.fetchItemVideos(document)
-        );
-
-        // Construct a list of viewed Videos from the Video elements.
-        const videos = elements.map(element => new Video(element, this));
-        const viewed = videos.filter(video => video.getViewed());
-        Logger.info("Manager.fetchVideos(): %d/%d Videos on the page were viewed.", viewed.length, videos.length);
-        return viewed;
-    }
-
-    // Fetches all the section Videos in the given HTML element.
-    fetchSectionVideos(element) {
-        const elements = Array.from(element.querySelectorAll("ytd-item-section-renderer.style-scope.ytd-section-list-renderer"));
-        return elements.filter(element => this.fetchGridVideos(element).length      == 1
-                                       || this.fetchSearchVideos(element).length    == 1
-                                       || this.fetchSecondaryVideos(element).length == 1
-                                       || this.fetchShelfVideos(element).length     == 1
-                                       || this.fetchPlaylistVideos(element).length  == 1
-                                       || this.fetchItemVideos(element).length      == 1);
-    }
-
-    // Fetches all the grid Videos in the given HTML element.
-    fetchGridVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-grid-video-renderer.style-scope.yt-horizontal-list-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-grid-video-renderer.style-scope.ytd-grid-renderer")));
-    }
-
-    // Fetches all the search Videos in the given HTML element.
-    fetchSearchVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-item-section-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-vertical-list-renderer")));
-    }
-
-    // Fetches all the secondary Videos in the given HTML element.
-    fetchSecondaryVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-compact-video-renderer.style-scope.ytd-watch-next-secondary-results-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-compact-video-renderer.style-scope.ytd-item-section-renderer")));
-    }
-
-    // Fetches all the shelf Videos in the given HTML element.
-    fetchShelfVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-video-renderer.style-scope.ytd-expanded-shelf-contents-renderer"));
-    }
-
-    // Fetches all the playlist Videos in the given HTML element.
-    fetchPlaylistVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-playlist-video-renderer.style-scope.ytd-playlist-video-list-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer")));
-    }
-
-    // Fetches all the item Videos in the given HTML element.
-    fetchItemVideos(element) {
-        return Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-renderer")).concat(
-               Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-shelf-renderer")),
-               Array.from(element.querySelectorAll(":scope ytd-rich-item-renderer.style-scope.ytd-rich-grid-row")));
-    }
-
     // -----------------------------------------------------------------------------
 
     // Refreshes the Album associated with this Manager.
     refresh() {
         Logger.info("Manager.refresh():", this.hidden ? "hiding" : "showing", "Videos.");
-        this.album.refresh(!this.hidden);
+        this.album.refresh(this.hidden);
     }
 }
-
-// -----------------------------------------------------------------------------
-
-// Time interval to batch poll requests.
-// Manager.BATCH_TIME = 200;

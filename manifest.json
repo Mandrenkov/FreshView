@@ -29,6 +29,7 @@
             "js": [
                 "js/album.js",
                 "js/constants.js",
+                "js/extractor.js",
                 "js/logger.js",
                 "js/manager.js",
                 "js/path.js",
