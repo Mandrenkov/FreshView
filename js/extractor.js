@@ -113,7 +113,7 @@ function extractPlaylistVideos(element) {
         element,
         // Videos on a playlist page
         "ytd-playlist-video-renderer.style-scope.ytd-playlist-video-list-renderer",
-        // Videos in a playlist located next to a video
+        // Videos in a playlist panel
         "ytd-playlist-panel-video-renderer.style-scope.ytd-playlist-panel-renderer"
     );
 }
