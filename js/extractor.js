@@ -86,9 +86,9 @@ function extractHistoryVideos(element) {
 
 /**
  * Extracts all the home videos in the given HTML element.
- * 
+ *
  * @param {Element} element - HTML element to extract home videos from.
- * 
+ *
  * @return {Element[]} - List of HTML home video elements.
  */
 function extractHomeVideos(element) {
@@ -119,9 +119,9 @@ function extractPlaylistVideos(element) {
 
 /**
  * Extracts all the recommended videos in the given HTML element.
- * 
+ *
  * @param {Element} element - HTML element to extract recommended videos from.
- * 
+ *
  * @return {Element[]} - List of HTML recommended video elements.
  */
 function extractRecommendedVideos(element) {
@@ -153,10 +153,10 @@ function extractSearchVideos(element) {
  * Extracts all the videos in the given HTML element that match at least one of
  * the provided CSS selectors. Each of the CSS selectors will be prefixed with
  * ":scope " before being queried.
- * 
+ *
  * @param {Element} element - HTML element to extract.
  * @param {string[]} selectors - CSS selectors.
- * 
+ *
  * @return {Element[]} - List of HTML video elements.
  */
 function extract(element, ...selectors) {
