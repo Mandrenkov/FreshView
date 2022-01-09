@@ -22,7 +22,7 @@ class Path {
      * Invokes the given callback with the path and query components of the
      * current YouTube page.
      *
-     * @param {requestCallback} callback - Function to be called with the page.
+     * @param {*} callback - Function to be called with the page.
      */
     static get(callback) {
         const wrapper = (tabs) => {
