@@ -18,14 +18,14 @@
 
     if (command === "toggle-hide-videos-checkbox") {
         toggleStateInBrowserStorage(
-            "hide-videos-checkbox-state",
-            DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE
+            HIDE_VIDEOS_CHECKBOX_STORAGE_KEY,
+            HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE
         );
 
     } else if (command === "toggle-view-threshold-checkbox") {
         toggleStateInBrowserStorage(
-            "view-threshold-checkbox-state",
-            DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE
+            VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY,
+            VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE
         );
     }
 };
@@ -48,7 +48,7 @@ function onMessageListener(message, sender, _sendResponse) {
  */
 function onTabUpdatedListener(tabID, changes, _){
     if (changes.url) {
-        chrome.tabs.sendMessage(tabID, {"message": "url-change"});
+        chrome.tabs.sendMessage(tabID, {"message": URL_CHANGE_MESSAGE});
     }
 };
 

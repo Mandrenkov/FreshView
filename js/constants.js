@@ -47,6 +47,11 @@ const BATCH_TIME_MILLISECONDS = 50;
 
 // -----------------------------------------------------------------------------
 
+// Message indicating a URL change.
+const URL_CHANGE_MESSAGE = "url-change";
+
+// -----------------------------------------------------------------------------
+
 // Default Settings state
 const SETTINGS_DEFAULT_STATE = {
     [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY]: HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE,
