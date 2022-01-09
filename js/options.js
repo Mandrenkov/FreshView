@@ -21,22 +21,22 @@ document.addEventListener("DOMContentLoaded", () => {
         // Filters (Types)
         new Checkbox(
             "hide-recommendations-checkbox",
-            "hide-recommendations-checkbox-state",
+            HIDE_RECOMMENDATIONS_CHECKBOX_STORAGE_KEY,
             true,
         ),
         new Checkbox(
             "hide-playlists-checkbox",
-            "hide-playlists-checkbox-state",
+            HIDE_PLAYLISTS_CHECKBOX_STORAGE_KEY,
             true,
         ),
         new Checkbox(
             "hide-searches-checkbox",
-            "hide-searches-checkbox-state",
+            HIDE_SEARCHES_CHECKBOX_STORAGE_KEY,
             true,
         ),
         new Checkbox(
             "hide-channels-checkbox",
-            "hide-channels-checkbox-state",
+            HIDE_CHANNELS_CHECKBOX_STORAGE_KEY,
             true,
         ),
 
