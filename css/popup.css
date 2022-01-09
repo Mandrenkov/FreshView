@@ -67,11 +67,6 @@ div.action input {
     display: none;
 }
 
-/* TODO: Delete this style once the Dark Mode widget has been migrated. */
-div.action label {
-    display: none;
-}
-
 div.action .material-icons {
     color: var(--font-colour-icons);
     font-size: 1.80rem;
