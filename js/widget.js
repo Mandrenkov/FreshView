@@ -108,7 +108,7 @@ class DarkModeCheckbox extends Checkbox {
     constructor() {
         super(
             "dark-mode-checkbox",
-            "dark-mode-checkbox-state",
+            DARK_MODE_CHECKBOX_STORAGE_KEY,
             DEFAULT_DARK_MODE_CHECKBOX_STATE
         );
     }
@@ -118,7 +118,7 @@ class DarkModeCheckbox extends Checkbox {
      */
     onLoad(values) {
         super.onLoad(values);
-        setCSSTheme(values["dark-mode-checkbox-state"]);
+        setCSSTheme(values[DARK_MODE_CHECKBOX_STORAGE_KEY]);
     }
 }
 
@@ -147,8 +147,8 @@ class HideVideosCheckbox extends Widget {
     constructor() {
         super(
             "hide-videos-checkbox",
-            ["hide-videos-checkbox-state", "hide-videos-bookmarks"],
-            DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE
+            [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY, HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY],
+            HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE
         );
 
         this.load();
@@ -160,8 +160,8 @@ class HideVideosCheckbox extends Widget {
      */
     load() {
         const items = {
-            "hide-videos-checkbox-state": DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-            "hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS,
+            [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY]: HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE,
+            [HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onLoad(values));
     }
@@ -172,8 +172,8 @@ class HideVideosCheckbox extends Widget {
      * @param {Object} values - Values from browser storage.
      */
     onLoad(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
-        const universal = values["hide-videos-checkbox-state"];
+        const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
+        const universal = values[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
 
         const callback = (page) => {
             if (bookmarks.hasOwnProperty(page)) {
@@ -192,7 +192,7 @@ class HideVideosCheckbox extends Widget {
      * See Widget.save().
      */
     save() {
-        const items = {"hide-videos-checkbox-state": this.element.checked};
+        const items = {[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY]: this.element.checked};
         Storage.set(items);
     }
 }
@@ -209,8 +209,8 @@ class HideVideosBookmark extends Widget {
     constructor() {
         super(
             "hide-videos-bookmark",
-            ["hide-videos-checkbox-state", "hide-videos-bookmarks"],
-            DEFAULT_HIDE_VIDEOS_BOOKMARK_STATE
+            [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY, HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY],
+            HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE
         );
 
         this.load();
@@ -221,7 +221,7 @@ class HideVideosBookmark extends Widget {
      * See Widget.load().
      */
     load() {
-        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        const items = {[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE};
         Storage.get(items, values => this.onLoad(values));
     }
 
@@ -231,7 +231,7 @@ class HideVideosBookmark extends Widget {
      * @param {Object} values - Values from browser storage.
      */
     onLoad(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
+        const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
 
         const callback = (page) => {
             this.element.checked = bookmarks.hasOwnProperty(page);
@@ -245,8 +245,8 @@ class HideVideosBookmark extends Widget {
      */
     save() {
         const items = {
-            "hide-videos-checkbox-state": DEFAULT_HIDE_VIDEOS_CHECKBOX_STATE,
-            "hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS,
+            [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY]: HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE,
+            [HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onSave(values));
     }
@@ -257,8 +257,8 @@ class HideVideosBookmark extends Widget {
      * @param {Object} values - Values from browser storage.
      */
     onSave(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
-        const universal = values["hide-videos-checkbox-state"];
+        const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
+        const universal = values[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
 
         const callback = (page) => {
             if (this.element.checked) {
@@ -267,7 +267,7 @@ class HideVideosBookmark extends Widget {
                 delete bookmarks[page];
             }
 
-            Storage.set({"hide-videos-bookmarks": bookmarks});
+            Storage.set({[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: bookmarks});
         }
 
         Path.get(callback);
@@ -287,8 +287,8 @@ class HideVideosBookmark extends Widget {
     constructor() {
         super(
             "view-threshold-checkbox",
-            "view-threshold-checkbox-state",
-            DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
+            VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY,
+            VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE,
         );
     }
 }
@@ -305,8 +305,8 @@ class ViewThresholdSlider extends Widget {
     constructor() {
         super(
             "view-threshold-slider",
-            ["view-threshold-checkbox-state", "view-threshold-slider-value"],
-            DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE
+            [VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY, VIEW_THRESHOLD_SLIDER_STORAGE_KEY],
+            VIEW_THRESHOLD_SLIDER_DEFAULT_STATE
         );
 
         this.load();
@@ -318,8 +318,8 @@ class ViewThresholdSlider extends Widget {
      */
     load() {
         const items = {
-            "view-threshold-checkbox-state": DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
-            "view-threshold-slider-value": DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE,
+            VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY: VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE,
+            VIEW_THRESHOLD_SLIDER_STORAGE_KEY: VIEW_THRESHOLD_SLIDER_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onLoad(values));
     }
@@ -330,21 +330,21 @@ class ViewThresholdSlider extends Widget {
      * @param {Object} values - Values from browser storage.
      */
     onLoad(values) {
-        this.element.value = values["view-threshold-slider-value"];
+        this.element.value = values[VIEW_THRESHOLD_SLIDER_STORAGE_KEY];
 
         const track_width = this.element.clientWidth;
         const thumb_width = parseInt(window.getComputedStyle(document.documentElement).getPropertyValue("--thumb-size"));
         const distance = Math.ceil((1 - (this.element.value - 1) / 99) * (track_width - thumb_width));
         document.documentElement.style.setProperty("--thumb-translation", `${distance}px`);
 
-        this.element.disabled = values["view-threshold-checkbox-state"] === false;
+        this.element.disabled = values[VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY] === false;
     }
 
     /**
      * See Widget.save().
      */
     save() {
-        const items = {"view-threshold-slider-value": this.element.value};
+        const items = {VIEW_THRESHOLD_SLIDER_STORAGE_KEY: this.element.value};
         Storage.set(items);
     }
 }
@@ -359,8 +359,8 @@ class ViewThresholdSlider extends Widget {
     constructor() {
         super(
             "view-threshold-percent",
-            ["view-threshold-checkbox-state", "view-threshold-slider-value"],
-            `${DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE}%`
+            [VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY, VIEW_THRESHOLD_SLIDER_STORAGE_KEY],
+            `${VIEW_THRESHOLD_SLIDER_DEFAULT_STATE}%`
         );
 
         this.load();
@@ -371,8 +371,8 @@ class ViewThresholdSlider extends Widget {
      */
     load() {
         const items = {
-            "view-threshold-checkbox-state": DEFAULT_VIEW_THRESHOLD_CHECKBOX_STATE,
-            "view-threshold-slider-value": DEFAULT_VIEW_THRESHOLD_SLIDER_VALUE,
+            [VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY]: VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE,
+            [VIEW_THRESHOLD_SLIDER_STORAGE_KEY]: VIEW_THRESHOLD_SLIDER_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onLoad(values));
     }
@@ -383,8 +383,8 @@ class ViewThresholdSlider extends Widget {
      * @param {Object} values - Values from browser storage.
      */
     onLoad(values) {
-        const enabled = values["view-threshold-checkbox-state"] === true;
-        const percent = values["view-threshold-slider-value"];
+        const enabled = values[VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY] === true;
+        const percent = values[VIEW_THRESHOLD_SLIDER_STORAGE_KEY];
 
         if (enabled) {
             this.element.textContent = `${percent}%`;
@@ -410,7 +410,7 @@ class HidePageCheckbox extends Checkbox {
      * @param {*} fallback - See Checkbox.constructor().
      */
     constructor(element_id, youtube_page, fallback) {
-        super(element_id, ["hide-videos-bookmarks"], fallback);
+        super(element_id, [HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY], fallback);
         this.youtube_page = youtube_page;
     }
 
@@ -418,7 +418,7 @@ class HidePageCheckbox extends Checkbox {
      * See Checkbox.load().
      */
     load() {
-        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        const items = {[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE};
         Storage.get(items, values => this.onLoad(values));
     }
 
@@ -428,7 +428,7 @@ class HidePageCheckbox extends Checkbox {
      * @param {Object} values - Values from browser storage.
      */
     onLoad(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
+        const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
         if (bookmarks.hasOwnProperty(this.youtube_page)) {
             this.element.checked = bookmarks[this.youtube_page];
         } else {
@@ -440,7 +440,7 @@ class HidePageCheckbox extends Checkbox {
      * See Checkbox.save().
      */
     save() {
-        const items = {"hide-videos-bookmarks": DEFAULT_HIDE_VIDEOS_BOOKMARKS};
+        const items = {[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE};
         Storage.get(items, values => this.onSave(values));
     }
 
@@ -450,8 +450,8 @@ class HidePageCheckbox extends Checkbox {
      * @param {Object} values - Values from browser storage.
      */
     onSave(values) {
-        const bookmarks = values["hide-videos-bookmarks"];
+        const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
         bookmarks[this.youtube_page] = this.element.checked;
-        Storage.set({"hide-videos-bookmarks": bookmarks});
+        Storage.set({[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: bookmarks});
     }
 }
