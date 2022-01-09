@@ -10,7 +10,7 @@ class Settings {
      * Constructs a new Settings object and, for convenience, loads its state.
      */
     constructor() {
-        this.state = DEFAULT_SETTINGS_STATE;
+        this.state = SETTINGS_DEFAULT_STATE;
         this.load();
     }
 
@@ -23,13 +23,13 @@ class Settings {
      */
     hidden() {
         const channel = document.querySelector("#channel-container");
-        if (channel && this.state["hide-channels-checkbox-state"] === false) {
+        if (channel && this.state[HIDE_CHANNELS_CHECKBOX_STORAGE_KEY] === false) {
             return false;
         }
 
         const page = Path.parse(window.location.toString());
-        const bookmark = this.state["hide-videos-bookmarks"][page];
-        const universal = this.state["hide-videos-checkbox-state"];
+        const bookmark = this.state[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY][page];
+        const universal = this.state[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
         return bookmark === undefined ? universal : bookmark;
     }
 
@@ -40,8 +40,8 @@ class Settings {
      * inclusive range [1, 100].
      */
     threshold() {
-        const enabled = this.state["view-threshold-checkbox-state"] === true;
-        const percent = this.state["view-threshold-slider-value"];
+        const enabled = this.state[VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY] === true;
+        const percent = this.state[VIEW_THRESHOLD_SLIDER_STORAGE_KEY];
         return enabled ? percent : 100;
     }
 
@@ -59,6 +59,6 @@ class Settings {
                 continuation();
             }
         }
-        Storage.get(DEFAULT_SETTINGS_STATE, callback);
+        Storage.get(SETTINGS_DEFAULT_STATE, callback);
     }
 }
