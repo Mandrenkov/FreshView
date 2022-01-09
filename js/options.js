@@ -22,49 +22,49 @@ document.addEventListener("DOMContentLoaded", () => {
         new Checkbox(
             "hide-recommendations-checkbox",
             HIDE_RECOMMENDATIONS_CHECKBOX_STORAGE_KEY,
-            true,
+            HIDE_RECOMMENDATIONS_CHECKBOX_DEFAULT_STATE
         ),
         new Checkbox(
             "hide-playlists-checkbox",
             HIDE_PLAYLISTS_CHECKBOX_STORAGE_KEY,
-            true,
+            HIDE_PLAYLISTS_CHECKBOX_DEFAULT_STATE
         ),
         new Checkbox(
             "hide-searches-checkbox",
             HIDE_SEARCHES_CHECKBOX_STORAGE_KEY,
-            true,
+            HIDE_SEARCHES_CHECKBOX_DEFAULT_STATE
         ),
         new Checkbox(
             "hide-channels-checkbox",
             HIDE_CHANNELS_CHECKBOX_STORAGE_KEY,
-            true,
+            HIDE_CHANNELS_CHECKBOX_DEFAULT_STATE
         ),
 
         // Filters (Pages)
-        new HidePageCheckbox(
+        new Checkbox(
             "hide-home-checkbox",
-            "/",
-            DEFAULT_HIDE_HOME_CHECKBOX_STATE
+            HIDE_HOME_CHECKBOX_STORAGE_KEY,
+            HIDE_HOME_CHECKBOX_DEFAULT_STATE
         ),
-        new HidePageCheckbox(
+        new Checkbox(
             "hide-explore-checkbox",
-            "/feed/explore",
-            DEFAULT_HIDE_EXPLORE_CHECKBOX_STATE
+            HIDE_EXPLORE_CHECKBOX_STORAGE_KEY,
+            HIDE_EXPLORE_CHECKBOX_DEFAULT_STATE
         ),
-        new HidePageCheckbox(
+        new Checkbox(
             "hide-subscriptions-checkbox",
-            "/feed/subscriptions",
-            DEFAULT_HIDE_SUBSCRIPTIONS_CHECKBOX_STATE
+            HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY,
+            HIDE_SUBSCRIPTIONS_CHECKBOX_DEFAULT_STATE
         ),
-        new HidePageCheckbox(
+        new Checkbox(
             "hide-library-checkbox",
-            "/feed/library",
-            DEFAULT_HIDE_LIBRARY_CHECKBOX_STATE
+            HIDE_LIBRARY_CHECKBOX_STORAGE_KEY,
+            HIDE_LIBRARY_CHECKBOX_DEFAULT_STATE
         ),
-        new HidePageCheckbox(
+        new Checkbox(
             "hide-history-checkbox",
-            "/feed/history",
-            DEFAULT_HIDE_HISTORY_CHECKBOX_STATE
+            HIDE_HISTORY_CHECKBOX_STORAGE_KEY,
+            HIDE_HISTORY_CHECKBOX_DEFAULT_STATE
         ),
     ];
 

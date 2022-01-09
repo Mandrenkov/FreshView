@@ -22,12 +22,23 @@ class Settings {
      * @returns {boolean} - True iff videos should be hidden.
      */
     hidden() {
-        const channel = document.querySelector("#channel-container");
-        if (channel && this.state[HIDE_CHANNELS_CHECKBOX_STORAGE_KEY] === false) {
-            return false;
+        const page = Path.parse(window.location.toString());
+
+        const filters = {
+            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: new RegExp("/"),
+            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: new RegExp("/(c|channel)/.*"),
+            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/explore"),
+            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/library"),
+            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/history"),
+            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/subscriptions")
+        };
+
+        for (const [key, regex] of Object.entries(filters)) {
+            if (this.state[key] === false && regex.test(page)) {
+                return false;
+            }
         }
 
-        const page = Path.parse(window.location.toString());
         const bookmark = this.state[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY][page];
         const universal = this.state[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
         return bookmark === undefined ? universal : bookmark;
