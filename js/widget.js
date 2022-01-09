@@ -147,7 +147,16 @@ class HideVideosCheckbox extends Widget {
     constructor() {
         super(
             "hide-videos-checkbox",
-            [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY, HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY],
+            [
+                HIDE_VIDEOS_CHECKBOX_STORAGE_KEY,
+                HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY,
+                HIDE_CHANNELS_CHECKBOX_STORAGE_KEY,
+                HIDE_HOME_CHECKBOX_STORAGE_KEY,
+                HIDE_EXPLORE_CHECKBOX_STORAGE_KEY,
+                HIDE_LIBRARY_CHECKBOX_STORAGE_KEY,
+                HIDE_HISTORY_CHECKBOX_STORAGE_KEY,
+                HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY
+            ],
             HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE
         );
 
@@ -160,8 +169,17 @@ class HideVideosCheckbox extends Widget {
      */
     load() {
         const items = {
+            // Hide Videos
             [HIDE_VIDEOS_CHECKBOX_STORAGE_KEY]: HIDE_VIDEOS_CHECKBOX_DEFAULT_STATE,
             [HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY]: HIDE_VIDEOS_BOOKMARKS_DEFAULT_STATE,
+
+            // Filters (Pages)
+            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: HIDE_CHANNELS_CHECKBOX_DEFAULT_STATE,
+            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: HIDE_HOME_CHECKBOX_DEFAULT_STATE,
+            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: HIDE_EXPLORE_CHECKBOX_DEFAULT_STATE,
+            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: HIDE_LIBRARY_CHECKBOX_DEFAULT_STATE,
+            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: HIDE_HISTORY_CHECKBOX_DEFAULT_STATE,
+            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: HIDE_SUBSCRIPTIONS_CHECKBOX_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onLoad(values));
     }
@@ -176,6 +194,23 @@ class HideVideosCheckbox extends Widget {
         const universal = values[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
 
         const callback = (page) => {
+            const filters = {
+                [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: HIDE_CHANNELS_CHECKBOX_REGEX,
+                [HIDE_HOME_CHECKBOX_STORAGE_KEY]: HIDE_HOME_CHECKBOX_REGEX,
+                [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: HIDE_EXPLORE_CHECKBOX_REGEX,
+                [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: HIDE_LIBRARY_CHECKBOX_REGEX,
+                [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: HIDE_HISTORY_CHECKBOX_REGEX,
+                [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: HIDE_SUBSCRIPTIONS_CHECKBOX_REGEX
+            };
+
+            for (const [key, regex] of Object.entries(filters)) {
+                if (values[key] === false && regex.test(page)) {
+                    this.element.checked = false;
+                    this.element.disabled = true;
+                    return;
+                }
+            }
+
             if (bookmarks.hasOwnProperty(page)) {
                 this.element.checked = bookmarks[page];
                 this.element.disabled = true;

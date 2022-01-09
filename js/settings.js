@@ -25,12 +25,12 @@ class Settings {
         const page = Path.parse(window.location.toString());
 
         const filters = {
-            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: new RegExp("/"),
-            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: new RegExp("/(c|channel)/.*"),
-            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/explore"),
-            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/library"),
-            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/history"),
-            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: new RegExp("/feed/subscriptions")
+            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: HIDE_CHANNELS_CHECKBOX_REGEX,
+            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: HIDE_HOME_CHECKBOX_REGEX,
+            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: HIDE_EXPLORE_CHECKBOX_REGEX,
+            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: HIDE_LIBRARY_CHECKBOX_REGEX,
+            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: HIDE_HISTORY_CHECKBOX_REGEX,
+            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: HIDE_SUBSCRIPTIONS_CHECKBOX_REGEX
         };
 
         for (const [key, regex] of Object.entries(filters)) {
