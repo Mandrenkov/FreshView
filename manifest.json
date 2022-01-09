@@ -33,6 +33,7 @@
                 "js/logger.js",
                 "js/manager.js",
                 "js/path.js",
+                "js/settings.js",
                 "js/storage.js",
                 "js/video.js",
                 "js/injection.js"
