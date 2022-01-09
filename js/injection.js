@@ -23,7 +23,7 @@ function onMessageListener(request, {}, {}) {
  */
 function onStorageChangedListener(changes, {}) {
     Logger.debug("onStorageChangedListener(): changed", changes, ".");
-    const keys = Array.from(Object.keys(DEFAULT_SETTINGS_STATE));
+    const keys = Array.from(Object.keys(SETTINGS_DEFAULT_STATE));
     if (keys.some(key => changes.hasOwnProperty(key))) {
         manager.settings.load(() => manager.request());
     }

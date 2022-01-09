@@ -22,7 +22,7 @@ function onStorageChangedListener(changes, _) {
 let widgets = [];
 
 // Set the CSS theme immediately to avoid an initial theme animation.
-const items = {[DARK_MODE_CHECKBOX_STORAGE_KEY]: DEFAULT_DARK_MODE_CHECKBOX_STATE};
+const items = {[DARK_MODE_CHECKBOX_STORAGE_KEY]: DARK_MODE_CHECKBOX_DEFAULT_STATE};
 Storage.get(items, values => setCSSTheme(values[DARK_MODE_CHECKBOX_STORAGE_KEY]))
 
 document.addEventListener("DOMContentLoaded", () => {

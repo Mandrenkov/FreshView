@@ -109,7 +109,7 @@ class DarkModeCheckbox extends Checkbox {
         super(
             "dark-mode-checkbox",
             DARK_MODE_CHECKBOX_STORAGE_KEY,
-            DEFAULT_DARK_MODE_CHECKBOX_STATE
+            DARK_MODE_CHECKBOX_DEFAULT_STATE
         );
     }
 
@@ -318,8 +318,8 @@ class ViewThresholdSlider extends Widget {
      */
     load() {
         const items = {
-            VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY: VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE,
-            VIEW_THRESHOLD_SLIDER_STORAGE_KEY: VIEW_THRESHOLD_SLIDER_DEFAULT_STATE,
+            [VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY]: VIEW_THRESHOLD_CHECKBOX_DEFAULT_STATE,
+            [VIEW_THRESHOLD_SLIDER_STORAGE_KEY]: VIEW_THRESHOLD_SLIDER_DEFAULT_STATE,
         };
         Storage.get(items, values => this.onLoad(values));
     }
@@ -362,7 +362,6 @@ class ViewThresholdSlider extends Widget {
             [VIEW_THRESHOLD_CHECKBOX_STORAGE_KEY, VIEW_THRESHOLD_SLIDER_STORAGE_KEY],
             `${VIEW_THRESHOLD_SLIDER_DEFAULT_STATE}%`
         );
-
         this.load();
     }
 
