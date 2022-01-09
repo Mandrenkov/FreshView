@@ -10,8 +10,8 @@ function onTabUpdatedListener({}, changes, {}) {
 
 // Updates the CSS theme when its value is changed in browser storage.
 function onStorageChangedListener(changes, _) {
-    if ("dark-mode-checkbox-state" in changes) {
-        setCSSTheme(changes["dark-mode-checkbox-state"]["newValue"]);
+    if (DARK_MODE_CHECKBOX_STORAGE_KEY in changes) {
+        setCSSTheme(changes[DARK_MODE_CHECKBOX_STORAGE_KEY]["newValue"]);
     }
 }
 
@@ -22,8 +22,8 @@ function onStorageChangedListener(changes, _) {
 let widgets = [];
 
 // Set the CSS theme immediately to avoid an initial theme animation.
-const items = {"dark-mode-checkbox-state": DEFAULT_DARK_MODE_CHECKBOX_STATE};
-Storage.get(items, (values) => setCSSTheme(values["dark-mode-checkbox-state"]))
+const items = {[DARK_MODE_CHECKBOX_STORAGE_KEY]: DEFAULT_DARK_MODE_CHECKBOX_STATE};
+Storage.get(items, values => setCSSTheme(values[DARK_MODE_CHECKBOX_STORAGE_KEY]))
 
 document.addEventListener("DOMContentLoaded", () => {
     // Browser extensions are prohibited from embedding JavaScript in the
