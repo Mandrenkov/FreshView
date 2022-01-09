@@ -1,74 +1,100 @@
-// This script implements the Album class.
+// This script contains the Album class.
 // -----------------------------------------------------------------------------
 
-// Album represents a collection of Videos.
+/**
+ * A unique collection of videos.
+ */
 class Album {
-    // Constructs a new Album.
-    constructor() {
+    /**
+     * Constructs a new Album object.
+     *
+     * @param {Video[]?} - Optional array of videos to initialize the album.
+     */
+    constructor(videos) {
         this.videos = new Map();
+        if (videos !== undefined) {
+            videos.forEach(video => this.add(video));
+        }
     }
 
-    // Adds the given Video to this Album.
+    /**
+     * Adds the given video to this album.
+     *
+     * @param {Video} video - Video to be added.
+     */
     add(video) {
         const id = video.getID();
         if (id === undefined) {
-            Logger.warning("Album.add(): failed to add Video", video, ": Video does not have an ID.");
+            Logger.warning("Album.add(): could not add video", video, " because it does not have an ID.");
             return;
         }
         this.videos.set(id, video);
     }
 
-    // Updates the given Video in this Album.
+    /**
+     * Updates the given video in this album.
+     *
+     * @param {Video} video - Video to be updated.
+     */
     update(video) {
         const id = video.getID();
         if (id === undefined) {
-            Logger.warning("Album.update(): failed to update Video", video, ": Video does not have an ID.");
+            Logger.warning("Album.update(): could not update video", video, "because it does not have an ID.");
             return;
         }
         video.display = this.videos.get(id).display;
         this.videos.set(id, video);
     }
 
-    // Reports whether the given Album is tha same as this Album.
+    /**
+     * Reports whether this album has the same content as the given album.
+     *
+     * @param {Album} that - Album to be compared for equality.
+     *
+     * @returns {boolean} - True iff the albums contain the same video IDs.
+     */
     equals(that) {
-        // Two Albums are the same if:
-        //    1. The Albums contain the same number of Videos.
-        //    2. Every ID in the first Album appears in the second Album.
-        return this.getSize() === that.getSize() &&
-               this.getIDs().every(id => that.videos.has(id));
+        const this_ids = new Set(this.getIDs());
+        const that_ids = new Set(that.getIDs());
+        return this_ids.size === that_ids.size && this_ids.every(id => that_ids.has(id));
     }
 
-    // Merges this Album with the given Album, refreshing Videos as needed.
+    /**
+     * Merges this album with the given album, refreshing videos as needed.
+     *
+     * @param {Album} that - Album to be merged into this album.
+     */
     merge(that) {
         const dropped = this.getIDs().filter(id => !that.videos.has(id));
         dropped.forEach(id => {this.videos.get(id).show(); this.videos.delete(id);});
-        Logger.debug("Album.merge(): dropped Videos", dropped, ".");
+        Logger.debug("Album.merge(): dropped videos", dropped, ".");
 
         const updated = that.getIDs().filter(id => this.videos.has(id));
         updated.forEach(id => this.update(that.videos.get(id)));
-        Logger.debug("Album.merge(): updated Videos", updated, ".");
+        Logger.debug("Album.merge(): updated videos", updated, ".");
 
         const added = that.getIDs().filter(id => !this.videos.has(id));
         added.forEach(id => this.add(that.videos.get(id)));
-        Logger.debug("Album.merge(): added Videos", added, ".");
+        Logger.debug("Album.merge(): added videos", added, ".");
     }
 
-    // Refreshes the visibility of all Videos in this Album.
-    refresh(hidden) {
-        this.getVideos().forEach(video => hidden ? video.hide() : video.show());
-    }
-
-    // Returns the IDs of the Videos in this Album.
+    /**
+     * Returns the IDs of the videos in this album.
+     */
     getIDs() {
-        return Array.from(this.videos.keys())
+        return Array.from(this.videos.keys());
     }
 
-    // Returns the Videos in this Album.
+    /**
+     * Returns the videos in this album.
+     */
     getVideos() {
-        return Array.from(this.videos.values())
+        return Array.from(this.videos.values());
     }
 
-    // Returns the number of Videos in this Album.
+    /**
+     * Returns the number of videos in this album.
+     */
     getSize() {
         return this.videos.size;
     }
