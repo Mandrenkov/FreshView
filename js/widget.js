@@ -379,7 +379,7 @@ class ViewThresholdSlider extends Widget {
      * See Widget.save().
      */
     save() {
-        const items = {VIEW_THRESHOLD_SLIDER_STORAGE_KEY: this.element.value};
+        const items = {[VIEW_THRESHOLD_SLIDER_STORAGE_KEY]: this.element.value};
         Storage.set(items);
     }
 }
@@ -387,7 +387,7 @@ class ViewThresholdSlider extends Widget {
 /**
  * Widget for the View Threshold label.
  */
- class ViewThresholdLabel extends Widget {
+class ViewThresholdLabel extends Widget {
     /**
      * Constructs a new View Threshold label by calling the Widget constructor.
      */
