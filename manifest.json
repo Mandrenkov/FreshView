@@ -32,6 +32,7 @@
                 "js/extractor.js",
                 "js/logger.js",
                 "js/manager.js",
+                "js/page.js",
                 "js/path.js",
                 "js/settings.js",
                 "js/storage.js",

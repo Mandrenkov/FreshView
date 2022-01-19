@@ -17,7 +17,7 @@ class Settings {
     /**
      * Reports whether watched videos on the current page should be hidden,
      * taking into account the state of the universal Hide Videos toggle,
-     * bookmarks, and channel filter.
+     * bookmarks, and YouTube page filters.
      *
      * @returns {boolean} - True iff videos should be hidden.
      */
@@ -25,16 +25,16 @@ class Settings {
         const page = Path.parse(window.location.toString());
 
         const filters = {
-            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: HIDE_CHANNELS_CHECKBOX_REGEX,
-            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: HIDE_HOME_CHECKBOX_REGEX,
-            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: HIDE_EXPLORE_CHECKBOX_REGEX,
-            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: HIDE_LIBRARY_CHECKBOX_REGEX,
-            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: HIDE_HISTORY_CHECKBOX_REGEX,
-            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: HIDE_SUBSCRIPTIONS_CHECKBOX_REGEX
+            [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: isChannelPage,
+            [HIDE_HOME_CHECKBOX_STORAGE_KEY]: isHomePage,
+            [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: isExplorePage,
+            [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: isLibraryPage,
+            [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: isHistoryPage,
+            [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: isSubscriptionsPage,
         };
 
-        for (const [key, regex] of Object.entries(filters)) {
-            if (this.state[key] === false && regex.test(page)) {
+        for (const [key, isFilterPage] of Object.entries(filters)) {
+            if (this.state[key] === false && isFilterPage(document, page)) {
                 return false;
             }
         }
