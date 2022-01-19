@@ -51,6 +51,21 @@ class Extractor {
 }
 
 /**
+ * Extracts all the explore videos in the given HTML element.
+ *
+ * @param {Element} element - HTML element to extract explore videos from.
+ *
+ * @return {Element[]} - List of HTML explore video elements.
+ */
+ function extractExploreVideos(element) {
+    return extract(
+        element,
+        // Videos on the Explore page
+        "ytd-video-renderer.style-scope.ytd-expanded-shelf-contents-renderer"
+    );
+}
+
+/**
  * Returns all the grid videos in the given HTML element.
  *
  * @param {Element} element - HTML element to extract videos from.

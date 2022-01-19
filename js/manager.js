@@ -66,6 +66,7 @@ class Manager {
     extract() {
         const extractor = new Extractor();
 
+        extractor.insert(extractExploreVideos);
         extractor.insert(extractGridVideos);
         extractor.insert(extractHistoryVideos);
         extractor.insert(extractHomeVideos);
