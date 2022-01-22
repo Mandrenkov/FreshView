@@ -4,47 +4,47 @@
 
 FreshView for YouTube™ is a [Chrome](https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/freshview-for-youtube/) extension that hides YouTube™ videos which users have already watched.
 
----
+## Features
 
-### Repository Layout
+* *Simple* - Intuitive user interface, design, and controls.
+* *Convenient* - Choose the minimum view progress of a watched video.
+* *Customizable* - Select which types of videos should never be hidden by the extension.
 
-The contents of the top-level directories match their names exactly:
+## Installation
 
-| **Directory**    | **Contents**     |
-| :--------        | :--------        |
-| [assets](assets) | Asset files      |
-| [css](css)       | CSS files        |
-| [html](html)     | HTML files       |
-| [img](img)       | Icon files       |
-| [js](js)         | JavaScript files |
+The easiest way to install this extension is to follow the instructions on the
+[Chrome Web Store](https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm) or [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/freshview-for-youtube/) pages. This is the preferred way to add the latest,
+stable version of the extension to your browser.
 
-The [js](js) directory contains the following scripts:
+> **Note:** The Chrome Web Store supports Chrome, Edge, Opera, Vivaldi, Brave,
+> and other Chromium-based browsers.
 
-| **File**                          | **Purpose**                                            |
-| :---                              | :---                                                   |
-| [album.js](js/album.js)           | Implements a container for Videos.                     |
-| [background.js](js/background.js) | Activates the extension in the browser toolbar.        |
-| [injection.js](js/injection.js)   | Attaches listeners to browser storage events.          |
-| [logger.js](js/logger.js)         | Wraps `console` to control the visibility of messages. |
-| [manager.js](js/manager.js)       | Finds and manages Videos on a page.                    |
-| [path.js](js/path.js)             | Parses the URL of a YouTube™ page.                     |
-| [popup.js](js/popup.js)           | Attaches event listeners and initializes animations.   |
-| [storage.js](js/storage.js)       | Adapts the browser local storage API.                  |
-| [video.js](js/video.js)           | Implements a model for YouTube™ videos.                |
-| [widget.js](js/widget.js)         | Implements the state and lifecycle of UI widgets.      |
+To install the extension manually, simply clone this GitHub repository and then
+refer to the instructions below.
 
-### How it Works
-When the DOM is mutated, FreshView polls the DOM for HTML elements that match the expected structure of a YouTube™ video.  Each HTML element that matches the structure of a YouTube™ video is converted into a `Video` object.  All Videos with a view progress that meets or exceeds the current view threshold are added to a dynamic collection of Videos known as an `Album`.  When a Video is added to an Album, it is displayed or hidden depending on the state of the *Hide Videos* toggle.  Similarly, when a Video is removed from an Album, it is reverted to a visible state.
+#### Chrome
 
-#### Technical Notes
-1. The visibility of a Video is controlled by setting the `display` attribute of a YouTube™ video element's `style`.
-1. The view progress of a Video is derived from the red bar shown along the bottom of a YouTube™ video element.
-1. Only DOM `childList` mutations trigger a poll request.
-1. DOM mutations that occur within 200 milliseconds of one another are batched into a single poll request.
-1. YouTube™ videos that appear in the Autoplay panel are ignored.
-1. A YouTube™ page is identified by the concatenation of its path and query arguments.
-1. The durations of the CSS transitions are initialized *after* the first animation frame to enable instantaneous loading.
+1. Navigate to `chrome://extensions` via the URL bar.
+2. Ensure the **Developer mode** toggle is activated.
+3. Click on **Load unpacked**.
+4. Select the directory containing the cloned repository.
 
-### Screenshots
+#### Firefox
 
-![FreshView for YouTube™ UI](assets/popups.png "The two different FreshView for YouTube™ themes.")
+1. Navigate to `about:debugging` via the URL bar.
+2. Click on **This Firefox** from the left sidebar.
+3. Click on **Load Temporary Add-on...**.
+4. Select the [`manifest.json`](manifest.json) file from the cloned repository.
+
+## Support
+
+* Source Code: https://github.com/Mandrenkov/FreshView
+* Issue Tracker: https://github.com/Mandrenkov/FreshView/issues
+
+If you are having problems or would like to suggest a feature, please create an
+issue using the GitHub issue tracker.
+
+## License
+
+FreshView for YouTube™ is **free** and **open source**, released under the
+[GNU Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
