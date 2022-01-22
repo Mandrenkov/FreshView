@@ -16,8 +16,8 @@ The easiest way to install this extension is to follow the instructions on the
 [Chrome Web Store](https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm) or [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/freshview-for-youtube/) pages. This is the preferred way to add the latest,
 stable version of the extension to your browser.
 
-> **Note:** The Chrome Web Store supports Chrome, Edge, Opera, Vivaldi, Brave,
-> and other Chromium-based browsers.
+> **Note:** The Chrome Web Store supports Google Chrome, Microsoft Edge, and
+> other Chromium-based browsers.
 
 To install the extension manually, simply clone this GitHub repository and then
 refer to the instructions below.
