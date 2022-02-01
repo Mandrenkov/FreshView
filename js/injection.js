@@ -3,15 +3,22 @@
 // -----------------------------------------------------------------------------
 
 /**
- * Listens to browser message events which indicate that the URL of the page
- * associated with the running instance of the content script has changed.
+ * Listens to browser message events which indicate that one of the following
+ * events associated with the page corresponding to the running instance of the
+ * content script has occurred:
+ *
+ * 1. The URL of the page has changed.
+ * 2. The popup script has issued a page filter query.
  *
  * @see https://developer.chrome.com/docs/extensions/reference/runtime/#event-onMessage
  */
-function onMessageListener(request, {}, {}) {
+function onMessageListener(request, {}, sendResponse) {
     Logger.debug(`onMessageListener(): received "${request.message}" message.`);
     if (request.message === URL_CHANGE_MESSAGE) {
         manager.display();
+    } else if (request.message === PAGE_FILTER_QUERY_MESSAGE) {
+        const ignored = manager.settings.ignored();
+        sendResponse(ignored);
     }
 };
 
