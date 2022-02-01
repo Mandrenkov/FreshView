@@ -15,13 +15,12 @@ class Settings {
     }
 
     /**
-     * Reports whether watched videos on the current page should be hidden,
-     * taking into account the state of the universal Hide Videos toggle,
-     * bookmarks, and YouTube page filters.
+     * Reports whether watched videos on the current page should be ignored,
+     * taking into account the YouTube page filters.
      *
-     * @returns {boolean} - True iff videos should be hidden.
+     * @returns {boolean} - True iff watched videos should be ignored.
      */
-    hidden() {
+    ignored() {
         const page = Path.parse(window.location.toString());
 
         const filters = {
@@ -35,13 +34,25 @@ class Settings {
 
         for (const [key, isFilterPage] of Object.entries(filters)) {
             if (this.state[key] === false && isFilterPage(document, page)) {
-                return false;
+                return true;
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Reports whether watched videos on the current page should be hidden,
+     * taking into account the state of the universal Hide Videos toggle and
+     * bookmarks.
+     *
+     * @returns {boolean} - True iff watched videos should be hidden.
+     */
+    hidden() {
+        const page = Path.parse(window.location.toString());
         const bookmark = this.state[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY][page];
         const universal = this.state[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
-        return bookmark === undefined ? universal : bookmark;
+        return bookmark !== undefined ? bookmark : universal;
     }
 
     /**
