@@ -19,10 +19,11 @@ class Manager {
     }
 
     /**
-     * Updates the visibility of the video collection based on Settings.hidden().
+     * Updates the visibility of the video collection based on Settings.hidden()
+     * and Settings.ignored().
      */
     display() {
-        const hidden = this.settings.hidden();
+        const hidden = !this.settings.ignored() && this.settings.hidden();
         Logger.debug(`Manager.display(): ${hidden ? "hiding" : "showing"} videos.`);
         
         const videos = this.album.getVideos();

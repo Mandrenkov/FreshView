@@ -21,7 +21,7 @@ function isChannelPage(element, _) {
  * @returns {boolean} - True iff the given element and path describe the Home page.
  */
 function isHomePage(_, path) {
-    return new RegExp("/").test(path);
+    return new RegExp("/$").test(path);
 }
 
 /**

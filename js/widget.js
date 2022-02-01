@@ -193,34 +193,39 @@ class HideVideosCheckbox extends Widget {
         const bookmarks = values[HIDE_VIDEOS_BOOKMARKS_STORAGE_KEY];
         const universal = values[HIDE_VIDEOS_CHECKBOX_STORAGE_KEY];
 
-        const callback = (page) => {
-            const filters = {
-                [HIDE_CHANNELS_CHECKBOX_STORAGE_KEY]: HIDE_CHANNELS_CHECKBOX_REGEX,
-                [HIDE_HOME_CHECKBOX_STORAGE_KEY]: HIDE_HOME_CHECKBOX_REGEX,
-                [HIDE_EXPLORE_CHECKBOX_STORAGE_KEY]: HIDE_EXPLORE_CHECKBOX_REGEX,
-                [HIDE_LIBRARY_CHECKBOX_STORAGE_KEY]: HIDE_LIBRARY_CHECKBOX_REGEX,
-                [HIDE_HISTORY_CHECKBOX_STORAGE_KEY]: HIDE_HISTORY_CHECKBOX_REGEX,
-                [HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY]: HIDE_SUBSCRIPTIONS_CHECKBOX_REGEX
-            };
+        const outer_callback = (tabs) => {
+            if (chrome.runtime.lastError) {
+                Logger.error(`HideVideosCheckbox.onLoad(): outer callback error: ${chrome.runtime.lastError.message}.`);
+                return;
+            } else if (tabs.length == 0) {
+                Logger.error("Failed to retrieve the current YouTube page tab.");
+                return;
+            }
 
-            for (const [key, regex] of Object.entries(filters)) {
-                if (values[key] === false && regex.test(page)) {
+            const inner_callback = (ignored) => {
+                if (chrome.runtime.lastError) {
+                    Logger.error(`HideVideosCheckbox.onLoad(): inner callback error: ${chrome.runtime.lastError.message}.`);
+                    return;
+                }
+
+                const page = Path.parse(tabs[0].url);
+
+                if (ignored) {
                     this.element.checked = false;
                     this.element.disabled = true;
-                    return;
+                } else if (bookmarks.hasOwnProperty(page)) {
+                    this.element.checked = bookmarks[page];
+                    this.element.disabled = true;
+                } else {
+                    this.element.checked = universal;
+                    this.element.disabled = false;
                 }
             }
 
-            if (bookmarks.hasOwnProperty(page)) {
-                this.element.checked = bookmarks[page];
-                this.element.disabled = true;
-            } else {
-                this.element.checked = universal;
-                this.element.disabled = false;
-            }
+            chrome.tabs.sendMessage(tabs[0].id, {"message": PAGE_FILTER_QUERY_MESSAGE}, inner_callback);
         }
 
-        Path.get(callback);
+        chrome.tabs.query({active: true, currentWindow: true}, outer_callback);
     }
 
     /**
