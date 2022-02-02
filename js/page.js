@@ -10,7 +10,7 @@
  * @returns {boolean} - True iff the given element and path describe a channel page.
  */
 function isChannelPage(element, _) {
-    return element.querySelector("#channel-container") !== null;
+    return element.querySelector("ytd-browse[page-subtype=channels]:not([hidden]) #channel-container") !== null;
 }
 
 /**
