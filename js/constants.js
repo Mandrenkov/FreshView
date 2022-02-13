@@ -16,19 +16,14 @@ const HIDE_SEARCHES_CHECKBOX_DEFAULT_STATE = true;
 // Filters (Pages)
 const HIDE_CHANNELS_CHECKBOX_STORAGE_KEY = "hide-channels-checkbox-state";
 const HIDE_CHANNELS_CHECKBOX_DEFAULT_STATE = true;
-
 const HIDE_HOME_CHECKBOX_STORAGE_KEY = "hide-home-checkbox-state"
 const HIDE_HOME_CHECKBOX_DEFAULT_STATE = true;
-
 const HIDE_EXPLORE_CHECKBOX_STORAGE_KEY = "hide-explore-checkbox-state"
 const HIDE_EXPLORE_CHECKBOX_DEFAULT_STATE = true;
-
 const HIDE_LIBRARY_CHECKBOX_STORAGE_KEY = "hide-library-checkbox-state"
 const HIDE_LIBRARY_CHECKBOX_DEFAULT_STATE = true;
-
 const HIDE_HISTORY_CHECKBOX_STORAGE_KEY = "hide-history-checkbox-state"
 const HIDE_HISTORY_CHECKBOX_DEFAULT_STATE = false;
-
 const HIDE_SUBSCRIPTIONS_CHECKBOX_STORAGE_KEY = "hide-subscriptions-checkbox-state"
 const HIDE_SUBSCRIPTIONS_CHECKBOX_DEFAULT_STATE = true;
 
