@@ -17,8 +17,9 @@ function onMessageListener(request, {}, sendResponse) {
     if (request.message === URL_CHANGE_MESSAGE) {
         manager.display();
     } else if (request.message === PAGE_FILTER_QUERY_MESSAGE) {
-        const ignored = manager.settings.ignored();
-        sendResponse(ignored);
+        manager.settings.load(() => sendResponse(manager.settings.ignored()));
+        // Indicate that sendResponse() will be invoked asynchronously.
+        return true;
     }
 };
 
