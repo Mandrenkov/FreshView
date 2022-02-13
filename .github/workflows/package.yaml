@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Chromium:
+  Zip:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,25 +16,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Chromium
-          path: |
-            assets/
-            css/
-            html/
-            img/
-            js/
-            LICENSE
-            manifest.json
-
-  Firefox:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Firefox
+          name: FreshView
           path: |
             assets/
             css/
