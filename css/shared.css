@@ -1,0 +1,130 @@
+/* Section 0: Testing Styles -------------------------------------------------*/
+
+.red {
+    background-color: #F00;
+}
+
+.green {
+    background-color: #0F0;
+}
+
+.blue {
+    background-color: #00F;
+}
+
+/* Section 1: Global Styles --------------------------------------------------*/
+
+:root {
+    font-size: 12px;
+    --accent-colour: #065FD4;
+    --accent-colour-hover: #0048B8;
+    --background-colour-primary: #F9F9F9;
+    --background-colour-secondary: #FFFFFF;
+    --background-colour-tooltips: #333333;
+    --disabled-colour: #909090;
+    --divider-colour: #E0E0E0;
+    --font-colour-title: #282828;
+    --font-colour-primary: #0D0D0D;
+    --font-colour-secondary: #757575;
+    --font-colour-icons: #909090;
+    --font-colour-icons-hover: #5E5E5E;
+    --font-colour-tooltips: #FFFFFF;
+    --font-weight-title: 500;
+    --font-weight-primary: 500;
+    --font-weight-secondary: 400;
+    --link-colour: #064FD4;
+    --thumb-border-width: 2px;
+    --thumb-translation: 0px;
+    --thumb-size: 12px;
+    --track-colour-toggle: #E7E7E7;
+    --track-colour-slider: #CCCCCC;
+    --transition-delay-tooltip: 1s;
+    --transition-duration-colour: 0s;
+    --transition-duration-slider: 0s;
+    --transition-duration-toggle: 0s;
+}
+
+:root[data-theme='dark'] {
+    font-size: 12px;
+    --accent-colour: #3EA6FF;
+    --accent-colour-hover: #73CFFF;
+    --background-colour-primary: #181818;
+    --background-colour-secondary: #202020;
+    --background-colour-tooltips: #333333;
+    --disabled-colour: #909090;
+    --divider-colour: #303030;
+    --font-colour-title: #FFFFFF;
+    --font-colour-primary: #FFFFFF;
+    --font-colour-secondary: #AAAAAA;
+    --font-colour-icons: #909090;
+    --font-colour-icons-hover: #D4D4D4;
+    --font-colour-tooltips: #FFFFFF;
+    --font-weight-title: 500;
+    --font-weight-primary: 500;
+    --font-weight-secondary: 400;
+    --link-colour: #3EA6FF;
+    --thumb-border-width: 2px;
+    --thumb-translation: 0px;
+    --thumb-size: 12px;
+    --track-colour-toggle: #3C3C3C;
+    --track-colour-slider: #2F2F2F;
+    --transition-delay-tooltip: 1s;
+    --transition-duration-colour: 0s;
+    --transition-duration-slider: 0s;
+    --transition-duration-toggle: 0s;
+}
+
+/* Section 2: Toggle Styles --------------------------------------------------*/
+
+div.toggle {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+/* Toggle Checkbox Styles */
+div.toggle input {
+    -moz-appearance: none;
+    display: none;
+    height: 0;
+    width: 0;
+}
+
+/* Toggle Thumb Styles */
+label.toggle::before {
+    background-color: var(--disabled-colour);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    content: "";
+    height: 18px;
+    position: absolute;
+    top: 1px;
+    transition-duration: var(--transition-duration-toggle);
+    width: 18px;
+}
+
+input:checked + label.toggle::before {
+    background-color: var(--accent-colour);
+    transform: translateX(16px);
+    transition-duration: var(--transition-duration-toggle);
+}
+
+/* Toggle Track Styles */
+label.toggle {
+    background-color: var(--track-colour-toggle);
+    border-radius: 32px;
+    cursor: pointer;
+    display: inline-block;
+    height: 12px;
+    transition-duration: var(--transition-duration-colour);
+    width: 32px;
+}
+
+input:disabled + label.toggle {
+    cursor: default;
+    opacity: 0.38;
+}

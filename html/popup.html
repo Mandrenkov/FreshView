@@ -5,28 +5,22 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="../css/popup.css">
+        <script src="../js/constants.js"></script>
         <script src="../js/logger.js"></script>
         <script src="../js/manager.js"></script>
         <script src="../js/path.js"></script>
-        <script src="../js/popup.js"></script>
         <script src="../js/storage.js"></script>
         <script src="../js/widget.js"></script>
+        <script src="../js/popup.js"></script>
     </head>
     <body>
         <div id="header">
             <img id="logo" src="../img/icon.png"/>
             <span id="title">FreshView</span>
             <div id="actions">
-                <div class="action tooltip">
-                    <input type="checkbox" id="dark-mode-checkbox">
-                    <label class="material-icons tooltip" for="dark-mode-checkbox">brightness_4</label>
-                    <span id="theme-tooltip" class="tooltip">Theme</span>
-                </div>
-                <div class="action tooltip">
-                    <!-- DEV --> <a class="material-icons action tooltip" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">mode_comment</a>
-                    <!-- CWS <a class="material-icons action tooltip" href="https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm" target="_blank">mode_comment</a> -->
-                    <!-- AMO <a class="material-icons action tooltip" href="https://addons.mozilla.org/en-CA/firefox/addon/freshview-for-youtube" target="_blank">mode_comment</a> -->
-                    <span id="feedback-tooltip" class="tooltip">Feedback</span>
+                <div class="action">
+                    <span id="options-span" class="material-icons">tune</span>
+                    <span id="options-tooltip" class="tooltip">Options</span>
                 </div>
             </div>
         </div>
@@ -34,9 +28,9 @@
             <!-- "Hide Videos" controls -->
             <div class="control">
                 <div class="control-margin">
-                    <div class="control-toggle">
+                    <div class="toggle">
                         <input id="hide-videos-checkbox" type="checkbox"/>
-                        <label class="control-toggle" for="hide-videos-checkbox"></label>
+                        <label class="toggle" for="hide-videos-checkbox"></label>
                     </div>
                 </div>
                 <div class="control-panel">
@@ -45,10 +39,10 @@
                             <div class="control-name">Hide Videos</div>
                             <div class="control-help">Toggles the visibility of watched videos.</div>
                         </div>
-                        <div class="control-bookmark tooltip">
+                        <div class="control-bookmark">
                             <input type="checkbox" id="hide-videos-bookmark">
-                            <label class="material-icons tooltip" for="hide-videos-bookmark">vpn_lock</label>
-                            <span id="hide-videos-tooltip" class="tooltip">Lock the &quot;Hide Videos&quot; toggle on this page</span>
+                            <label class="material-icons" for="hide-videos-bookmark">vpn_lock</label>
+                            <span id="hide-videos-tooltip" class="tooltip">Lock the Hide Videos toggle on this page.</span>
                         </div>
                     </div>
                 </div>
@@ -56,9 +50,9 @@
             <!-- "View Threshold" controls -->
             <div class="control">
                 <div class="control-margin">
-                    <div class="control-toggle">
+                    <div class="toggle">
                         <input id="view-threshold-checkbox" type="checkbox">
-                        <label class="control-toggle" for="view-threshold-checkbox"></label>
+                        <label class="toggle" for="view-threshold-checkbox"></label>
                     </div>
                 </div>
                 <div class="control-panel">

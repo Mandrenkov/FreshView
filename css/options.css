@@ -1,0 +1,141 @@
+@import "shared.css";
+
+/* Section 1: Global Styles --------------------------------------------------*/
+
+body {
+    align-items: center;
+    background-color: var(--background-colour-primary);
+    color: var(--font-colour-primary);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    margin: 0;
+    transition-duration: var(--transition-duration-colour);
+}
+
+a:link {
+    color: var(--link-colour);
+}
+
+a:visited {
+    color: var(--link-colour);
+}
+
+a:active {
+    color: var(--link-colour);
+}
+
+
+/* Section 2: Header Styles --------------------------------------------------*/
+
+.header {
+    background-color: var(--background-colour-secondary);
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    position: fixed;
+    transition-duration: var(--transition-duration-colour);
+    width: 100%;
+}
+
+.header-title {
+    color: var(--font-colour-title);
+    line-height: 60px;
+    font-size: 1.70rem;
+    font-weight: var(--font-weight-title);
+    height: 60px;
+}
+
+.header-subtitle {
+    color: var(--font-colour-secondary);
+    line-height: 60px;
+    font-size: 1.70rem;
+    height: 60px;
+}
+
+.header-logo {
+    display: inline-block;
+    height: 24px;
+    padding: 18px;
+    width: auto;
+    user-select: none;
+}
+
+.header-section-break {
+    height: 60px;
+}
+
+/* Section 3: Divider Styles -------------------------------------------------*/
+
+.divider {
+    background-color: var(--divider-colour);
+    height: 1px;
+    transition-duration: var(--transition-duration-colour);
+}
+
+/* Section 4: Section Styles -------------------------------------------------*/
+
+.divider, .section {
+    width: 800px;
+}
+
+.section-title {
+    color: var(--font-colour-primary);
+    line-height: 1.50rem;
+    font-size: 1.50rem;
+    font-weight: var(--font-weight-title);
+    padding: 24px 0 12px 0;
+}
+
+.section-description {
+    color: var(--font-colour-secondary);
+    line-height: 20px;
+    font-size: 1.20rem;
+    padding-bottom: 44px;
+}
+
+.section-group {
+    display: flex;
+    padding: 0 0 24px 0;
+}
+
+.section-group-left {
+    font-size: 1.20rem;
+    font-weight: var(--font-weight-primary);
+    width: 160px;
+}
+
+.section-group-right {
+    width: 100%
+}
+
+/* Section 5: Option Styles --------------------------------------------------*/
+
+.section-option {
+    display: flex;
+    margin-bottom: 24px;
+}
+
+div.section-option-left {
+    margin-top: 2px;
+    width: 60px;
+}
+
+.section-option-right {
+    padding-left: 15px;
+}
+
+.section-option-title {
+    font-size: 1.20rem;
+    font-weight: var(--font-weight-primary);
+    line-height: 24px;
+    height: 24px;
+}
+
+.section-option-description {
+    color: var(--font-colour-secondary);
+    line-height: 14px;
+    font-size: 1.20rem;
+}
+

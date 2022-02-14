@@ -1,0 +1,27 @@
+name: Package
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  release:
+  workflow_dispatch:
+
+jobs:
+  Zip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: FreshView
+          path: |
+            assets/
+            css/
+            html/
+            img/
+            js/
+            LICENSE
+            manifest.json

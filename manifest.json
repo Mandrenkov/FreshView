@@ -4,13 +4,55 @@
     "name": "FreshView for YouTube™",
     "short_name": "FreshView for YouTube™",
     "description": "Hide YouTube™ videos you've already watched to easily discover fresh content.",
-    "version": "2.0.4",
+    "version": "2.1.0",
+
+    "background": {
+        "scripts": [
+            "js/constants.js",
+            "js/storage.js",
+            "js/background.js"
+        ],
+        "persistent": false
+    },
+
+    "commands": {
+        "toggle-hide-videos-checkbox": {
+            "description": "Toggle \"Hide Videos\""
+        },
+        "toggle-view-threshold-checkbox": {
+            "description": "Toggle \"View Threshold\""
+        }
+    },
+
+    "content_scripts": [{
+            "matches": ["*://*.youtube.com/*"],
+            "js": [
+                "js/album.js",
+                "js/constants.js",
+                "js/extractor.js",
+                "js/logger.js",
+                "js/manager.js",
+                "js/page.js",
+                "js/path.js",
+                "js/settings.js",
+                "js/storage.js",
+                "js/video.js",
+                "js/injection.js"
+            ],
+            "run_at": "document_idle"
+    }],
 
     "icons": {
-         "16": "img/icon16.png",
-         "32": "img/icon32.png",
-         "48": "img/icon48.png",
-        "128": "img/icon128.png"
+        "16": "img/icon16.png",
+        "32": "img/icon32.png",
+        "48": "img/icon48.png",
+       "128": "img/icon128.png"
+    },
+
+    "options_ui": {
+       "browser_style": true,
+       "page": "html/options.html",
+       "open_in_tab": true
     },
 
     "page_action": {
@@ -24,38 +66,6 @@
         "default_popup": "html/popup.html",
         "default_title": "FreshView for YouTube™"
     },
-
-    "commands": {
-        "toggle-hide-videos-checkbox": {
-            "description": "Toggle \"Hide Videos\""
-        },
-        "toggle-view-threshold-checkbox": {
-            "description": "Toggle \"View Threshold\""
-        }
-    },
-
-    "background": {
-        "scripts": [
-            "js/manager.js",
-            "js/storage.js",
-            "js/background.js"
-        ],
-        "persistent": false
-    },
-
-    "content_scripts": [{
-            "matches": ["*://*.youtube.com/*"],
-            "js": [
-                "js/album.js",
-                "js/logger.js",
-                "js/manager.js",
-                "js/path.js",
-                "js/storage.js",
-                "js/video.js",
-                "js/injection.js"
-            ],
-            "run_at": "document_idle"
-    }],
 
     "permissions": [
         "storage",
