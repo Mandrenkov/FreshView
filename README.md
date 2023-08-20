@@ -4,6 +4,8 @@
 
 FreshView for YouTube™ is a [Chrome](https://chrome.google.com/webstore/detail/freshview-for-youtube/eckknmnfoohbeklmjlidmfdlakndcfkm) and [Firefox](https://addons.mozilla.org/en-US/firefox/addon/freshview-for-youtube/) extension that hides watched YouTube™ videos.
 
+⚠️ **This project is no longer maintained. Thank you to everyone who contributed their thoughts and ideas!** ⚠️
+
 ## Features
 
 * *Simple* - Intuitive user interface, design, and controls.
